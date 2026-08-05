@@ -1,0 +1,45 @@
+name: Release
+
+on:
+    push:
+        branches: [alpha] # TODO: add 'beta', 'main' when those channels are wired up
+
+concurrency:
+    group: release-${{ github.ref }}
+    cancel-in-progress: false
+
+permissions:
+    contents: write
+    pull-requests: write
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - uses: pnpm/action-setup@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: pnpm
+            - run: pnpm install --frozen-lockfile
+
+            - name: Version or publish
+              id: changesets
+              uses: changesets/action@v1.9.0
+              with:
+                  publish: pnpm run release
+                  commit: 'chore: version packages (alpha)'
+                  title: 'chore: version packages (alpha)'
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Upload app bundle to the release
+              if: steps.changesets.outputs.published == 'true'
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  VERSION=$(node -p "require('./package.json').version")
+                  gh release upload "v$VERSION" build/bundle/*.zip --clobber

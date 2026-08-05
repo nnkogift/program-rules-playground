@@ -1,0 +1,31 @@
+name: Deploy
+
+on:
+    release:
+        types: [published]
+
+permissions:
+    contents: read
+
+jobs:
+    deploy:
+        if: contains(github.event.release.tag_name, '-alpha.') # TODO: extend once beta/main deploys are wired up
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  ref: ${{ github.event.release.tag_name }}
+            - uses: pnpm/action-setup@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: pnpm
+            - run: pnpm install --frozen-lockfile
+            - run: pnpm build
+
+            - name: Deploy to demo DHIS2
+              env:
+                  D2_PASSWORD: ${{ secrets.DHIS2_DEMO_PASSWORD }}
+              run: >
+                  pnpm run deploy "${{ vars.DHIS2_DEMO_URL }}"
+                  --username "${{ secrets.DHIS2_DEMO_USERNAME }}"

@@ -15,6 +15,9 @@ permissions:
 jobs:
     release:
         runs-on: ubuntu-latest
+        outputs:
+            published: ${{ steps.changesets.outputs.published }}
+            tag: v${{ steps.version.outputs.version }}
         steps:
             - uses: actions/checkout@v4
               with:
@@ -36,10 +39,21 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+            - name: Read released version
+              id: version
+              if: steps.changesets.outputs.published == 'true'
+              run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
             - name: Upload app bundle to the release
               if: steps.changesets.outputs.published == 'true'
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                  VERSION=$(node -p "require('./package.json').version")
-                  gh release upload "v$VERSION" build/bundle/*.zip --clobber
+              run: gh release upload "v${{ steps.version.outputs.version }}" build/bundle/*.zip --clobber
+
+    deploy:
+        needs: release
+        if: needs.release.outputs.published == 'true'
+        uses: ./.github/workflows/deploy.yml
+        with:
+            tag: ${{ needs.release.outputs.tag }}
+        secrets: inherit

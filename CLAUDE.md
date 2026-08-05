@@ -54,11 +54,11 @@ There is no separate typecheck script; `tsc --noEmit` (per `tsconfig.json`) is t
 
 - **`WITHOUT_REGISTRATION`** (event program): renders a single `ProgramStageFormScreen` for the first program stage.
 - **`WITH_REGISTRATION`** (tracker program): renders `TrackerProgramShell`, which is the more complex piece:
-  - Loads tracker-specific metadata (`useTrackerMetadataQuery`) — TEAs, sections, tracked entity type.
-  - Maintains an `EnrollmentRail` (left nav) that can switch between the registration form and any program-stage event forms. Repeatable stages can have multiple draft events, added via `handleAddEvent`; identified by `TrackerSlot`/`slotKey` (`src/components/programs/trackerSlot.ts`).
-  - **All rendered forms stay mounted simultaneously** (visibility toggled with `hidden` CSS, not conditional rendering) so switching rail rows never discards in-progress input in another form.
-  - Each form pushes its live values up via `usePublishFormValues` (debounced 150ms, uses RHF's `form.subscribe`, not `watch`) so sibling forms can see them as `enrollment`/`events` rule-engine inputs — this is what lets a rule on the event form react to a value entered in the registration form, and vice versa.
-  - `toRuleEventInput` / `eventsExcludingSlot` in `TrackerProgramShell` shape per-form values into `RuleEventInput[]` for the rule engine, excluding each form's own in-progress event from the list passed to itself.
+    - Loads tracker-specific metadata (`useTrackerMetadataQuery`) — TEAs, sections, tracked entity type.
+    - Maintains an `EnrollmentRail` (left nav) that can switch between the registration form and any program-stage event forms. Repeatable stages can have multiple draft events, added via `handleAddEvent`; identified by `TrackerSlot`/`slotKey` (`src/components/programs/trackerSlot.ts`).
+    - **All rendered forms stay mounted simultaneously** (visibility toggled with `hidden` CSS, not conditional rendering) so switching rail rows never discards in-progress input in another form.
+    - Each form pushes its live values up via `usePublishFormValues` (debounced 150ms, uses RHF's `form.subscribe`, not `watch`) so sibling forms can see them as `enrollment`/`events` rule-engine inputs — this is what lets a rule on the event form react to a value entered in the registration form, and vice versa.
+    - `toRuleEventInput` / `eventsExcludingSlot` in `TrackerProgramShell` shape per-form values into `RuleEventInput[]` for the rule engine, excluding each form's own in-progress event from the list passed to itself.
 
 ### Rule-aware rendering (`src/components/rules/`)
 

@@ -1,0 +1,16 @@
+# DHIS2 Platform
+node_modules
+.d2
+src/locales
+build
+
+# OS
+.DS_Store
+
+# Build artifacts
+*.tsbuildinfo
+coverage/
+
+# Env
+.env
+.env.local

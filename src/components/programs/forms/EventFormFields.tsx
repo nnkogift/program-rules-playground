@@ -4,10 +4,7 @@ import type {
     ProgramStageDataElement,
     ProgramStageMetadata,
 } from '@nnkogift/dhis2-form-utils-metadata'
-import {
-    getProgramStageSectionDataElementIds,
-    resolveFormSectionLayout,
-} from '@nnkogift/dhis2-form-utils-metadata'
+import { resolveFormSectionLayout } from '@nnkogift/dhis2-form-utils-metadata'
 import { RuleAwareField } from '@/components/rules/RuleAwareField'
 import { defaultSectionTitle, FormSectionCard } from './FormSectionCard'
 
@@ -73,7 +70,7 @@ export function EventFormFields({ metadata }: EventFormFieldsProps) {
         getSectionDisplayName: (section) => section.displayName,
         getSortOrder: (section) => section.sortOrder ?? 0,
         getSectionItemIds: (section) =>
-            getProgramStageSectionDataElementIds(section),
+            section.dataElements.map(({ id }: { id: string }) => id),
         getFieldId: (programStageDataElement) =>
             programStageDataElement.dataElement?.id,
     })

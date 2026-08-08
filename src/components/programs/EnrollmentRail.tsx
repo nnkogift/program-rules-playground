@@ -10,14 +10,11 @@ import type { TrackerProgramMetadata } from '@nnkogift/dhis2-form-utils-hooks'
 import type { EventProgramMetadata } from '@nnkogift/dhis2-form-utils-metadata'
 import type { TrackerSlot } from './trackerSlot'
 import { slotKey } from './trackerSlot'
+import { useTrackerFormsStore } from './trackerFormsStoreContext'
 
 type EnrollmentRailProps = {
     program: EventProgramMetadata
     trackerMetadata: TrackerProgramMetadata | undefined
-    selectedSlot: TrackerSlot
-    onSelectSlot: (slot: TrackerSlot) => void
-    eventDraftsByStage: Record<string, string[]>
-    onAddEvent: (stageId: string) => void
 }
 
 function RailRow({
@@ -86,11 +83,13 @@ function RailRow({
 export function EnrollmentRail({
     program,
     trackerMetadata,
-    selectedSlot,
-    onSelectSlot,
-    eventDraftsByStage,
-    onAddEvent,
 }: EnrollmentRailProps) {
+    const selectedSlot = useTrackerFormsStore((state) => state.selectedSlot)
+    const eventDraftsByStage = useTrackerFormsStore(
+        (state) => state.eventDraftsByStage
+    )
+    const selectSlot = useTrackerFormsStore((state) => state.selectSlot)
+    const addEvent = useTrackerFormsStore((state) => state.addEvent)
     const stages = [...(program.programStages ?? [])].sort(
         (left, right) => (left.sortOrder ?? 0) - (right.sortOrder ?? 0)
     )
@@ -121,7 +120,7 @@ export function EnrollmentRail({
                     })}
                     selected={selectedKey === slotKey({ kind: 'registration' })}
                     onClick={() => {
-                        onSelectSlot({ kind: 'registration' })
+                        selectSlot({ kind: 'registration' })
                     }}
                 />
                 {stages.map((stage) => {
@@ -141,7 +140,7 @@ export function EnrollmentRail({
                                 meta={i18n.t('1 event')}
                                 selected={selectedKey === slotKey(slot)}
                                 onClick={() => {
-                                    onSelectSlot(slot)
+                                    selectSlot(slot)
                                 }}
                             />
                         )
@@ -165,10 +164,10 @@ export function EnrollmentRail({
                                 }
                                 onClick={() => {
                                     if (drafts.length === 0) {
-                                        onAddEvent(stage.id)
+                                        addEvent(stage.id)
                                         return
                                     }
-                                    onSelectSlot({
+                                    selectSlot({
                                         kind: 'stage',
                                         stageId: stage.id,
                                         eventLocalId: drafts[0],
@@ -191,7 +190,7 @@ export function EnrollmentRail({
                                         indent
                                         selected={selectedKey === slotKey(slot)}
                                         onClick={() => {
-                                            onSelectSlot(slot)
+                                            selectSlot(slot)
                                         }}
                                     />
                                 )
@@ -206,7 +205,7 @@ export function EnrollmentRail({
                     disabled={!canAddEvent}
                     onClick={() => {
                         if (selectedStageId) {
-                            onAddEvent(selectedStageId)
+                            addEvent(selectedStageId)
                         }
                     }}
                     className="flex h-8 items-center justify-center gap-1.5 rounded bg-white text-[13px] shadow-[inset_0_0_0_1px_#a0adba] disabled:cursor-not-allowed disabled:opacity-50"

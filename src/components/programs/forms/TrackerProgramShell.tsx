@@ -1,22 +1,18 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useMemo } from 'react'
 import { useTrackerMetadataQuery } from '@nnkogift/dhis2-form-utils-hooks'
 import type {
     EventProgramMetadata,
     OptionGroupCodeMap,
 } from '@nnkogift/dhis2-form-utils-metadata'
-import type {
-    RuleEventInput,
-    RuleSupplementaryDataInput,
-} from '@nnkogift/dhis2-form-utils-rules'
-import { EVENT_SYSTEM_FIELD_KEYS } from '@/utils/trackerPayloads'
+import type { RuleSupplementaryDataInput } from '@nnkogift/dhis2-form-utils-rules'
 import { EnrollmentRail } from '../EnrollmentRail'
-import { slotKey, type TrackerSlot } from '../trackerSlot'
+import { slotKey } from '../trackerSlot'
+import {
+    TrackerFormsStoreProvider,
+    useTrackerFormsStore,
+} from '../trackerFormsStoreContext'
 import { ProgramRegistrationFormScreen } from './ProgramRegistrationFormScreen'
-import { ProgramStageFormScreen } from './ProgramStageFormScreen'
-
-function createTodayValue() {
-    return new Date().toISOString().slice(0, 10)
-}
+import { TrackerStageFormSlot } from './TrackerStageFormSlot'
 
 type TrackerProgramShellProps = {
     program: EventProgramMetadata
@@ -29,31 +25,15 @@ type TrackerProgramShellProps = {
 
 type RenderableStageSlot = { stageId: string; eventLocalId: string }
 
-const EMPTY_EVENTS: RuleEventInput[] = []
-
-function toRuleEventInput(
-    slot: RenderableStageSlot,
-    key: string,
-    values: Record<string, unknown>
-): RuleEventInput {
-    const dataValues = Object.fromEntries(
-        Object.entries(values).filter(
-            ([field]) => !EVENT_SYSTEM_FIELD_KEYS.has(field)
-        )
+export function TrackerProgramShell(props: TrackerProgramShellProps) {
+    return (
+        <TrackerFormsStoreProvider>
+            <TrackerProgramShellContent {...props} />
+        </TrackerFormsStoreProvider>
     )
-
-    return {
-        event: key,
-        programStage: slot.stageId,
-        orgUnit:
-            typeof values.orgUnit === 'string' ? values.orgUnit : undefined,
-        eventDate:
-            typeof values.occurredAt === 'string' ? values.occurredAt : null,
-        dataValues,
-    }
 }
 
-export function TrackerProgramShell({
+function TrackerProgramShellContent({
     program,
     programId,
     orgUnitId,
@@ -67,63 +47,16 @@ export function TrackerProgramShell({
         error: trackerError,
     } = useTrackerMetadataQuery(programId)
 
-    const [selectedSlot, setSelectedSlot] = useState<TrackerSlot>({
-        kind: 'registration',
-    })
-    const [eventDraftsByStage, setEventDraftsByStage] = useState<
-        Record<string, string[]>
-    >({})
-    const draftCounters = useRef<Record<string, number>>({})
-    // Each stage event's default date is fixed at first render and cached here —
-    // switching between events must not reset an already-open event's date field.
-    const occurredAtByEvent = useRef<Record<string, string>>({})
-
-    // Live cross-form sync: each form pushes its current values here (debounced) via
-    // usePublishFormValues, so sibling forms can see them as `enrollment`/`events` inputs.
-    const [registrationValues, setRegistrationValues] =
-        useState<Record<string, unknown>>()
-    const [eventValuesBySlot, setEventValuesBySlot] = useState<
-        Record<string, Record<string, unknown>>
-    >({})
-    const handleRegistrationValuesChange = useCallback(
-        (values: Record<string, unknown>) => {
-            setRegistrationValues(values)
-        },
-        []
+    const selectedSlot = useTrackerFormsStore((state) => state.selectedSlot)
+    const eventDraftsByStage = useTrackerFormsStore(
+        (state) => state.eventDraftsByStage
     )
-    const handleEventValuesChange = useCallback(
-        (key: string, values: Record<string, unknown>) => {
-            setEventValuesBySlot((current) => ({ ...current, [key]: values }))
-        },
-        []
+    const registrationValues = useTrackerFormsStore(
+        (state) => state.registrationValues
     )
-    // Cached per-slot so `onValuesChange` keeps a stable reference across renders —
-    // an inline arrow here would resubscribe usePublishFormValues every render.
-    const eventValuesChangeHandlers = useRef(
-        new Map<string, (values: Record<string, unknown>) => void>()
+    const setRegistrationValues = useTrackerFormsStore(
+        (state) => state.setRegistrationValues
     )
-    const getEventValuesChangeHandler = (key: string) => {
-        const cache = eventValuesChangeHandlers.current
-        let handler = cache.get(key)
-        if (!handler) {
-            handler = (values: Record<string, unknown>) =>
-                handleEventValuesChange(key, values)
-            cache.set(key, handler)
-        }
-        return handler
-    }
-
-    const handleAddEvent = (stageId: string) => {
-        draftCounters.current[stageId] =
-            (draftCounters.current[stageId] ?? 0) + 1
-        const eventLocalId = `${stageId}-${draftCounters.current[stageId]}`
-
-        setEventDraftsByStage((current) => ({
-            ...current,
-            [stageId]: [...(current[stageId] ?? []), eventLocalId],
-        }))
-        setSelectedSlot({ kind: 'stage', stageId, eventLocalId })
-    }
 
     // Every stage/event combination renders as soon as it exists and stays mounted
     // (visibility toggled via CSS) rather than being destroyed on navigation — otherwise
@@ -153,40 +86,11 @@ export function TrackerProgramShell({
         [trackerMetadata, registrationValues]
     )
 
-    const allEvents = useMemo(
-        () =>
-            renderableStageSlots.flatMap((slot) => {
-                const key = slotKey({ kind: 'stage', ...slot })
-                const values = eventValuesBySlot[key]
-                return values ? [toRuleEventInput(slot, key, values)] : []
-            }),
-        [renderableStageSlots, eventValuesBySlot]
-    )
-
-    // Precomputed once per `allEvents` change so each stage form gets a stable
-    // `events` array reference — filtering inline in the JSX below would create a
-    // new array every render and force useEventForm to reinit on every render.
-    const eventsExcludingSlot = useMemo(() => {
-        const map = new Map<string, RuleEventInput[]>()
-        for (const slot of renderableStageSlots) {
-            const key = slotKey({ kind: 'stage', ...slot })
-            map.set(
-                key,
-                allEvents.filter((event) => event.event !== key)
-            )
-        }
-        return map
-    }, [renderableStageSlots, allEvents])
-
     return (
         <div className="flex min-h-0 flex-1 overflow-x-auto">
             <EnrollmentRail
                 program={program}
                 trackerMetadata={trackerMetadata}
-                selectedSlot={selectedSlot}
-                onSelectSlot={setSelectedSlot}
-                eventDraftsByStage={eventDraftsByStage}
-                onAddEvent={handleAddEvent}
             />
             <div
                 className={
@@ -203,43 +107,27 @@ export function TrackerProgramShell({
                     programStages={program.programStages}
                     loading={trackerLoading}
                     error={trackerError}
-                    events={allEvents}
                     supplementaryData={supplementaryData}
                     optionGroups={optionGroups}
-                    onValuesChange={handleRegistrationValuesChange}
+                    onValuesChange={setRegistrationValues}
                 />
             </div>
             {renderableStageSlots.map((slot) => {
-                const stageSlot: TrackerSlot = { kind: 'stage', ...slot }
-                const key = slotKey(stageSlot)
-                if (!occurredAtByEvent.current[key]) {
-                    occurredAtByEvent.current[key] = createTodayValue()
-                }
+                const key = slotKey({ kind: 'stage', ...slot })
                 const isSelected = slotKey(selectedSlot) === key
 
                 return (
-                    <div
+                    <TrackerStageFormSlot
                         key={key}
-                        className={
-                            isSelected
-                                ? 'flex min-h-0 min-w-0 flex-1'
-                                : 'hidden'
-                        }
-                    >
-                        <ProgramStageFormScreen
-                            program={program}
-                            programStageId={slot.stageId}
-                            orgUnitId={orgUnitId}
-                            occurredAt={occurredAtByEvent.current[key]}
-                            enrollment={enrollment}
-                            events={
-                                eventsExcludingSlot.get(key) ?? EMPTY_EVENTS
-                            }
-                            supplementaryData={supplementaryData}
-                            optionGroups={optionGroups}
-                            onValuesChange={getEventValuesChangeHandler(key)}
-                        />
-                    </div>
+                        slotId={key}
+                        program={program}
+                        programStageId={slot.stageId}
+                        orgUnitId={orgUnitId}
+                        enrollment={enrollment}
+                        supplementaryData={supplementaryData}
+                        optionGroups={optionGroups}
+                        isSelected={isSelected}
+                    />
                 )
             })}
         </div>

@@ -1,6 +1,9 @@
 import { useMemo } from 'react'
 import i18n from '@dhis2/d2-i18n'
-import type { TrackerProgramMetadata } from '@nnkogift/dhis2-form-utils-hooks'
+import type {
+    FieldControlInput,
+    TrackerProgramMetadata,
+} from '@nnkogift/dhis2-form-utils-hooks'
 import type { ProgramTrackedEntityAttribute } from '@nnkogift/dhis2-form-utils-metadata'
 import { resolveFormSectionLayout } from '@nnkogift/dhis2-form-utils-metadata'
 import { RuleAwareField } from '@/components/rules/RuleAwareField'
@@ -24,16 +27,12 @@ function toFieldConfig(
     } as unknown as ProgramTrackedEntityAttribute
 }
 
-function renderTeaField(fieldConfig: ProgramTrackedEntityAttribute) {
-    return (
-        <RuleAwareField
-            key={fieldConfig.id}
-            field={{
-                kind: 'trackedEntityAttribute',
-                config: fieldConfig,
-            }}
-        />
-    )
+function renderTeaField(field: FieldControlInput | undefined) {
+    if (!field || field.kind !== 'trackedEntityAttribute') {
+        return null
+    }
+
+    return <RuleAwareField key={field.config.id} field={field} />
 }
 
 export function RegistrationFormFields({
@@ -51,19 +50,25 @@ export function RegistrationFormFields({
         [metadata.programTrackedEntityAttributes]
     )
     const sections = metadata.programSections ?? []
+    // Field prop objects are memoized per TEA id so their reference stays stable
+    // across renders unless the underlying metadata changes — required for
+    // `React.memo` on `RuleAwareField` to actually bail out per-field.
     const fieldsByTeaId = useMemo(
         () =>
-            new Map(
+            new Map<string, FieldControlInput>(
                 fieldConfigs.map((fieldConfig) => [
                     fieldConfig.trackedEntityAttribute.id,
-                    fieldConfig,
+                    {
+                        kind: 'trackedEntityAttribute',
+                        config: fieldConfig,
+                    },
                 ])
             ),
         [fieldConfigs]
     )
 
     if (sections.length === 0) {
-        return <>{fieldConfigs.map(renderTeaField)}</>
+        return <>{Array.from(fieldsByTeaId.values()).map(renderTeaField)}</>
     }
 
     const layout = resolveFormSectionLayout({
@@ -91,24 +96,14 @@ export function RegistrationFormFields({
                         count: section.itemIds.length,
                     })}
                 >
-                    {section.itemIds.map((teaId) => {
-                        const fieldConfig = fieldsByTeaId.get(teaId)
-                        if (!fieldConfig) {
-                            return null
-                        }
-
-                        return renderTeaField(fieldConfig)
-                    })}
+                    {section.itemIds.map((teaId) =>
+                        renderTeaField(fieldsByTeaId.get(teaId))
+                    )}
                 </FormSectionCard>
             ))}
-            {layout.unsectionedItemIds.map((teaId) => {
-                const fieldConfig = fieldsByTeaId.get(teaId)
-                if (!fieldConfig) {
-                    return null
-                }
-
-                return renderTeaField(fieldConfig)
-            })}
+            {layout.unsectionedItemIds.map((teaId) =>
+                renderTeaField(fieldsByTeaId.get(teaId))
+            )}
         </>
     )
 }

@@ -5,7 +5,7 @@ import {
     useFieldControl,
     useFieldRuleEffect,
 } from '@nnkogift/dhis2-form-utils-hooks'
-import { useEffect, useId, useRef } from 'react'
+import { memo, useEffect, useId, useRef } from 'react'
 import { FieldEffectBadge } from './FieldEffectBadge'
 import { HiddenFieldPlaceholder } from './HiddenFieldPlaceholder'
 import { useRuleDisplay } from './RuleDisplayContext'
@@ -21,7 +21,9 @@ type RuleAwareFieldProps = {
 const WIDGET_TARGET_SELECTOR =
     'input, textarea, [data-test="dhis2-uicore-select-input"]'
 
-export function RuleAwareField({ field }: RuleAwareFieldProps) {
+export const RuleAwareField = memo(function RuleAwareField({
+    field,
+}: RuleAwareFieldProps) {
     const control = useFieldControl(field)
     const ruleEffect = useFieldRuleEffect(control.fieldId)
     const { ghostsEnabled, labelLookup } = useRuleDisplay()
@@ -84,4 +86,4 @@ export function RuleAwareField({ field }: RuleAwareFieldProps) {
             )}
         </div>
     )
-}
+})

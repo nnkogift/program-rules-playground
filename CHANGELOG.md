@@ -1,5 +1,12 @@
 # program-rules-playground
 
+## 0.1.0-alpha.2
+
+### Patch Changes
+
+- 7ac9eed: performance fixes
+- c2b2835: move the add-event button inline next to repeatable stage labels
+
 ## 0.1.0-alpha.1
 
 ### Patch Changes

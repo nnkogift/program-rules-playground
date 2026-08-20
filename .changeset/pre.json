@@ -4,5 +4,10 @@
     "initialVersions": {
         "program-rules-playground": "0.0.0"
     },
-    "changesets": ["big-dogs-eat", "dark-moles-cut"]
+    "changesets": [
+        "better-rocks-read",
+        "big-dogs-eat",
+        "dark-moles-cut",
+        "tame-rats-smile"
+    ]
 }

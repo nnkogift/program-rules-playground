@@ -1,10 +1,11 @@
-import type { ReactNode } from 'react'
+import type { ReactNode, Ref } from 'react'
 import i18n from '@dhis2/d2-i18n'
 import {
     IconAdd16,
     IconFileDocument16,
     IconQueue16,
     IconUser16,
+    Tooltip,
 } from '@dhis2/ui'
 import type { TrackerProgramMetadata } from '@nnkogift/dhis2-form-utils-hooks'
 import type { EventProgramMetadata } from '@nnkogift/dhis2-form-utils-metadata'
@@ -17,6 +18,28 @@ type EnrollmentRailProps = {
     trackerMetadata: TrackerProgramMetadata | undefined
 }
 
+function AddEventIconButton({ onAdd }: { onAdd: () => void }) {
+    return (
+        <Tooltip content={i18n.t('Add event')}>
+            {(referenceProps) => (
+                <button
+                    {...referenceProps}
+                    ref={referenceProps.ref as Ref<HTMLButtonElement>}
+                    type="button"
+                    aria-label={i18n.t('Add event')}
+                    onClick={(event) => {
+                        event.stopPropagation()
+                        onAdd()
+                    }}
+                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded text-dhis2-grey-700 hover:bg-dhis2-grey-300 hover:text-dhis2-grey-900"
+                >
+                    <IconAdd16 aria-hidden="true" />
+                </button>
+            )}
+        </Tooltip>
+    )
+}
+
 function RailRow({
     icon,
     label,
@@ -24,6 +47,7 @@ function RailRow({
     indent = false,
     selected,
     onClick,
+    action,
 }: {
     icon?: ReactNode
     label: string
@@ -31,6 +55,7 @@ function RailRow({
     indent?: boolean
     selected: boolean
     onClick: () => void
+    action?: ReactNode
 }) {
     return (
         <div
@@ -53,25 +78,30 @@ function RailRow({
                     selected ? 'bg-dhis2-teal-600' : 'bg-transparent'
                 }`}
             />
-            <div className="flex min-w-0 items-center gap-2">
-                {icon ? (
+            <div className="flex min-w-0 items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-2">
+                    {icon ? (
+                        <span
+                            className={
+                                selected
+                                    ? 'shrink-0 text-dhis2-teal-600'
+                                    : 'shrink-0 text-dhis2-grey-600'
+                            }
+                        >
+                            {icon}
+                        </span>
+                    ) : null}
                     <span
-                        className={
+                        className={`min-w-0 truncate text-sm font-medium leading-5 ${
                             selected
-                                ? 'shrink-0 text-dhis2-teal-600'
-                                : 'shrink-0 text-dhis2-grey-600'
-                        }
+                                ? 'text-dhis2-teal-900'
+                                : 'text-dhis2-grey-800'
+                        }`}
                     >
-                        {icon}
+                        {label}
                     </span>
-                ) : null}
-                <span
-                    className={`min-w-0 truncate text-sm font-medium leading-5 ${
-                        selected ? 'text-dhis2-teal-900' : 'text-dhis2-grey-800'
-                    }`}
-                >
-                    {label}
-                </span>
+                </div>
+                {action}
             </div>
             <div className={indent ? 'pl-0' : 'pl-6'}>
                 <span className="text-xs text-dhis2-grey-600">{meta}</span>
@@ -94,10 +124,6 @@ export function EnrollmentRail({
         (left, right) => (left.sortOrder ?? 0) - (right.sortOrder ?? 0)
     )
     const selectedKey = slotKey(selectedSlot)
-    const selectedStageId =
-        selectedSlot.kind === 'stage' ? selectedSlot.stageId : null
-    const selectedStage = stages.find((stage) => stage.id === selectedStageId)
-    const canAddEvent = Boolean(selectedStage?.repeatable)
 
     return (
         <nav
@@ -152,19 +178,17 @@ export function EnrollmentRail({
                                 icon={<IconQueue16 />}
                                 label={stage.displayName}
                                 meta={
-                                    drafts.length === 1
-                                        ? i18n.t('1 event')
-                                        : i18n.t('{{count}} events', {
-                                              count: drafts.length,
-                                          })
-                                }
-                                selected={
-                                    selectedStageId === stage.id &&
                                     drafts.length === 0
+                                        ? i18n.t('No events yet')
+                                        : drafts.length === 1
+                                          ? i18n.t('1 event')
+                                          : i18n.t('{{count}} events', {
+                                                count: drafts.length,
+                                            })
                                 }
+                                selected={false}
                                 onClick={() => {
                                     if (drafts.length === 0) {
-                                        addEvent(stage.id)
                                         return
                                     }
                                     selectSlot({
@@ -173,6 +197,11 @@ export function EnrollmentRail({
                                         eventLocalId: drafts[0],
                                     })
                                 }}
+                                action={
+                                    <AddEventIconButton
+                                        onAdd={() => addEvent(stage.id)}
+                                    />
+                                }
                             />
                             {drafts.map((eventLocalId, index) => {
                                 const slot: TrackerSlot = {
@@ -198,26 +227,6 @@ export function EnrollmentRail({
                         </div>
                     )
                 })}
-            </div>
-            <div className="mt-2 flex flex-col gap-2 border-t border-dhis2-grey-300 px-4 pb-3.5 pt-2">
-                <button
-                    type="button"
-                    disabled={!canAddEvent}
-                    onClick={() => {
-                        if (selectedStageId) {
-                            addEvent(selectedStageId)
-                        }
-                    }}
-                    className="flex h-8 items-center justify-center gap-1.5 rounded bg-white text-[13px] shadow-[inset_0_0_0_1px_#a0adba] disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                    <IconAdd16 aria-hidden="true" />
-                    {i18n.t('Add event')}
-                </button>
-                <p className="m-0 text-xs leading-normal text-dhis2-grey-600">
-                    {i18n.t(
-                        'Repeatable stages accept more than one event, so you can test rules that compare across events.'
-                    )}
-                </p>
             </div>
         </nav>
     )

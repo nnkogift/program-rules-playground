@@ -5,8 +5,11 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-08-02T13:21:32.021Z\n"
-"PO-Revision-Date: 2026-08-02T13:21:32.021Z\n"
+"POT-Creation-Date: 2026-08-20T18:11:20.462Z\n"
+"PO-Revision-Date: 2026-08-20T18:11:20.462Z\n"
+
+msgid "Add event"
+msgstr "Add event"
 
 msgid "Enrollment"
 msgstr "Enrollment"
@@ -17,18 +20,11 @@ msgstr "Registration"
 msgid "1 event"
 msgstr "1 event"
 
+msgid "No events yet"
+msgstr "No events yet"
+
 msgid "Event {{number}}"
 msgstr "Event {{number}}"
-
-msgid "Add event"
-msgstr "Add event"
-
-msgid ""
-"Repeatable stages accept more than one event, so you can test rules that "
-"compare across events."
-msgstr ""
-"Repeatable stages accept more than one event, so you can test rules that "
-"compare across events."
 
 msgid "Programs"
 msgstr "Programs"
@@ -217,7 +213,7 @@ msgstr "An unexpected error occurred"
 
 msgctxt "Application title"
 msgid "__MANIFEST_APP_TITLE"
-msgstr "Program Rule Playground"
+msgstr "Program Rules Playground"
 
 msgctxt "Application description"
 msgid "__MANIFEST_APP_DESCRIPTION"

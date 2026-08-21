@@ -21,20 +21,20 @@ importers:
         specifier: ^5.2.2
         version: 5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76)
       '@nnkogift/dhis2-form-utils-devtools':
-        specifier: 0.1.0-alpha.2
-        version: 0.1.0-alpha.2(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7)(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(immer@11.1.16)(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
+        specifier: 0.1.0-alpha.3
+        version: 0.1.0-alpha.3(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7)(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(immer@11.1.16)(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
       '@nnkogift/dhis2-form-utils-dhis2-ui':
-        specifier: 0.1.0-alpha.2
-        version: 0.1.0-alpha.2(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7)(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
+        specifier: 0.1.0-alpha.3
+        version: 0.1.0-alpha.3(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7)(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
       '@nnkogift/dhis2-form-utils-hooks':
-        specifier: 0.1.0-alpha.2
-        version: 0.1.0-alpha.2(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
+        specifier: 0.1.0-alpha.3
+        version: 0.1.0-alpha.3(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
       '@nnkogift/dhis2-form-utils-metadata':
-        specifier: 0.1.0-alpha.2
-        version: 0.1.0-alpha.2(zod@3.25.76)
+        specifier: 0.1.0-alpha.3
+        version: 0.1.0-alpha.3(zod@3.25.76)
       '@nnkogift/dhis2-form-utils-rules':
-        specifier: 0.1.0-alpha.2
-        version: 0.1.0-alpha.2(@dhis2/rule-engine@3.8.2)(zod@3.25.76)
+        specifier: 0.1.0-alpha.3
+        version: 0.1.0-alpha.3(@dhis2/rule-engine@3.8.2)(zod@3.25.76)
       immer:
         specifier: ^11.1.16
         version: 11.1.16
@@ -1775,8 +1775,8 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  '@nnkogift/dhis2-form-utils-devtools@0.1.0-alpha.2':
-    resolution: {integrity: sha512-Ce7p+DQM6BBQTFvkwIR2pKRY+iKclHoeuxXyzQr2VQ/AmSSG4pyjxaFsLOsucF4nyDJbPCAv2B73UMNQTz5nrA==}
+  '@nnkogift/dhis2-form-utils-devtools@0.1.0-alpha.3':
+    resolution: {integrity: sha512-tc7tbVLXHOCkVp6LEbh4JyaLmaSszpWrUCHcVargvsu/nvFNZ+lnxFg/9OrQ1LX0+N/amunfjgMC2QLzIJc7IA==}
     engines: {node: '>=18'}
     peerDependencies:
       '@dhis2/d2-i18n': '>=1.0.0'
@@ -1784,8 +1784,8 @@ packages:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
 
-  '@nnkogift/dhis2-form-utils-dhis2-ui@0.1.0-alpha.2':
-    resolution: {integrity: sha512-ZJT9RFZX1MyVVG2SBemcpMtriDDFOgektSuliRUdBUVAIbL1S9XsuDvDhpeeYmImgN2/2dC6qUIbUgITRC0MJw==}
+  '@nnkogift/dhis2-form-utils-dhis2-ui@0.1.0-alpha.3':
+    resolution: {integrity: sha512-5TlRo0sKac0cU9MdlpK4CBX2Mx3l4oo89AiFEtucHhpP0KYIFviv/V1MXHKSbL60+5A37mk7jlJF66XDyARE+Q==}
     engines: {node: '>=18'}
     peerDependencies:
       '@dhis2/app-runtime': '>=3.0.0'
@@ -1794,8 +1794,8 @@ packages:
       react-dom: '>=18.0.0'
       react-hook-form: '>=7.0.0'
 
-  '@nnkogift/dhis2-form-utils-hooks@0.1.0-alpha.2':
-    resolution: {integrity: sha512-tuLAVvOlDVcxTaYEHMljPP23FTy1XEfj98V3YTrzWpP6gLanyVLVp8LBNlXTijx9dvZ9v0oILdLJkgZReJ8PyA==}
+  '@nnkogift/dhis2-form-utils-hooks@0.1.0-alpha.3':
+    resolution: {integrity: sha512-CapOa/A+zkby3ccUrbvLBqqICI1SR4YPgC1sSFEl9bCpVRHT4hmYhKelvlcODNMyZn3COZe0ui8sDSk089esBw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@dhis2/app-runtime': '>=3.0.0'
@@ -1805,14 +1805,14 @@ packages:
       react-hook-form: '>=7.0.0'
       zod: '>=3.0.0'
 
-  '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.2':
-    resolution: {integrity: sha512-BXbnKTVPF1N7rLO7EdVZNMWzA0stt3r4B3w6UoFKKvaOFlunAXjEBrcNOO+l9TopZC0q76zFATkldMXhRaMKsA==}
+  '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.3':
+    resolution: {integrity: sha512-+PAaQPYCgYSThTWZ5r6YSfW2YaBAECM1vMVf547TaMLu+vjm0NK4g3cpMn3Wf3tLxbilj6ZAaQkdP8zqQBmsqg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: '>=3.0.0'
 
-  '@nnkogift/dhis2-form-utils-rules@0.1.0-alpha.2':
-    resolution: {integrity: sha512-wT5g2/VXsLZZ6vmqAOK/IMK0oFptJ1e3FSan8DFYZtC2tcQ6dOXBX/gQfS4KJ/NqtJJvHWSGis9fmIC6bDBLsg==}
+  '@nnkogift/dhis2-form-utils-rules@0.1.0-alpha.3':
+    resolution: {integrity: sha512-zakbZ8FKLD6mWY7YNftJ9aojsMfLqvHiZVhmhcKfRukte9vUlWcKPLYRFDqMW8OCFhqdUWst5frPnz/eIyHvZQ==}
     engines: {node: '>=18'}
     peerDependencies:
       '@dhis2/rule-engine': '>=3.8.2'
@@ -9206,12 +9206,12 @@ snapshots:
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     optional: true
 
-  '@nnkogift/dhis2-form-utils-devtools@0.1.0-alpha.2(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7)(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(immer@11.1.16)(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
+  '@nnkogift/dhis2-form-utils-devtools@0.1.0-alpha.3(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7)(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(immer@11.1.16)(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
     dependencies:
       '@dhis2/d2-i18n': 1.2.0
       '@dhis2/ui': 10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7)(react@18.3.1))
-      '@nnkogift/dhis2-form-utils-hooks': 0.1.0-alpha.2(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
-      '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.2(zod@3.25.76)
+      '@nnkogift/dhis2-form-utils-hooks': 0.1.0-alpha.3(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
+      '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.3(zod@3.25.76)
       '@xyflow/react': 12.11.2(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(immer@11.1.16)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -9225,11 +9225,11 @@ snapshots:
       - react-hook-form
       - zod
 
-  '@nnkogift/dhis2-form-utils-dhis2-ui@0.1.0-alpha.2(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7)(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
+  '@nnkogift/dhis2-form-utils-dhis2-ui@0.1.0-alpha.3(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7)(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
     dependencies:
       '@dhis2/app-runtime': 3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@dhis2/ui': 10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7)(react@18.3.1))
-      '@nnkogift/dhis2-form-utils-hooks': 0.1.0-alpha.2(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
+      '@nnkogift/dhis2-form-utils-hooks': 0.1.0-alpha.3(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
       maplibre-gl: 6.2.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -9241,12 +9241,12 @@ snapshots:
       - '@hookform/resolvers'
       - zod
 
-  '@nnkogift/dhis2-form-utils-hooks@0.1.0-alpha.2(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
+  '@nnkogift/dhis2-form-utils-hooks@0.1.0-alpha.3(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
     dependencies:
       '@dhis2/app-runtime': 3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@hookform/resolvers': 5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76)
-      '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.2(zod@3.25.76)
-      '@nnkogift/dhis2-form-utils-rules': 0.1.0-alpha.2(@dhis2/rule-engine@3.8.2)(zod@3.25.76)
+      '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.3(zod@3.25.76)
+      '@nnkogift/dhis2-form-utils-rules': 0.1.0-alpha.3(@dhis2/rule-engine@3.8.2)(zod@3.25.76)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-hook-form: 7.84.0(react@18.3.1)
@@ -9254,14 +9254,14 @@ snapshots:
     transitivePeerDependencies:
       - '@dhis2/rule-engine'
 
-  '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.2(zod@3.25.76)':
+  '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.3(zod@3.25.76)':
     dependencies:
       zod: 3.25.76
 
-  '@nnkogift/dhis2-form-utils-rules@0.1.0-alpha.2(@dhis2/rule-engine@3.8.2)(zod@3.25.76)':
+  '@nnkogift/dhis2-form-utils-rules@0.1.0-alpha.3(@dhis2/rule-engine@3.8.2)(zod@3.25.76)':
     dependencies:
       '@dhis2/rule-engine': 3.8.2
-      '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.2(zod@3.25.76)
+      '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.3(zod@3.25.76)
     transitivePeerDependencies:
       - zod
 

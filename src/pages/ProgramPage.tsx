@@ -1,16 +1,28 @@
-import React, { useMemo, useState } from 'react'
+import '@nnkogift/dhis2-form-utils-devtools/style.css'
+
+import React, { lazy, Suspense, useMemo, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router'
 import i18n from '@dhis2/d2-i18n'
 import { Center, CircularLoader, NoticeBox } from '@dhis2/ui'
 import { useEventProgramMetadataQuery } from '@nnkogift/dhis2-form-utils-hooks'
 import { ProgramContextBar } from '@/components/programs/ProgramContextBar'
-import { ProgramStageFormScreen } from '@/components/programs/forms/ProgramStageFormScreen'
-import { TrackerProgramShell } from '@/components/programs/forms/TrackerProgramShell'
+import { RouteSuspenseFallback } from '@/components/RouteSuspenseFallback'
 import { buildProgramListUrl } from '@/hooks/buildProgramListUrl'
 import { useAccessibleOrgUnits } from '@/hooks/useAccessibleOrgUnits'
 import { useCurrentUserSupplementaryData } from '@/hooks/useCurrentUserSupplementaryData'
 import { useOptionGroupsSupplementaryData } from '@/hooks/useOptionGroupsSupplementaryData'
 import { PROGRAM_TYPE, type ProgramListParams } from '@/types/program'
+
+const TrackerProgramShell = lazy(() =>
+    import('@/components/programs/forms/TrackerProgramShell').then((m) => ({
+        default: m.TrackerProgramShell,
+    }))
+)
+const ProgramStageFormScreen = lazy(() =>
+    import('@/components/programs/forms/ProgramStageFormScreen').then((m) => ({
+        default: m.ProgramStageFormScreen,
+    }))
+)
 
 type ProgramPageLocationState = {
     listParams?: ProgramListParams
@@ -144,27 +156,31 @@ export function ProgramPage() {
                 ) : null}
                 {!orgUnitsError && orgUnits.length > 0 ? (
                     <div className="flex min-h-0 flex-1 flex-col">
-                        {isTracker ? (
-                            <TrackerProgramShell
-                                key={resetKey}
-                                program={program}
-                                programId={program.id}
-                                orgUnitId={orgUnitId}
-                                enrolledAt={primaryDate}
-                                supplementaryData={supplementaryData}
-                                optionGroups={optionGroups}
-                            />
-                        ) : (
-                            <ProgramStageFormScreen
-                                key={resetKey}
-                                program={program}
-                                programStageId={program.programStages?.[0]?.id}
-                                orgUnitId={orgUnitId}
-                                occurredAt={primaryDate}
-                                supplementaryData={supplementaryData}
-                                optionGroups={optionGroups}
-                            />
-                        )}
+                        <Suspense fallback={<RouteSuspenseFallback />}>
+                            {isTracker ? (
+                                <TrackerProgramShell
+                                    key={resetKey}
+                                    program={program}
+                                    programId={program.id}
+                                    orgUnitId={orgUnitId}
+                                    enrolledAt={primaryDate}
+                                    supplementaryData={supplementaryData}
+                                    optionGroups={optionGroups}
+                                />
+                            ) : (
+                                <ProgramStageFormScreen
+                                    key={resetKey}
+                                    program={program}
+                                    programStageId={
+                                        program.programStages?.[0]?.id
+                                    }
+                                    orgUnitId={orgUnitId}
+                                    occurredAt={primaryDate}
+                                    supplementaryData={supplementaryData}
+                                    optionGroups={optionGroups}
+                                />
+                            )}
+                        </Suspense>
                     </div>
                 ) : null}
             </div>

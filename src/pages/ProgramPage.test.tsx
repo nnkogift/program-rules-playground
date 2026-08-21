@@ -72,7 +72,7 @@ describe('ProgramPage', () => {
         jest.clearAllMocks()
     })
 
-    it('renders the event form flow for event programs', () => {
+    it('renders the event form flow for event programs', async () => {
         mockedUseEventProgramMetadataQuery.mockReturnValue({
             metadata: {
                 id: 'Program12345',
@@ -97,14 +97,14 @@ describe('ProgramPage', () => {
 
         const view = renderPage()
 
-        expect(view.getByText('Event form screen')).toBeTruthy()
+        expect(await view.findByText('Event form screen')).toBeTruthy()
         expect(ProgramStageFormScreen).toHaveBeenCalled()
         const [props] = jest.mocked(ProgramStageFormScreen).mock.calls[0]
         expect(props.supplementaryData).toEqual(SENTINEL_SUPPLEMENTARY_DATA)
         expect(props.optionGroups).toEqual(SENTINEL_OPTION_GROUPS)
     })
 
-    it('renders the registration flow for tracker programs', () => {
+    it('renders the registration flow for tracker programs', async () => {
         mockedUseEventProgramMetadataQuery.mockReturnValue({
             metadata: {
                 id: 'Program12345',
@@ -129,7 +129,7 @@ describe('ProgramPage', () => {
 
         const view = renderPage()
 
-        expect(view.getByText('Registration form screen')).toBeTruthy()
+        expect(await view.findByText('Registration form screen')).toBeTruthy()
         expect(TrackerProgramShell).toHaveBeenCalled()
         const [props] = jest.mocked(TrackerProgramShell).mock.calls[0]
         expect(props.supplementaryData).toEqual(SENTINEL_SUPPLEMENTARY_DATA)

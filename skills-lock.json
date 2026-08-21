@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "skills": {
+        "coding-standards": {
+            "source": "nnkogift/personal-skills",
+            "sourceType": "github",
+            "skillPath": "coding-standards/SKILL.md",
+            "computedHash": "0bd420fd245f4da17dca6ecce06dfc1ff1a49b0794104dd053413f584e847c13"
+        },
+        "dev-tooling": {
+            "source": "nnkogift/personal-skills",
+            "sourceType": "github",
+            "skillPath": "dev-tooling/SKILL.md",
+            "computedHash": "30aab1c5148281e264f7af2bb49fb07e2ff471528aa7ff6b03dbc892a364affe"
+        },
+        "forming": {
+            "source": "nnkogift/personal-skills",
+            "sourceType": "github",
+            "skillPath": "forming/SKILL.md",
+            "computedHash": "65fb419032251cd968b57fa5b63f1a853160414df20df618999994bfb5862bb1"
+        }
+    }
+}

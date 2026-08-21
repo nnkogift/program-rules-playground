@@ -1,5 +1,11 @@
 # program-rules-playground
 
+## 0.1.0-alpha.4
+
+### Patch Changes
+
+- 9ae64b1: fix: the rules are now sorted to allow those firing to move on top
+
 ## 0.1.0-alpha.3
 
 ### Patch Changes

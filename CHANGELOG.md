@@ -1,5 +1,11 @@
 # program-rules-playground
 
+## 0.1.0-alpha.5
+
+### Patch Changes
+
+- 8c3d2df: perf: code-split routes and program forms with React.lazy
+
 ## 0.1.0-alpha.4
 
 ### Patch Changes

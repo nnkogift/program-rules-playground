@@ -21,7 +21,7 @@ import { FormProvider, type UseFormReturn } from 'react-hook-form'
 import { GhostToggleButton } from '@/components/rules/GhostToggleButton'
 import { LazyRulesPanel } from '@/components/rules/LazyRulesPanel'
 import { RuleDisplayProvider } from '@/components/rules/RuleDisplayContext'
-import { RuleFeedbackList } from '@/components/rules/RuleFeedbackList'
+import { RuleOutputColumn } from '@/components/rules/RuleOutputColumn'
 import { usePublishFormValues } from '@/hooks/usePublishFormValues'
 import { formatDhis2Error } from '@/utils/formatDhis2Error'
 import {
@@ -146,7 +146,7 @@ export function ProgramRegistrationForm({
                     <FormProvider {...form}>
                         <form
                             onSubmit={handleSubmit}
-                            className="flex min-w-0 flex-1 flex-col gap-dp16 overflow-auto pt-4 px-7 pb-7"
+                            className="flex min-w-0 flex-1 flex-col overflow-auto pt-4 px-7 pb-7"
                         >
                             {metadata.displayIncidentDate ? (
                                 <FormDateField
@@ -164,21 +164,35 @@ export function ProgramRegistrationForm({
                                     setGhostsEnabled((current) => !current)
                                 }}
                             />
-                            <RuleDisplayProvider
-                                ghostsEnabled={ghostsEnabled}
-                                labelLookup={labelLookup}
-                            >
-                                <RuleFeedbackList metadata={rulesMetadata} />
-                                <RegistrationFormFields metadata={metadata} />
-                            </RuleDisplayProvider>
-                            <ProgramFormActions
-                                submitLabel={i18n.t('Register tracked entity')}
-                                errorTitle={i18n.t(
-                                    'Could not save registration'
-                                )}
-                                successMessage={successMessage}
-                                successTitle={i18n.t('Registration saved')}
-                            />
+                            <div className="flex flex-1 flex-row-reverse items-start gap-5 pt-4">
+                                <div className="sticky top-0 shrink-0">
+                                    <RuleOutputColumn
+                                        metadata={rulesMetadata}
+                                    />
+                                </div>
+                                <div className="flex min-w-[520px] flex-1 flex-col gap-dp16">
+                                    <RuleDisplayProvider
+                                        ghostsEnabled={ghostsEnabled}
+                                        labelLookup={labelLookup}
+                                    >
+                                        <RegistrationFormFields
+                                            metadata={metadata}
+                                        />
+                                    </RuleDisplayProvider>
+                                    <ProgramFormActions
+                                        submitLabel={i18n.t(
+                                            'Register tracked entity'
+                                        )}
+                                        errorTitle={i18n.t(
+                                            'Could not save registration'
+                                        )}
+                                        successMessage={successMessage}
+                                        successTitle={i18n.t(
+                                            'Registration saved'
+                                        )}
+                                    />
+                                </div>
+                            </div>
                         </form>
                     </FormProvider>
                     <LazyRulesPanel metadata={rulesMetadata} />

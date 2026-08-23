@@ -1,5 +1,11 @@
 # program-rules-playground
 
+## 0.1.0-alpha.7
+
+### Patch Changes
+
+- b9b72c2: feat: move rule feedback and indicators into a persistent sidebar with separate Feedback/Indicators cards, replacing the inline tinted banner
+
 ## 0.1.0-alpha.6
 
 ### Patch Changes

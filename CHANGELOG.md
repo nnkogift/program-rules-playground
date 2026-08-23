@@ -1,5 +1,11 @@
 # program-rules-playground
 
+## 0.1.0-alpha.6
+
+### Patch Changes
+
+- 1def1c0: fixes and improvements on the rules list filtering and performance improvements
+
 ## 0.1.0-alpha.5
 
 ### Patch Changes

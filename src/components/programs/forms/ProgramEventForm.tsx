@@ -1,9 +1,6 @@
 import { useDataEngine } from '@dhis2/app-runtime'
-import {
-    createLabelLookup,
-    RuleDevtoolsScope,
-    RulesPanel,
-} from '@nnkogift/dhis2-form-utils-devtools'
+import { createLabelLookup } from '@nnkogift/dhis2-form-utils-devtools'
+import { RuleDevtoolsScope } from '@nnkogift/dhis2-form-utils-devtools/scope'
 import {
     FormStateProvider,
     useEventForm,
@@ -22,6 +19,7 @@ import {
 import i18n from '@dhis2/d2-i18n'
 import React, { useEffect, useMemo, useState } from 'react'
 import { GhostToggleButton } from '@/components/rules/GhostToggleButton'
+import { LazyRulesPanel } from '@/components/rules/LazyRulesPanel'
 import { RuleDisplayProvider } from '@/components/rules/RuleDisplayContext'
 import { RuleFeedbackList } from '@/components/rules/RuleFeedbackList'
 import { usePublishFormValues } from '@/hooks/usePublishFormValues'
@@ -163,7 +161,7 @@ export function ProgramEventForm({
                             successTitle={i18n.t('Event saved')}
                         />
                     </form>
-                    <RulesPanel metadata={rulesMetadata} />
+                    <LazyRulesPanel metadata={rulesMetadata} />
                 </div>
             </RuleDevtoolsScope>
         </FormStateProvider>

@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-08-20T18:11:20.462Z\n"
-"PO-Revision-Date: 2026-08-20T18:11:20.462Z\n"
+"POT-Creation-Date: 2026-08-23T10:53:51.066Z\n"
+"PO-Revision-Date: 2026-08-23T10:53:51.066Z\n"
 
 msgid "Add event"
 msgstr "Add event"
@@ -167,6 +167,9 @@ msgstr "{{sourceLabel}} · {{ruleName}}"
 
 msgid "Program indicators"
 msgstr "Program indicators"
+
+msgid "Loading rules panel"
+msgstr "Loading rules panel"
 
 msgid "Pick a program to open its forms and watch its rules evaluate."
 msgstr "Pick a program to open its forms and watch its rules evaluate."

@@ -2,10 +2,9 @@ import { useDataEngine } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import {
     createLabelLookup,
-    RuleDevtoolsScope,
-    RulesPanel,
     type ProgramStageRef,
 } from '@nnkogift/dhis2-form-utils-devtools'
+import { RuleDevtoolsScope } from '@nnkogift/dhis2-form-utils-devtools/scope'
 import {
     FormStateProvider,
     type TrackerProgramMetadata,
@@ -20,6 +19,7 @@ import {
 import React, { useEffect, useMemo, useState } from 'react'
 import { FormProvider, type UseFormReturn } from 'react-hook-form'
 import { GhostToggleButton } from '@/components/rules/GhostToggleButton'
+import { LazyRulesPanel } from '@/components/rules/LazyRulesPanel'
 import { RuleDisplayProvider } from '@/components/rules/RuleDisplayContext'
 import { RuleFeedbackList } from '@/components/rules/RuleFeedbackList'
 import { usePublishFormValues } from '@/hooks/usePublishFormValues'
@@ -181,7 +181,7 @@ export function ProgramRegistrationForm({
                             />
                         </form>
                     </FormProvider>
-                    <RulesPanel metadata={rulesMetadata} />
+                    <LazyRulesPanel metadata={rulesMetadata} />
                 </div>
             </RuleDevtoolsScope>
         </FormStateProvider>

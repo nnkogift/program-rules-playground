@@ -4,7 +4,7 @@ import {
     getEffectVariant,
     getEffectVisual,
     type EffectVisualVariant,
-} from '@nnkogift/dhis2-form-utils-devtools'
+} from '@nnkogift/dhis2-form-utils-devtools/effect-styles'
 import type { ProgramRuleActionType } from '@nnkogift/dhis2-form-utils-metadata'
 
 const BADGE_LABELS: Partial<Record<EffectVisualVariant, string>> = {

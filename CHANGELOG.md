@@ -1,5 +1,11 @@
 # program-rules-playground
 
+## 0.1.0-alpha.8
+
+### Patch Changes
+
+- 8e4b674: Adds description to program rule condition in the details modal. Adds links to maintenance apps in the program rules details modal. Improvements on Coordinate and GeoJSON fields
+
 ## 0.1.0-alpha.7
 
 ### Patch Changes

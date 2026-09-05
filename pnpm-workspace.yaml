@@ -21,3 +21,10 @@ allowBuilds:
   '@dhis2/cli-helpers-engine': false
   core-js-pure: false
   esbuild: false
+
+minimumReleaseAgeExclude:
+  - '@nnkogift/dhis2-form-utils-devtools@0.1.0-alpha.7'
+  - '@nnkogift/dhis2-form-utils-dhis2-ui@0.1.0-alpha.7'
+  - '@nnkogift/dhis2-form-utils-hooks@0.1.0-alpha.7'
+  - '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.7'
+  - '@nnkogift/dhis2-form-utils-rules@0.1.0-alpha.7'

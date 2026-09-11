@@ -59,14 +59,24 @@ export function RegistrationFormFields({
     // `React.memo` on `RuleAwareField` to actually bail out per-field.
     const fieldsByTeaId = useMemo(
         () =>
-            new Map<string, FieldControlInput>(
-                fieldConfigs.map((fieldConfig) => [
-                    fieldConfig.trackedEntityAttribute.id,
-                    {
-                        kind: 'trackedEntityAttribute',
-                        config: fieldConfig,
-                    },
-                ])
+            new Map(
+                fieldConfigs
+                    .map((fieldConfig) => {
+                        const teaId = fieldConfig.trackedEntityAttribute?.id
+                        if (!teaId) {
+                            return null
+                        }
+                        return [
+                            teaId,
+                            {
+                                kind: 'trackedEntityAttribute' as const,
+                                config: fieldConfig,
+                            },
+                        ] as const
+                    })
+                    .filter((entry): entry is NonNullable<typeof entry> =>
+                        Boolean(entry)
+                    )
             ),
         [fieldConfigs]
     )
@@ -86,7 +96,7 @@ export function RegistrationFormFields({
                 (attribute) => attribute.id
             )
         },
-        getFieldId: (fieldConfig) => fieldConfig.trackedEntityAttribute.id,
+        getFieldId: (fieldConfig) => fieldConfig.trackedEntityAttribute?.id,
     })
 
     return (

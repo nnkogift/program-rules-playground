@@ -19,10 +19,16 @@ type RuleOutputCardProps = {
     variant: RuleOutputCardVariant
 }
 
+type IndicatorQualifier = { label: string } | undefined
+
 // A qualifier chip has no data source yet in FeedbackItem — this stays
 // undefined until the rule engine surfaces one, per the design's intent
-// that it never be derived client-side.
-type IndicatorQualifier = { label: string } | undefined
+// that it never be derived client-side. Routed through a function (rather
+// than a `const` literal) so TS keeps the union type instead of narrowing
+// to `undefined` via control-flow analysis of the literal assignment.
+function resolveIndicatorQualifier(): IndicatorQualifier {
+    return undefined
+}
 
 function RuleOutputRow({
     item,
@@ -40,7 +46,7 @@ function RuleOutputRow({
     const actionType =
         ruleEffect?.ruleActionType ??
         (item.type === 'text' ? 'DISPLAYTEXT' : 'DISPLAYKEYVALUEPAIR')
-    const qualifier: IndicatorQualifier = undefined
+    const qualifier = resolveIndicatorQualifier()
 
     return (
         <div className="flex flex-col gap-1 border-b border-dhis2-grey-200 px-3 py-[11px] last:border-b-0">

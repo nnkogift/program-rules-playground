@@ -46,7 +46,7 @@ export function ProgramPage() {
         metadata: program,
         error,
         loading,
-    } = useEventProgramMetadataQuery(programId)
+    } = useEventProgramMetadataQuery(programId ?? '')
     const {
         orgUnits,
         loading: orgUnitsLoading,

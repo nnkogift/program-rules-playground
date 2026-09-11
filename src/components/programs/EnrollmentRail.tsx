@@ -120,9 +120,11 @@ export function EnrollmentRail({
     )
     const selectSlot = useTrackerFormsStore((state) => state.selectSlot)
     const addEvent = useTrackerFormsStore((state) => state.addEvent)
-    const stages = [...(program.programStages ?? [])].sort(
-        (left, right) => (left.sortOrder ?? 0) - (right.sortOrder ?? 0)
-    )
+    const stages = (program.programStages ?? [])
+        .filter((stage): stage is typeof stage & { id: string } =>
+            Boolean(stage.id)
+        )
+        .sort((left, right) => (left.sortOrder ?? 0) - (right.sortOrder ?? 0))
     const selectedKey = slotKey(selectedSlot)
 
     return (
@@ -162,7 +164,7 @@ export function EnrollmentRail({
                             <RailRow
                                 key={stage.id}
                                 icon={<IconFileDocument16 />}
-                                label={stage.displayName}
+                                label={stage.displayName ?? ''}
                                 meta={i18n.t('1 event')}
                                 selected={selectedKey === slotKey(slot)}
                                 onClick={() => {
@@ -176,7 +178,7 @@ export function EnrollmentRail({
                         <div key={stage.id} className="flex flex-col">
                             <RailRow
                                 icon={<IconQueue16 />}
-                                label={stage.displayName}
+                                label={stage.displayName ?? ''}
                                 meta={
                                     drafts.length === 0
                                         ? i18n.t('No events yet')

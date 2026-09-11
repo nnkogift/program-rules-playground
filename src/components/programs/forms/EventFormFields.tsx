@@ -1,7 +1,10 @@
 import { useMemo } from 'react'
 import i18n from '@dhis2/d2-i18n'
 import type { ProgramStageMetadata } from '@nnkogift/dhis2-form-utils-metadata'
-import { resolveFormSectionLayout } from '@nnkogift/dhis2-form-utils-metadata'
+import {
+    getProgramStageSectionDataElementIds,
+    resolveFormSectionLayout,
+} from '@nnkogift/dhis2-form-utils-metadata'
 import type { FieldControlInput } from '@nnkogift/dhis2-form-utils-hooks'
 import { RuleAwareField } from '@/components/rules/RuleAwareField'
 import { defaultSectionTitle, FormSectionCard } from './FormSectionCard'
@@ -31,7 +34,7 @@ export function EventFormFields({ metadata }: EventFormFieldsProps) {
     // `React.memo` on `RuleAwareField` to actually bail out per-field.
     const fieldsByDataElementId = useMemo(
         () =>
-            new Map<string, FieldControlInput>(
+            new Map(
                 programStageDataElements
                     .map((programStageDataElement) => {
                         const fieldId = programStageDataElement.dataElement?.id
@@ -42,16 +45,13 @@ export function EventFormFields({ metadata }: EventFormFieldsProps) {
                         return [
                             fieldId,
                             {
-                                kind: 'dataElement',
+                                kind: 'dataElement' as const,
                                 config: programStageDataElement,
                             },
                         ] as const
                     })
-                    .filter(
-                        (
-                            entry
-                        ): entry is readonly [string, FieldControlInput] =>
-                            entry !== null
+                    .filter((entry): entry is NonNullable<typeof entry> =>
+                        Boolean(entry)
                     )
             ),
         [programStageDataElements]
@@ -77,7 +77,7 @@ export function EventFormFields({ metadata }: EventFormFieldsProps) {
             getSectionDisplayName: (section) => section.displayName,
             getSortOrder: (section) => section.sortOrder ?? 0,
             getSectionItemIds: (section) =>
-                section.dataElements.map(({ id }: { id: string }) => id),
+                getProgramStageSectionDataElementIds(section),
             getFieldId: (programStageDataElement) =>
                 programStageDataElement.dataElement?.id,
         })

@@ -39,6 +39,7 @@
     },
     "devDependencies": {
         "@changesets/cli": "^2.31.1",
+        "@dhis2/api-types": "43.0.0-beta.daa0d8e",
         "@dhis2/cli-app-scripts": "^12.11.1",
         "@dhis2/config-eslint": "^0.2.2",
         "@dhis2/config-prettier": "^0.2.2",

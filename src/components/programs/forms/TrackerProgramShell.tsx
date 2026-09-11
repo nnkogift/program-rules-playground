@@ -64,6 +64,9 @@ function TrackerProgramShellContent({
     const renderableStageSlots = useMemo<RenderableStageSlot[]>(() => {
         const slots: RenderableStageSlot[] = []
         for (const stage of program.programStages ?? []) {
+            if (!stage.id) {
+                continue
+            }
             if (stage.repeatable) {
                 for (const eventLocalId of eventDraftsByStage[stage.id] ?? []) {
                     slots.push({ stageId: stage.id, eventLocalId })

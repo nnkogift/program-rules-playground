@@ -17,12 +17,13 @@ import {
     type RuleSupplementaryDataInput,
 } from '@nnkogift/dhis2-form-utils-rules'
 import React, { useEffect, useMemo, useState } from 'react'
-import { FormProvider, type UseFormReturn } from 'react-hook-form'
+import { FormProvider } from 'react-hook-form'
 import { GhostToggleButton } from '@/components/rules/GhostToggleButton'
 import { LazyRulesPanel } from '@/components/rules/LazyRulesPanel'
 import { RuleDisplayProvider } from '@/components/rules/RuleDisplayContext'
 import { RuleOutputColumn } from '@/components/rules/RuleOutputColumn'
 import { usePublishFormValues } from '@/hooks/usePublishFormValues'
+import { createTodayValue } from '@/utils/date.utils'
 import { formatDhis2Error } from '@/utils/formatDhis2Error'
 import {
     buildTrackerRegistrationPayload,
@@ -42,10 +43,6 @@ type ProgramRegistrationFormProps = {
     supplementaryData?: RuleSupplementaryDataInput
     optionGroups?: OptionGroupCodeMap
     onValuesChange?: (values: Record<string, unknown>) => void
-}
-
-function createTodayValue() {
-    return new Date().toISOString().slice(0, 10)
 }
 
 export function ProgramRegistrationForm({
@@ -137,9 +134,9 @@ export function ProgramRegistrationForm({
     })
 
     return (
-        <FormStateProvider
+        <FormStateProvider<TrackerRegistrationValues>
             formStore={formStore}
-            form={form as unknown as UseFormReturn<Record<string, unknown>>}
+            form={form}
         >
             <RuleDevtoolsScope formStore={formStore}>
                 <div className="flex h-full w-full flex-1 min-h-0">

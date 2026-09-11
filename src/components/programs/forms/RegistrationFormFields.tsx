@@ -16,6 +16,10 @@ type RegistrationFormFieldsProps = {
 function toFieldConfig(
     attribute: TrackerProgramMetadata['programTrackedEntityAttributes'][number]
 ): ProgramTrackedEntityAttribute {
+    // -hooks' TrackerProgramMetadata and -metadata's ProgramTrackedEntityAttribute
+    // describe the same DHIS2 attribute with independently-generated field sets
+    // (formName vs displayFormName, etc.) — no single cast satisfies both, and the
+    // mismatch is between two sibling packages this app doesn't own.
     return {
         ...attribute,
         trackedEntityAttribute: {

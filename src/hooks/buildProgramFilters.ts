@@ -1,13 +1,17 @@
-import type { ProgramTypeFilter } from '@/types/program'
+import {
+    PROGRAM_TYPE,
+    PROGRAM_TYPE_FILTER,
+    type ProgramTypeFilter,
+} from '@/types/program'
 
 export function programTypeFilterToApi(
     type: ProgramTypeFilter
 ): string | undefined {
-    if (type === 'registration') {
-        return 'WITH_REGISTRATION'
+    if (type === PROGRAM_TYPE_FILTER.REGISTRATION) {
+        return PROGRAM_TYPE.WITH_REGISTRATION
     }
-    if (type === 'event') {
-        return 'WITHOUT_REGISTRATION'
+    if (type === PROGRAM_TYPE_FILTER.EVENT) {
+        return PROGRAM_TYPE.WITHOUT_REGISTRATION
     }
     return undefined
 }

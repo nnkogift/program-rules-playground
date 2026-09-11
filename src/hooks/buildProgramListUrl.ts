@@ -1,4 +1,8 @@
-import type { ProgramListParams, ProgramTypeFilter } from '@/types/program'
+import {
+    PROGRAM_TYPE_FILTER,
+    type ProgramListParams,
+    type ProgramTypeFilter,
+} from '@/types/program'
 
 /** Matches @dhis2/ui Pagination default `pageSizes` options. */
 export const PAGE_SIZE_OPTIONS = [
@@ -32,10 +36,13 @@ export function parsePageSize(value: string | null): number {
 export function parseProgramTypeFilter(
     value: string | null
 ): ProgramTypeFilter {
-    if (value === 'registration' || value === 'event') {
+    if (
+        value === PROGRAM_TYPE_FILTER.REGISTRATION ||
+        value === PROGRAM_TYPE_FILTER.EVENT
+    ) {
         return value
     }
-    return 'all'
+    return PROGRAM_TYPE_FILTER.ALL
 }
 
 export function buildProgramListUrl(
@@ -47,7 +54,7 @@ export function buildProgramListUrl(
         searchParams.set('search', params.search)
     }
 
-    if (params.type && params.type !== 'all') {
+    if (params.type && params.type !== PROGRAM_TYPE_FILTER.ALL) {
         searchParams.set('type', params.type)
     }
 

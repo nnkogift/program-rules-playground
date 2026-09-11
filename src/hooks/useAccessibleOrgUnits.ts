@@ -1,4 +1,5 @@
 import { useDataQuery } from '@dhis2/app-runtime'
+import { uniqBy } from 'lodash-es'
 import { useMemo } from 'react'
 import type { OrgUnit } from '@/types/program'
 
@@ -19,18 +20,10 @@ const ME_ORG_UNIT_FIELDS = [
 ].join(',')
 
 function dedupeOrgUnits(orgUnits: OrgUnit[]): OrgUnit[] {
-    const byId = new Map<string, OrgUnit>()
-
-    for (const orgUnit of orgUnits) {
-        if (!orgUnit.id) {
-            continue
-        }
-        byId.set(orgUnit.id, orgUnit)
-    }
-
-    return [...byId.values()].sort((left, right) =>
-        left.displayName.localeCompare(right.displayName)
-    )
+    return uniqBy(
+        orgUnits.filter((orgUnit) => orgUnit.id),
+        'id'
+    ).sort((left, right) => left.displayName.localeCompare(right.displayName))
 }
 
 export function useAccessibleOrgUnits() {

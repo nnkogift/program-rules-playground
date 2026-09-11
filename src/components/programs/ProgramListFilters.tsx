@@ -2,14 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react'
 import i18n from '@dhis2/d2-i18n'
 import { IconSearch16, InputField, SegmentedControl } from '@dhis2/ui'
 import { useDebounceCallback } from 'usehooks-ts'
-import type { ProgramTypeFilter } from '@/types/program'
+import { PROGRAM_TYPE_FILTER, type ProgramTypeFilter } from '@/types/program'
 
 const SEARCH_DEBOUNCE_MS = 300
 
 const TYPE_SEGMENTS: Array<{ label: string; value: ProgramTypeFilter }> = [
-    { label: i18n.t('All'), value: 'all' },
-    { label: i18n.t('Tracker'), value: 'registration' },
-    { label: i18n.t('Event'), value: 'event' },
+    { label: i18n.t('All'), value: PROGRAM_TYPE_FILTER.ALL },
+    { label: i18n.t('Tracker'), value: PROGRAM_TYPE_FILTER.REGISTRATION },
+    { label: i18n.t('Event'), value: PROGRAM_TYPE_FILTER.EVENT },
 ]
 
 type ProgramListFiltersProps = {

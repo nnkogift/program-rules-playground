@@ -6,7 +6,11 @@ import {
     parsePageSize,
     parseProgramTypeFilter,
 } from '@/hooks/buildProgramListUrl'
-import type { ProgramListParams, ProgramTypeFilter } from '@/types/program'
+import {
+    PROGRAM_TYPE_FILTER,
+    type ProgramListParams,
+    type ProgramTypeFilter,
+} from '@/types/program'
 
 export function useProgramListParams() {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -43,7 +47,7 @@ export function useProgramListParams() {
                         next.delete('search')
                     }
 
-                    if (merged.type !== 'all') {
+                    if (merged.type !== PROGRAM_TYPE_FILTER.ALL) {
                         next.set('type', merged.type)
                     } else {
                         next.delete('type')

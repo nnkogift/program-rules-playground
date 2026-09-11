@@ -13,7 +13,9 @@ const ProgramListPage = lazy(() =>
 const ProgramPage = lazy(() =>
     import('@/pages/ProgramPage').then((m) => ({ default: m.ProgramPage }))
 )
-const AboutPage = lazy(() => import('@/components/About'))
+const AboutPage = lazy(() =>
+    import('@/components/About').then((m) => ({ default: m.AboutPage }))
+)
 
 const AppWrapper = () => {
     return (

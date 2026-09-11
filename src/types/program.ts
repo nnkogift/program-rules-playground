@@ -16,29 +16,6 @@ export type Program = {
     ruleCount: number
 }
 
-export type ProgramStageSummary = {
-    id: string
-    displayName: string
-}
-
-export type ProgramSection = {
-    id: string
-    displayName?: string
-    sortOrder?: number
-    trackedEntityAttributes: Array<{ id: string }>
-}
-
-export type ProgramHeader = Program & {
-    trackedEntityType?: { id: string }
-    displayIncidentDate?: boolean
-    selectEnrollmentDatesInFuture?: boolean
-    selectIncidentDatesInFuture?: boolean
-    displayEnrollmentDateLabel?: string
-    displayIncidentDateLabel?: string
-    programStages?: ProgramStageSummary[]
-    programSections?: ProgramSection[]
-}
-
 export type Pager = {
     page: number
     pageCount: number
@@ -46,12 +23,14 @@ export type Pager = {
     pageSize: number
 }
 
-export type ProgramsResponse = {
-    programs: Program[]
-    pager: Pager
-}
+export const PROGRAM_TYPE_FILTER = {
+    ALL: 'all',
+    REGISTRATION: 'registration',
+    EVENT: 'event',
+} as const
 
-export type ProgramTypeFilter = 'all' | 'registration' | 'event'
+export type ProgramTypeFilter =
+    (typeof PROGRAM_TYPE_FILTER)[keyof typeof PROGRAM_TYPE_FILTER]
 
 export type ProgramListParams = {
     search: string

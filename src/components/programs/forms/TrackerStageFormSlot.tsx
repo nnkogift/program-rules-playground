@@ -6,13 +6,10 @@ import type {
 } from '@nnkogift/dhis2-form-utils-metadata'
 import type { RuleSupplementaryDataInput } from '@nnkogift/dhis2-form-utils-rules'
 import { useShallow } from 'zustand/react/shallow'
+import { createTodayValue } from '@/utils/date.utils'
 import { selectEventsExcludingSlot } from '../trackerFormsStore'
 import { useTrackerFormsStore } from '../trackerFormsStoreContext'
 import { ProgramStageFormScreen } from './ProgramStageFormScreen'
-
-function createTodayValue() {
-    return new Date().toISOString().slice(0, 10)
-}
 
 type TrackerStageFormSlotProps = {
     slotId: string

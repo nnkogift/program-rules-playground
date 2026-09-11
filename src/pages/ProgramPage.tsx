@@ -12,6 +12,8 @@ import { useAccessibleOrgUnits } from '@/hooks/useAccessibleOrgUnits'
 import { useCurrentUserSupplementaryData } from '@/hooks/useCurrentUserSupplementaryData'
 import { useOptionGroupsSupplementaryData } from '@/hooks/useOptionGroupsSupplementaryData'
 import { PROGRAM_TYPE, type ProgramListParams } from '@/types/program'
+import { createTodayValue } from '@/utils/date.utils'
+import { parseDhis2Error } from '@/utils/parseDhis2Error'
 
 const TrackerProgramShell = lazy(() =>
     import('@/components/programs/forms/TrackerProgramShell').then((m) => ({
@@ -28,16 +30,10 @@ type ProgramPageLocationState = {
     listParams?: ProgramListParams
 }
 
-function createTodayValue() {
-    return new Date().toISOString().slice(0, 10)
-}
-
 const HTTP_NOT_FOUND = 404
 
 function isNotFoundError(error: unknown): boolean {
-    const details = (error as { details?: { httpStatusCode?: number } })
-        ?.details
-    return details?.httpStatusCode === HTTP_NOT_FOUND
+    return parseDhis2Error(error).details?.httpStatusCode === HTTP_NOT_FOUND
 }
 
 export function ProgramPage() {

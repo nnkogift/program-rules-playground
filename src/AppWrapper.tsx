@@ -2,19 +2,21 @@ import '@/index.css'
 
 import React, { lazy, Suspense } from 'react'
 import { HashRouter, Route, Routes } from 'react-router'
-import { RouteSuspenseFallback } from '@/components/RouteSuspenseFallback'
-import { SyncUrlWithGlobalShell } from '@/components/SyncUrlWithGlobalShell'
+import { RouteSuspenseFallback } from '@/shared/components/RouteSuspenseFallback'
+import { SyncUrlWithGlobalShell } from '@/SyncUrlWithGlobalShell'
 
 const ProgramListPage = lazy(() =>
-    import('@/pages/ProgramListPage').then((m) => ({
+    import('@/modules/program-list/pages/ProgramListPage').then((m) => ({
         default: m.ProgramListPage,
     }))
 )
 const ProgramPage = lazy(() =>
-    import('@/pages/ProgramPage').then((m) => ({ default: m.ProgramPage }))
+    import('@/modules/program-playground/pages/ProgramPage').then((m) => ({
+        default: m.ProgramPage,
+    }))
 )
 const AboutPage = lazy(() =>
-    import('@/components/About').then((m) => ({ default: m.AboutPage }))
+    import('@/About').then((m) => ({ default: m.AboutPage }))
 )
 
 const AppWrapper = () => {

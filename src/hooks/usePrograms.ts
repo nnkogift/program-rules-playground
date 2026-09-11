@@ -1,8 +1,11 @@
 import { useDataQuery } from '@dhis2/app-runtime'
 import { useEffect, useMemo } from 'react'
 import { buildProgramFilters } from '@/hooks/buildProgramFilters'
-import type { RawProgramListItem } from '@/utils/resolveProgramListItem'
-import type { Pager, ProgramTypeFilter } from '@/types/program'
+import {
+    type ProgramsResponse,
+    programsResponseSchema,
+} from '@/hooks/programsResponse.schema'
+import type { ProgramTypeFilter } from '@/types/program'
 
 type UseProgramsOptions = {
     page: number
@@ -12,10 +15,7 @@ type UseProgramsOptions = {
 }
 
 type ProgramsQueryResult = {
-    programs: {
-        programs: RawProgramListItem[]
-        pager: Pager
-    }
+    programs: unknown
 }
 
 export function usePrograms({
@@ -66,5 +66,16 @@ export function usePrograms({
         })
     }, [page, pageSize, search, type])
 
-    return dataQuery
+    const parsed = dataQuery.data
+        ? programsResponseSchema.safeParse(dataQuery.data.programs)
+        : undefined
+
+    const data: { programs: ProgramsResponse } | undefined = parsed?.success
+        ? { programs: parsed.data }
+        : undefined
+
+    return {
+        ...dataQuery,
+        data,
+    }
 }

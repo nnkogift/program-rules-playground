@@ -26,6 +26,7 @@ import { usePublishFormValues } from '@/hooks/usePublishFormValues'
 import { formatDhis2Error } from '@/utils/formatDhis2Error'
 import {
     buildEventPayload,
+    eventFormValuesSchema,
     type EventFormValues,
 } from '@/utils/trackerPayloads'
 import { EventFormFields } from './EventFormFields'
@@ -107,11 +108,21 @@ export function ProgramEventForm({
         setSuccessMessage(undefined)
 
         try {
-            const filteredValues = filterPayload(
-                values,
-                formStore.fieldStore.getSnapshot(),
-                formStore.optionGroups
-            ) as EventFormValues
+            const parsedValues = eventFormValuesSchema.safeParse(
+                filterPayload(
+                    values,
+                    formStore.fieldStore.getSnapshot(),
+                    formStore.optionGroups
+                )
+            )
+            if (!parsedValues.success) {
+                throw new Error(
+                    i18n.t(
+                        'The form values could not be validated before saving'
+                    )
+                )
+            }
+            const filteredValues = parsedValues.data
             const payload = buildEventPayload({
                 values: filteredValues,
                 programId: program.id,

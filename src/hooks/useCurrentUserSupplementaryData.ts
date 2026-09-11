@@ -1,6 +1,7 @@
 import { useDataQuery } from '@dhis2/app-runtime'
 import { useMemo } from 'react'
 import type { RuleSupplementaryDataInput } from '@nnkogift/dhis2-form-utils-rules'
+import { currentUserSupplementaryDataResponseSchema } from '@/hooks/currentUserSupplementaryData.schema'
 
 const SUPPLEMENTARY_DATA_FIELDS = ['userGroups[id]', 'userRoles[id]'].join(',')
 
@@ -12,10 +13,7 @@ const meQuery = {
 }
 
 type MeResult = {
-    me: {
-        userGroups?: Array<{ id: string }>
-        userRoles?: Array<{ id: string }>
-    }
+    me: unknown
 }
 
 /**
@@ -31,9 +29,16 @@ export function useCurrentUserSupplementaryData():
             return undefined
         }
 
+        const parsed =
+            currentUserSupplementaryDataResponseSchema.safeParse(data)
+        if (!parsed.success) {
+            return undefined
+        }
+
         return {
-            userGroups: data.me.userGroups?.map((group) => group.id) ?? [],
-            userRoles: data.me.userRoles?.map((role) => role.id) ?? [],
+            userGroups:
+                parsed.data.me.userGroups?.map((group) => group.id) ?? [],
+            userRoles: parsed.data.me.userRoles?.map((role) => role.id) ?? [],
         }
     }, [data])
 }

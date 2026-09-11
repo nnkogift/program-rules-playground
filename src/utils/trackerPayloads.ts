@@ -1,15 +1,27 @@
 import type { TrackerProgramMetadata } from '@nnkogift/dhis2-form-utils-hooks'
+import { z } from 'zod'
 
-export type TrackerRegistrationValues = Record<string, string> & {
-    orgUnit: string
-    enrolledAt: string
-    occurredAt?: string
-}
+export const trackerRegistrationValuesSchema = z
+    .record(z.string(), z.string())
+    .and(
+        z.object({
+            orgUnit: z.string(),
+            enrolledAt: z.string(),
+            occurredAt: z.string().optional(),
+        })
+    )
 
-export type EventFormValues = Record<string, string> & {
-    orgUnit: string
-    occurredAt: string
-}
+export const eventFormValuesSchema = z.record(z.string(), z.string()).and(
+    z.object({
+        orgUnit: z.string(),
+        occurredAt: z.string(),
+    })
+)
+
+export type TrackerRegistrationValues = z.infer<
+    typeof trackerRegistrationValuesSchema
+>
+export type EventFormValues = z.infer<typeof eventFormValuesSchema>
 
 export const EVENT_SYSTEM_FIELD_KEYS = new Set(['orgUnit', 'occurredAt'])
 

@@ -27,6 +27,7 @@ import { createTodayValue } from '@/utils/date.utils'
 import { formatDhis2Error } from '@/utils/formatDhis2Error'
 import {
     buildTrackerRegistrationPayload,
+    trackerRegistrationValuesSchema,
     type TrackerRegistrationValues,
 } from '@/utils/trackerPayloads'
 import { FormDateField } from './FormDateField'
@@ -107,11 +108,21 @@ export function ProgramRegistrationForm({
         setSuccessMessage(undefined)
 
         try {
-            const filteredValues = filterPayload(
-                values,
-                formStore.fieldStore.getSnapshot(),
-                formStore.optionGroups
-            ) as TrackerRegistrationValues
+            const parsedValues = trackerRegistrationValuesSchema.safeParse(
+                filterPayload(
+                    values,
+                    formStore.fieldStore.getSnapshot(),
+                    formStore.optionGroups
+                )
+            )
+            if (!parsedValues.success) {
+                throw new Error(
+                    i18n.t(
+                        'The form values could not be validated before saving'
+                    )
+                )
+            }
+            const filteredValues = parsedValues.data
             const payload = buildTrackerRegistrationPayload({
                 values: filteredValues,
                 metadata,

@@ -1,15 +1,5 @@
-import type { Program, ProgramType } from '@/types/program'
-
-export type RawProgramListItem = {
-    id: string
-    displayName: string
-    code: string
-    shortName: string
-    programType: ProgramType
-    lastUpdated?: string
-    programStages?: Array<{ id: string }>
-    programRules?: Array<{ id: string }>
-}
+import type { RawProgramListItem } from '@/hooks/programsResponse.schema'
+import type { Program } from '@/types/program'
 
 export function resolveProgramListItem(raw: RawProgramListItem): Program {
     return {

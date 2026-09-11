@@ -1,16 +1,11 @@
 import { useDataQuery } from '@dhis2/app-runtime'
 import { uniqBy } from 'lodash-es'
 import { useMemo } from 'react'
+import { accessibleOrgUnitsResponseSchema } from '@/hooks/accessibleOrgUnits.schema'
 import type { OrgUnit } from '@/types/program'
 
-type MeWithOrgUnits = {
-    organisationUnits?: OrgUnit[]
-    dataViewOrganisationUnits?: OrgUnit[]
-    teiSearchOrganisationUnits?: OrgUnit[]
-}
-
 type AccessibleOrgUnitsQueryResult = {
-    me: MeWithOrgUnits
+    me: unknown
 }
 
 const ME_ORG_UNIT_FIELDS = [
@@ -40,7 +35,10 @@ export function useAccessibleOrgUnits() {
     )
 
     const queryResult = useDataQuery<AccessibleOrgUnitsQueryResult>(query)
-    const me = queryResult.data?.me
+    const parsed = queryResult.data
+        ? accessibleOrgUnitsResponseSchema.safeParse(queryResult.data)
+        : undefined
+    const me = parsed?.success ? parsed.data.me : undefined
     const orgUnits = dedupeOrgUnits([
         ...(me?.teiSearchOrganisationUnits ?? []),
         ...(me?.dataViewOrganisationUnits ?? []),

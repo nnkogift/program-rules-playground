@@ -1,9 +1,9 @@
 import '@nnkogift/dhis2-form-utils-devtools/style.css'
 
-import React, { lazy, Suspense, useMemo, useState } from 'react'
-import { Link, useLocation, useParams } from 'react-router'
+import React, { lazy, Suspense, useMemo } from 'react'
+import { useLocation, useParams } from 'react-router'
 import i18n from '@dhis2/d2-i18n'
-import { Center, CircularLoader, NoticeBox } from '@dhis2/ui'
+import { Center, CircularLoader } from '@dhis2/ui'
 import { useEventProgramMetadataQuery } from '@nnkogift/dhis2-form-utils-hooks'
 import { ProgramContextBar } from '@/modules/program-playground/components/ProgramContextBar'
 import { RouteSuspenseFallback } from '@/shared/components/RouteSuspenseFallback'
@@ -11,9 +11,11 @@ import { buildProgramListUrl } from '@/modules/program-list/hooks/buildProgramLi
 import { useAccessibleOrgUnits } from '@/modules/program-playground/hooks/useAccessibleOrgUnits'
 import { useCurrentUserSupplementaryData } from '@/modules/program-playground/hooks/useCurrentUserSupplementaryData'
 import { useOptionGroupsSupplementaryData } from '@/modules/program-playground/hooks/useOptionGroupsSupplementaryData'
+import { useProgramPlaygroundState } from '@/modules/program-playground/hooks/useProgramPlaygroundState'
 import { PROGRAM_TYPE, type ProgramListParams } from '@/shared/types/program'
-import { createTodayValue } from '@/modules/program-playground/utils/date.utils'
 import { parseDhis2Error } from '@/modules/program-playground/utils/parseDhis2Error'
+import { OrgUnitsNotice } from './components/OrgUnitsNotice'
+import { ProgramLoadError } from './components/ProgramLoadError'
 
 const TrackerProgramShell = lazy(() =>
     import('@/modules/program-playground/components/forms/TrackerProgramShell').then(
@@ -61,9 +63,14 @@ export function ProgramPage() {
         program?.programRules ?? []
     )
 
-    const [orgUnitId, setOrgUnitId] = useState('')
-    const [primaryDate, setPrimaryDate] = useState(createTodayValue)
-    const [resetKey, setResetKey] = useState(0)
+    const {
+        orgUnitId,
+        setOrgUnitId,
+        primaryDate,
+        setPrimaryDate,
+        resetKey,
+        resetPlayground,
+    } = useProgramPlaygroundState()
 
     const isTracker = program?.programType === PROGRAM_TYPE.WITH_REGISTRATION
     const programMeta = useMemo(() => {
@@ -79,12 +86,6 @@ export function ProgramPage() {
         })
     }, [program, isTracker])
 
-    const handleResetPlayground = () => {
-        setOrgUnitId('')
-        setPrimaryDate(createTodayValue())
-        setResetKey((key) => key + 1)
-    }
-
     if (loading || orgUnitsLoading) {
         return (
             <Center>
@@ -95,23 +96,7 @@ export function ProgramPage() {
 
     if (error || !program) {
         const notFound = !error || isNotFoundError(error)
-        return (
-            <div className="flex flex-col gap-dp16 pb-dp24">
-                <Link
-                    className="text-dhis2-teal-700 no-underline font-medium hover:underline"
-                    to={backUrl}
-                >
-                    {i18n.t('Back to programs')}
-                </Link>
-                <NoticeBox error title={i18n.t('Error')}>
-                    {notFound
-                        ? i18n.t('Program not found')
-                        : i18n.t(
-                              'Could not load this program. Try again later.'
-                          )}
-                </NoticeBox>
-            </div>
-        )
+        return <ProgramLoadError backUrl={backUrl} notFound={notFound} />
     }
 
     return (
@@ -128,32 +113,13 @@ export function ProgramPage() {
                 }
                 primaryDateValue={primaryDate}
                 onPrimaryDateChange={setPrimaryDate}
-                onResetPlayground={handleResetPlayground}
+                onResetPlayground={resetPlayground}
             />
             <div className="flex min-h-0 flex-1 flex-col">
-                {orgUnitsError ? (
-                    <div className="p-dp16">
-                        <NoticeBox
-                            error
-                            title={i18n.t('Could not load organisation units')}
-                        >
-                            {i18n.t(
-                                'The current user organisation units could not be loaded for data entry.'
-                            )}
-                        </NoticeBox>
-                    </div>
-                ) : null}
-                {!orgUnitsError && orgUnits.length === 0 ? (
-                    <div className="p-dp16">
-                        <NoticeBox
-                            title={i18n.t('No organisation units available')}
-                        >
-                            {i18n.t(
-                                'The current user does not have any accessible organisation units for this playground.'
-                            )}
-                        </NoticeBox>
-                    </div>
-                ) : null}
+                <OrgUnitsNotice
+                    hasError={Boolean(orgUnitsError)}
+                    isEmpty={!orgUnitsError && orgUnits.length === 0}
+                />
                 {!orgUnitsError && orgUnits.length > 0 ? (
                     <div className="flex min-h-0 flex-1 flex-col">
                         <Suspense fallback={<RouteSuspenseFallback />}>

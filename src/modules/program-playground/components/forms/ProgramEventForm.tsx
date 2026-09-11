@@ -18,6 +18,7 @@ import {
 } from '@nnkogift/dhis2-form-utils-rules'
 import i18n from '@dhis2/d2-i18n'
 import React, { useEffect, useMemo, useState } from 'react'
+import { FormProvider } from 'react-hook-form'
 import { GhostToggleButton } from '@/modules/program-playground/components/rules/GhostToggleButton'
 import { LazyRulesPanel } from '@/modules/program-playground/components/rules/LazyRulesPanel'
 import { RuleDisplayProvider } from '@/modules/program-playground/components/rules/RuleDisplayContext'
@@ -148,36 +149,44 @@ export function ProgramEventForm({
         <FormStateProvider<EventFormValues> formStore={formStore} form={form}>
             <RuleDevtoolsScope formStore={formStore}>
                 <div className="flex h-full w-full flex-1 min-h-0">
-                    <form
-                        onSubmit={handleSubmit}
-                        className="flex min-w-0 flex-1 flex-col overflow-auto pt-4 px-7 pb-7"
-                    >
-                        <GhostToggleButton
-                            enabled={ghostsEnabled}
-                            onToggle={() => {
-                                setGhostsEnabled((current) => !current)
-                            }}
-                        />
-                        <div className="flex flex-1 flex-row-reverse items-start gap-5 pt-4">
-                            <div className="sticky top-0 shrink-0">
-                                <RuleOutputColumn metadata={rulesMetadata} />
+                    <FormProvider {...form}>
+                        <form
+                            onSubmit={handleSubmit}
+                            className="flex min-w-0 flex-1 flex-col overflow-auto pt-4 px-7 pb-7"
+                        >
+                            <GhostToggleButton
+                                enabled={ghostsEnabled}
+                                onToggle={() => {
+                                    setGhostsEnabled((current) => !current)
+                                }}
+                            />
+                            <div className="flex flex-1 flex-row-reverse items-start gap-5 pt-4">
+                                <div className="sticky top-0 shrink-0">
+                                    <RuleOutputColumn
+                                        metadata={rulesMetadata}
+                                    />
+                                </div>
+                                <div className="flex min-w-[520px] flex-1 flex-col gap-dp16">
+                                    <RuleDisplayProvider
+                                        ghostsEnabled={ghostsEnabled}
+                                        labelLookup={labelLookup}
+                                    >
+                                        <EventFormFields
+                                            metadata={stageMetadata}
+                                        />
+                                    </RuleDisplayProvider>
+                                    <ProgramFormActions
+                                        submitLabel={i18n.t('Save event')}
+                                        errorTitle={i18n.t(
+                                            'Could not save event'
+                                        )}
+                                        successMessage={successMessage}
+                                        successTitle={i18n.t('Event saved')}
+                                    />
+                                </div>
                             </div>
-                            <div className="flex min-w-[520px] flex-1 flex-col gap-dp16">
-                                <RuleDisplayProvider
-                                    ghostsEnabled={ghostsEnabled}
-                                    labelLookup={labelLookup}
-                                >
-                                    <EventFormFields metadata={stageMetadata} />
-                                </RuleDisplayProvider>
-                                <ProgramFormActions
-                                    submitLabel={i18n.t('Save event')}
-                                    errorTitle={i18n.t('Could not save event')}
-                                    successMessage={successMessage}
-                                    successTitle={i18n.t('Event saved')}
-                                />
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </FormProvider>
                     <LazyRulesPanel metadata={rulesMetadata} />
                 </div>
             </RuleDevtoolsScope>

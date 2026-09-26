@@ -4,7 +4,7 @@ import { PROGRAM_TYPE } from '@/shared/types/program'
 export const rawProgramListItemSchema = z.object({
     id: z.string(),
     displayName: z.string(),
-    code: z.string(),
+    code: z.string().optional(),
     shortName: z.string(),
     programType: z.enum([
         PROGRAM_TYPE.WITH_REGISTRATION,

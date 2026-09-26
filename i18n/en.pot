@@ -5,35 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-08-23T18:45:22.169Z\n"
-"PO-Revision-Date: 2026-08-23T18:45:22.169Z\n"
-
-msgid "Add event"
-msgstr "Add event"
-
-msgid "Enrollment"
-msgstr "Enrollment"
-
-msgid "Registration"
-msgstr "Registration"
-
-msgid "1 event"
-msgstr "1 event"
-
-msgid "No events yet"
-msgstr "No events yet"
-
-msgid "Event {{number}}"
-msgstr "Event {{number}}"
-
-msgid "Programs"
-msgstr "Programs"
-
-msgid "Organisation unit"
-msgstr "Organisation unit"
-
-msgid "Reset playground"
-msgstr "Reset playground"
+"POT-Creation-Date: 2026-09-15T17:33:15.978Z\n"
+"PO-Revision-Date: 2026-09-15T17:33:15.979Z\n"
 
 msgid "All"
 msgstr "All"
@@ -62,6 +35,42 @@ msgstr "Last updated"
 msgid "No programs found. Try adjusting your search or filter."
 msgstr "No programs found. Try adjusting your search or filter."
 
+msgid "Programs"
+msgstr "Programs"
+
+msgid "Pick a program to open its forms and watch its rules evaluate."
+msgstr "Pick a program to open its forms and watch its rules evaluate."
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Error loading programs"
+msgstr "Error loading programs"
+
+msgid "Add event"
+msgstr "Add event"
+
+msgid "Enrollment"
+msgstr "Enrollment"
+
+msgid "Registration"
+msgstr "Registration"
+
+msgid "1 event"
+msgstr "1 event"
+
+msgid "Organisation unit"
+msgstr "Organisation unit"
+
+msgid "Reset playground"
+msgstr "Reset playground"
+
+msgid "No events yet"
+msgstr "No events yet"
+
+msgid "Event {{number}}"
+msgstr "Event {{number}}"
+
 msgid "This field is required"
 msgstr "This field is required"
 
@@ -70,6 +79,9 @@ msgstr "a rule"
 
 msgid "Section"
 msgstr "Section"
+
+msgid "The form values could not be validated before saving"
+msgstr "The form values could not be validated before saving"
 
 msgid "Event saved successfully"
 msgstr "Event saved successfully"
@@ -135,9 +147,6 @@ msgstr "Required by rule"
 msgid "Warning"
 msgstr "Warning"
 
-msgid "Error"
-msgstr "Error"
-
 msgid "{{actionType}} from rule"
 msgstr "{{actionType}} from rule"
 
@@ -174,23 +183,8 @@ msgstr "No indicator rules are firing in this form."
 msgid "Loading rules panel"
 msgstr "Loading rules panel"
 
-msgid "Pick a program to open its forms and watch its rules evaluate."
-msgstr "Pick a program to open its forms and watch its rules evaluate."
-
-msgid "Error loading programs"
-msgstr "Error loading programs"
-
 msgid "Event program"
 msgstr "Event program"
-
-msgid "Back to programs"
-msgstr "Back to programs"
-
-msgid "Program not found"
-msgstr "Program not found"
-
-msgid "Could not load this program. Try again later."
-msgstr "Could not load this program. Try again later."
 
 msgid "Enrollment date"
 msgstr "Enrollment date"
@@ -213,6 +207,15 @@ msgid ""
 msgstr ""
 "The current user does not have any accessible organisation units for this "
 "playground."
+
+msgid "Back to programs"
+msgstr "Back to programs"
+
+msgid "Program not found"
+msgstr "Program not found"
+
+msgid "Could not load this program. Try again later."
+msgstr "Could not load this program. Try again later."
 
 msgid "An unexpected error occurred"
 msgstr "An unexpected error occurred"

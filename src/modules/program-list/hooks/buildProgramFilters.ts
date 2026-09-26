@@ -5,7 +5,7 @@ import {
 } from '@/shared/types/program'
 
 export function programTypeFilterToApi(
-    type: ProgramTypeFilter
+    type?: ProgramTypeFilter
 ): string | undefined {
     if (type === PROGRAM_TYPE_FILTER.REGISTRATION) {
         return PROGRAM_TYPE.WITH_REGISTRATION
@@ -17,11 +17,11 @@ export function programTypeFilterToApi(
 }
 
 export function buildProgramFilters(
-    search: string,
-    type: ProgramTypeFilter
+    search?: string,
+    type?: ProgramTypeFilter
 ): string[] {
     const filters: string[] = []
-    const trimmedSearch = search.trim()
+    const trimmedSearch = search?.trim()
 
     if (trimmedSearch) {
         filters.push(`identifiable:token:${trimmedSearch}`)

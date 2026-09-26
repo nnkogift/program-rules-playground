@@ -1,5 +1,5 @@
 import { useDataQuery } from '@dhis2/app-runtime'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { buildProgramFilters } from '@/modules/program-list/hooks/buildProgramFilters'
 import {
     type ProgramsResponse,
@@ -15,7 +15,33 @@ type UseProgramsOptions = {
 }
 
 type ProgramsQueryResult = {
-    programs: unknown
+    programs: ProgramsResponse
+}
+
+export const query = {
+    programs: {
+        resource: 'programs',
+        params: ({
+            search,
+            type,
+            page,
+            pageSize,
+        }: {
+            search?: string
+            type?: ProgramTypeFilter
+            page: number
+            pageSize: number
+        }) => {
+            const filters = buildProgramFilters(search, type)
+            return {
+                fields: 'id,displayName,code,shortName,programType,lastUpdated,programStages[id],programRules[id]',
+                order: 'displayName:asc',
+                page,
+                pageSize,
+                ...(filters.length > 0 ? { filter: filters } : {}),
+            }
+        },
+    },
 }
 
 export function usePrograms({
@@ -29,24 +55,7 @@ export function usePrograms({
     // match useDataQuery's broad `QueryVariables` — the useMemo below already
     // recomputes this whenever those values change, and the effect re-triggers the
     // fetch with the same values via `refetch`.
-    const query = useMemo(() => {
-        return {
-            programs: {
-                resource: 'programs',
-                params: () => {
-                    const filters = buildProgramFilters(search, type)
-                    return {
-                        fields: 'id,displayName,code,shortName,programType,lastUpdated,programStages[id],programRules[id]',
-                        order: 'displayName:asc',
-                        page,
-                        pageSize,
-                        ...(filters.length > 0 ? { filter: filters } : {}),
-                    }
-                },
-            },
-        }
-    }, [page, pageSize, search, type])
-
+    // @ts-expect-error Query type issues
     const dataQuery = useDataQuery<ProgramsQueryResult>(query, {
         variables: {
             page,

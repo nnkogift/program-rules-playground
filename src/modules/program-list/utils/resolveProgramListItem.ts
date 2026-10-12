@@ -5,7 +5,7 @@ export function resolveProgramListItem(raw: RawProgramListItem): Program {
     return {
         id: raw.id,
         displayName: raw.displayName,
-        code: raw.code,
+        code: raw.code ?? '',
         shortName: raw.shortName,
         programType: raw.programType,
         lastUpdated: raw.lastUpdated ?? '',

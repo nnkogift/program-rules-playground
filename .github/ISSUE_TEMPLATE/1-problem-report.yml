@@ -1,0 +1,116 @@
+name: Report a problem
+description: Something in the app is not working the way you expected. No technical knowledge needed.
+title: '[Problem]: '
+labels: ['bug', 'user-report']
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Thanks for taking the time to tell us about a problem. Answer what you can in your own words, there are no wrong answers.
+
+              **Please do not include passwords, usernames or any personal or patient data** in this report or in screenshots.
+
+    - type: textarea
+      id: trying-to-do
+      attributes:
+          label: What were you trying to do?
+          description: Describe the task you were working on.
+          placeholder: e.g. I opened the ANC program and was filling in the registration form to check a rule that should hide the "Gravida" field.
+      validations:
+          required: true
+
+    - type: textarea
+      id: what-happened
+      attributes:
+          label: What happened instead?
+          description: Tell us what went wrong. If you saw an error message, copy the exact text here.
+          placeholder: e.g. The field stayed visible, and the rules panel did not show the rule firing.
+      validations:
+          required: true
+
+    - type: textarea
+      id: steps
+      attributes:
+          label: How can we see the problem ourselves?
+          description: List the steps you took, one per line. Skip this if you are not sure.
+          placeholder: |
+              1. Open the program list and select "..."
+              2. Choose the organisation unit "..."
+              3. Enter "..." in the field "..."
+              4. See the problem
+      validations:
+          required: false
+
+    - type: dropdown
+      id: area
+      attributes:
+          label: Where in the app did this happen?
+          options:
+              - Program list (searching or opening a program)
+              - Event program form
+              - Tracker program, registration form
+              - Tracker program, stage or event form
+              - Rules panel (list of rules, trace or dependency graph)
+              - Feedback or Indicators panel
+              - Saving a form
+              - Somewhere else, or I am not sure
+      validations:
+          required: true
+
+    - type: input
+      id: program
+      attributes:
+          label: Which program were you using?
+          description: The program name as shown in the app. This helps us find the rules involved.
+          placeholder: e.g. Antenatal Care (ANC)
+      validations:
+          required: false
+
+    - type: dropdown
+      id: impact
+      attributes:
+          label: How much does this affect your work?
+          options:
+              - I cannot continue my work
+              - It is annoying, but I can work around it
+              - It is a small or cosmetic issue
+      validations:
+          required: true
+
+    - type: textarea
+      id: screenshots
+      attributes:
+          label: Screenshots or screen recordings
+          description: If you can, drag and drop images or a short video here. Remember to hide any personal or patient data.
+      validations:
+          required: false
+
+    - type: input
+      id: dhis2-instance
+      attributes:
+          label: DHIS2 version (optional)
+          description: Open your profile menu (top right) and choose "About DHIS2" to see the version. Leave blank if you are not sure.
+          placeholder: e.g. 2.41.3
+      validations:
+          required: false
+
+    - type: dropdown
+      id: browser
+      attributes:
+          label: Which web browser were you using?
+          options:
+              - Google Chrome
+              - Mozilla Firefox
+              - Microsoft Edge
+              - Safari
+              - Another browser, or I am not sure
+      validations:
+          required: false
+
+    - type: checkboxes
+      id: privacy
+      attributes:
+          label: Before you submit
+          options:
+              - label: I have not included passwords, usernames or any personal or patient data.
+                required: true

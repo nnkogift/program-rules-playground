@@ -1,0 +1,42 @@
+name: Suggest an improvement
+description: An idea that would make the app easier or more useful for you.
+title: '[Suggestion]: '
+labels: ['enhancement', 'user-report']
+body:
+    - type: markdown
+      attributes:
+          value: |
+              We love hearing how the app could work better for you. Describe your idea in your own words.
+
+    - type: textarea
+      id: need
+      attributes:
+          label: What would you like to be able to do?
+          description: Describe what you need, not how it should be built.
+          placeholder: e.g. I would like to see which rules hide a section, even when the section is empty.
+      validations:
+          required: true
+
+    - type: textarea
+      id: why
+      attributes:
+          label: Why would this help you?
+          description: Tell us about the task or situation where this would make a difference.
+      validations:
+          required: true
+
+    - type: textarea
+      id: today
+      attributes:
+          label: How do you manage today?
+          description: Any workaround you use at the moment, if there is one.
+      validations:
+          required: false
+
+    - type: textarea
+      id: examples
+      attributes:
+          label: Pictures or examples (optional)
+          description: Drag and drop screenshots, sketches or links that help explain your idea.
+      validations:
+          required: false

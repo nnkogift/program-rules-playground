@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+    - name: Ask the DHIS2 community
+      url: https://community.dhis2.org
+      about: For general questions about DHIS2 or program rules (not problems with this app).
+    - name: Report a rule engine or form library bug (developers)
+      url: https://github.com/nnkogift/dhis2-form-utils/issues
+      about: Developers can report issues in the underlying rule engine, form hooks, widgets or devtools here.

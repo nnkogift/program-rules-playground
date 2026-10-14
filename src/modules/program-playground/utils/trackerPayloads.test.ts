@@ -41,6 +41,56 @@ describe('trackerPayloads', () => {
         })
     })
 
+    it('does not add completedAt for ACTIVE events', () => {
+        const { events } = buildEventPayload({
+            values: { orgUnit: 'OrgUnit12345', occurredAt: '2026-07-02' },
+            programId: 'Program12345',
+            programStageId: 'Stage1234567',
+            status: 'ACTIVE',
+        })
+
+        expect(events[0].status).toBe('ACTIVE')
+        expect(events[0]).not.toHaveProperty('completedAt')
+    })
+
+    it('posts COMPLETED events with a completedAt timestamp', () => {
+        jest.useFakeTimers().setSystemTime(new Date('2026-07-03T10:00:00Z'))
+
+        try {
+            const { events } = buildEventPayload({
+                values: { orgUnit: 'OrgUnit12345', occurredAt: '2026-07-02' },
+                programId: 'Program12345',
+                programStageId: 'Stage1234567',
+                status: 'COMPLETED',
+            })
+
+            expect(events[0]).toMatchObject({
+                status: 'COMPLETED',
+                completedAt: '2026-07-03T10:00:00.000Z',
+            })
+        } finally {
+            jest.useRealTimers()
+        }
+    })
+
+    it('never sends a status form value as a data value', () => {
+        const { events } = buildEventPayload({
+            values: {
+                orgUnit: 'OrgUnit12345',
+                occurredAt: '2026-07-02',
+                status: 'COMPLETED',
+                deAlpha: 'yes',
+            },
+            programId: 'Program12345',
+            programStageId: 'Stage1234567',
+        })
+
+        expect(events[0].status).toBe('ACTIVE')
+        expect(events[0].dataValues).toEqual([
+            { dataElement: 'deAlpha', value: 'yes' },
+        ])
+    })
+
     it('builds a nested tracker registration payload', () => {
         const metadata: TrackerProgramMetadata = {
             id: 'Program12345',

@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-09-15T17:33:15.978Z\n"
-"PO-Revision-Date: 2026-09-15T17:33:15.979Z\n"
+"POT-Creation-Date: 2026-10-14T07:34:29.943Z\n"
+"PO-Revision-Date: 2026-10-14T07:34:29.943Z\n"
 
 msgid "All"
 msgstr "All"
@@ -83,20 +83,29 @@ msgstr "Section"
 msgid "The form values could not be validated before saving"
 msgstr "The form values could not be validated before saving"
 
+msgid "Event completed successfully"
+msgstr "Event completed successfully"
+
 msgid "Event saved successfully"
 msgstr "Event saved successfully"
 
-msgid "Save event"
-msgstr "Save event"
-
 msgid "Could not save event"
 msgstr "Could not save event"
+
+msgid "Event completed"
+msgstr "Event completed"
 
 msgid "Event saved"
 msgstr "Event saved"
 
 msgid "Saved"
 msgstr "Saved"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Complete"
+msgstr "Complete"
 
 msgid "Tracked entity registered successfully"
 msgstr "Tracked entity registered successfully"

@@ -23,18 +23,26 @@ export type TrackerRegistrationValues = z.infer<
 >
 export type EventFormValues = z.infer<typeof eventFormValuesSchema>
 
-export const EVENT_SYSTEM_FIELD_KEYS = new Set(['orgUnit', 'occurredAt'])
+export const EVENT_SYSTEM_FIELD_KEYS = new Set([
+    'orgUnit',
+    'occurredAt',
+    'status',
+])
+
+export type EventStatus = 'ACTIVE' | 'COMPLETED'
 
 export type EventSubmissionInput = {
     values: EventFormValues | Record<string, unknown>
     programId: string
     programStageId: string
+    status?: EventStatus
 }
 
 export function buildEventPayload({
     values,
     programId,
     programStageId,
+    status = 'ACTIVE',
 }: EventSubmissionInput) {
     const orgUnit = String(values.orgUnit ?? '')
     const occurredAt = String(values.occurredAt ?? '')
@@ -58,7 +66,10 @@ export function buildEventPayload({
                 programStage: programStageId,
                 orgUnit,
                 occurredAt,
-                status: 'ACTIVE' as const,
+                status,
+                ...(status === 'COMPLETED'
+                    ? { completedAt: new Date().toISOString() }
+                    : {}),
                 dataValues,
             },
         ],

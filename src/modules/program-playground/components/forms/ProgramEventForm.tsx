@@ -28,6 +28,7 @@ import {
     buildEventPayload,
     eventFormValuesSchema,
     type EventFormValues,
+    type EventStatus,
 } from '@/modules/program-playground/utils/trackerPayloads'
 import { EventFormFields } from './EventFormFields'
 import { ProgramFormActions } from './ProgramFormActions'
@@ -80,7 +81,10 @@ export function ProgramEventForm({
         },
     })
     usePublishFormValues(form, onValuesChange)
-    const [successMessage, setSuccessMessage] = useState<string>()
+    const [success, setSuccess] = useState<{
+        status: EventStatus
+        message: string
+    }>()
     const [ghostsEnabled, setGhostsEnabled] = useState(true)
     const rulesMetadata = useMemo(
         () => ({
@@ -103,53 +107,61 @@ export function ProgramEventForm({
         form.setValue('occurredAt', occurredAt, { shouldValidate: false })
     }, [form, occurredAt])
 
-    const handleSubmit = form.handleSubmit(async (values) => {
-        form.clearErrors('root')
-        setSuccessMessage(undefined)
+    const submit = (status: EventStatus) =>
+        form.handleSubmit(async (values) => {
+            form.clearErrors('root')
+            setSuccess(undefined)
 
-        try {
-            const parsedValues = eventFormValuesSchema.safeParse(
-                filterPayload(
-                    values,
-                    formStore.fieldStore.getSnapshot(),
-                    formStore.optionGroups
-                )
-            )
-            if (!parsedValues.success) {
-                throw new Error(
-                    i18n.t(
-                        'The form values could not be validated before saving'
+            try {
+                const parsedValues = eventFormValuesSchema.safeParse(
+                    filterPayload(
+                        values,
+                        formStore.fieldStore.getSnapshot(),
+                        formStore.optionGroups
                     )
                 )
+                if (!parsedValues.success) {
+                    throw new Error(
+                        i18n.t(
+                            'The form values could not be validated before saving'
+                        )
+                    )
+                }
+                const filteredValues = parsedValues.data
+                const payload = buildEventPayload({
+                    values: filteredValues,
+                    programId: program.id,
+                    programStageId,
+                    status,
+                })
+
+                await dataEngine.mutate({
+                    resource: 'tracker',
+                    type: 'create',
+                    data: payload,
+                })
+
+                form.reset(values)
+                setSuccess({
+                    status,
+                    message:
+                        status === 'COMPLETED'
+                            ? i18n.t('Event completed successfully')
+                            : i18n.t('Event saved successfully'),
+                })
+            } catch (error) {
+                form.setError('root', {
+                    message: formatDhis2Error(error),
+                })
             }
-            const filteredValues = parsedValues.data
-            const payload = buildEventPayload({
-                values: filteredValues,
-                programId: program.id,
-                programStageId,
-            })
-
-            await dataEngine.mutate({
-                resource: 'tracker',
-                type: 'create',
-                data: payload,
-            })
-
-            form.reset(values)
-            setSuccessMessage(i18n.t('Event saved successfully'))
-        } catch (error) {
-            form.setError('root', {
-                message: formatDhis2Error(error),
-            })
-        }
-    })
+        })
 
     return (
         <FormStateProvider<EventFormValues> formStore={formStore} form={form}>
             <RuleDevtoolsScope formStore={formStore}>
                 <div className="flex h-full w-full flex-1 min-h-0">
                     <form
-                        onSubmit={handleSubmit}
+                        onSubmit={submit('ACTIVE')}
                         className="flex min-w-0 flex-1 flex-col overflow-auto pt-4 px-7 pb-7"
                     >
                         <GhostToggleButton
@@ -170,10 +182,15 @@ export function ProgramEventForm({
                                     <EventFormFields metadata={stageMetadata} />
                                 </RuleDisplayProvider>
                                 <ProgramFormActions
-                                    submitLabel={i18n.t('Save event')}
+                                    onSave={submit('ACTIVE')}
+                                    onComplete={submit('COMPLETED')}
                                     errorTitle={i18n.t('Could not save event')}
-                                    successMessage={successMessage}
-                                    successTitle={i18n.t('Event saved')}
+                                    successMessage={success?.message}
+                                    successTitle={
+                                        success?.status === 'COMPLETED'
+                                            ? i18n.t('Event completed')
+                                            : i18n.t('Event saved')
+                                    }
                                 />
                             </div>
                         </div>

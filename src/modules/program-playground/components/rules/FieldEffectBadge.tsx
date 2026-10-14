@@ -19,21 +19,28 @@ const BADGE_LABELS: Partial<Record<EffectVisualVariant, string>> = {
 type FieldEffectBadgeProps = {
     actionType: ProgramRuleActionType
     ruleName: string
+    /** Marks a WARNINGONCOMPLETE / ERRORONCOMPLETE outcome of the completion pass. */
+    onComplete?: boolean
 }
 
 export function FieldEffectBadge({
     actionType,
     ruleName,
+    onComplete = false,
 }: FieldEffectBadgeProps) {
     const variant = getEffectVariant(actionType)
     const visual = getEffectVisual(actionType)
     const Icon = EFFECT_ICONS[variant]
-    const label = BADGE_LABELS[variant] ?? visual.shortLabel
+    const baseLabel = BADGE_LABELS[variant] ?? visual.shortLabel
+    const label = onComplete
+        ? i18n.t('On complete: {{label}}', { label: baseLabel.toLowerCase() })
+        : baseLabel
 
     return (
         <span
             title={`${i18n.t('{{actionType}} from rule', { actionType })}: ${ruleName}`}
-            className={`inline-flex shrink-0 items-center gap-1 rounded text-[11px] font-semibold leading-4 px-1.5 py-0.5 ${visual.tagClassName}`}
+            className={`inline-flex shrink-0 items-center gap-1 rounded text-[11px] font-semibold leading-4 px-1.5 py-0.5 ${visual.tagClassName} ${onComplete ? 'border border-dashed border-current' : ''}`}
+            data-on-complete={onComplete || undefined}
         >
             <Icon aria-hidden="true" />
             {label}

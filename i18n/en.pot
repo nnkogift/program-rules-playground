@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-14T07:34:29.943Z\n"
-"PO-Revision-Date: 2026-10-14T07:34:29.943Z\n"
+"POT-Creation-Date: 2026-10-14T14:24:05.044Z\n"
+"PO-Revision-Date: 2026-10-14T14:24:05.044Z\n"
 
 msgid "All"
 msgstr "All"
@@ -70,6 +70,24 @@ msgstr "No events yet"
 
 msgid "Event {{number}}"
 msgstr "Event {{number}}"
+
+msgid "Required"
+msgstr "Required"
+
+msgid "Warning"
+msgstr "Warning"
+
+msgid "Cannot complete this event yet"
+msgstr "Cannot complete this event yet"
+
+msgid "Review before completing"
+msgstr "Review before completing"
+
+msgid "Back to editing"
+msgstr "Back to editing"
+
+msgid "Complete anyway"
+msgstr "Complete anyway"
 
 msgid "This field is required"
 msgstr "This field is required"
@@ -153,9 +171,6 @@ msgstr "Assigned"
 msgid "Required by rule"
 msgstr "Required by rule"
 
-msgid "Warning"
-msgstr "Warning"
-
 msgid "{{actionType}} from rule"
 msgstr "{{actionType}} from rule"
 
@@ -173,6 +188,12 @@ msgstr "Hidden by {{ruleName}}"
 
 msgid "Section hidden by {{ruleName}}"
 msgstr "Section hidden by {{ruleName}}"
+
+msgid "completion pass"
+msgstr "completion pass"
+
+msgid "On complete"
+msgstr "On complete"
 
 msgid "{{actionType}} · {{ruleName}}"
 msgstr "{{actionType}} · {{ruleName}}"

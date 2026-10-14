@@ -4,8 +4,11 @@ import {
     type FieldControlInput,
     useFieldControl,
     useFieldRuleEffect,
+    useFieldState,
 } from '@nnkogift/dhis2-form-utils-hooks'
 import { memo, useEffect, useId, useRef } from 'react'
+import { useWatch } from 'react-hook-form'
+import { ProgramRuleActionType } from '@nnkogift/dhis2-form-utils-metadata'
 import { FieldEffectBadge } from './FieldEffectBadge'
 import { HiddenFieldPlaceholder } from './HiddenFieldPlaceholder'
 import { useRuleDisplay } from './RuleDisplayContext'
@@ -26,6 +29,8 @@ export const RuleAwareField = memo(function RuleAwareField({
 }: RuleAwareFieldProps) {
     const control = useFieldControl(field)
     const ruleEffect = useFieldRuleEffect(control.fieldId)
+    const fieldState = useFieldState(control.fieldId)
+    const status = useWatch({ name: 'status' })
     const { ghostsEnabled, labelLookup } = useRuleDisplay()
     const labelId = useId()
     const widgetContainerRef = useRef<HTMLDivElement>(null)
@@ -54,13 +59,26 @@ export const RuleAwareField = memo(function RuleAwareField({
         ? labelLookup.resolveRuleName(ruleEffect.ruleId)
         : null
     const label = control.fieldConfig.label
+    const effectIsOnComplete =
+        ruleEffect?.ruleActionType === ProgramRuleActionType.ERRORONCOMPLETE ||
+        ruleEffect?.ruleActionType === ProgramRuleActionType.WARNINGONCOMPLETE
+    const onCompleteError =
+        status === 'COMPLETED' ? fieldState?.errorOnComplete : null
+    const onCompleteWarning =
+        status === 'COMPLETED' && !onCompleteError
+            ? fieldState?.warningOnComplete
+            : null
+    const onCompleteMessage = onCompleteError ?? onCompleteWarning
     const widgetControl = {
         ...control,
         fieldConfig: { ...control.fieldConfig, label: '' },
     }
 
     return (
-        <div className="flex min-w-0 flex-col gap-1.5">
+        <div
+            className="flex min-w-0 flex-col gap-1.5"
+            data-field-id={control.fieldId}
+        >
             <div className="flex min-w-0 items-center gap-2">
                 <span
                     id={labelId}
@@ -70,8 +88,20 @@ export const RuleAwareField = memo(function RuleAwareField({
                 </span>
                 {ruleEffect && ruleName ? (
                     <FieldEffectBadge
+                        onComplete={effectIsOnComplete}
                         actionType={ruleEffect.ruleActionType}
                         ruleName={ruleName}
+                    />
+                ) : null}
+                {onCompleteMessage && !effectIsOnComplete ? (
+                    <FieldEffectBadge
+                        onComplete
+                        actionType={
+                            onCompleteError
+                                ? ProgramRuleActionType.ERRORONCOMPLETE
+                                : ProgramRuleActionType.WARNINGONCOMPLETE
+                        }
+                        ruleName={i18n.t('completion pass')}
                     />
                 ) : null}
             </div>
@@ -84,6 +114,17 @@ export const RuleAwareField = memo(function RuleAwareField({
                     <D2FieldWidget control={widgetControl} />
                 </div>
             )}
+            {onCompleteMessage ? (
+                <p
+                    className={`m-0 border-l-2 border-dashed pl-2 text-xs leading-4 ${onCompleteError ? 'border-dhis2-red-600 text-dhis2-red-800' : 'border-dhis2-yellow-600 text-dhis2-grey-900'}`}
+                >
+                    <span className="font-semibold">
+                        {i18n.t('On complete')}
+                        {': '}
+                    </span>
+                    {onCompleteMessage}
+                </p>
+            ) : null}
         </div>
     )
 })

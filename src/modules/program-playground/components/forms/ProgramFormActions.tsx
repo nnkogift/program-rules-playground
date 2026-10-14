@@ -7,6 +7,8 @@ type ProgramFormActionsBaseProps = {
     errorTitle: string
     successMessage?: string
     successTitle?: string
+    /** Complete is mid-pass (loading) or awaiting the banner's decision (disabled). */
+    completionPhase?: 'idle' | 'evaluating' | 'review'
 }
 
 type SingleActionProps = ProgramFormActionsBaseProps & {
@@ -32,6 +34,7 @@ export function ProgramFormActions({
     successTitle = i18n.t('Saved'),
     onSave,
     onComplete,
+    completionPhase = 'idle',
 }: ProgramFormActionsProps) {
     const { isSubmitting, errors } = useFormState()
     const [pendingAction, setPendingAction] = useState<PendingAction>()
@@ -53,7 +56,9 @@ export function ProgramFormActions({
                         secondary
                         type="button"
                         loading={isSubmitting && pendingAction === 'save'}
-                        disabled={isSubmitting}
+                        disabled={
+                            isSubmitting || completionPhase === 'evaluating'
+                        }
                         onClick={() => {
                             setPendingAction('save')
                             onSave?.()
@@ -66,8 +71,11 @@ export function ProgramFormActions({
                     <Button
                         primary
                         type="button"
-                        loading={isSubmitting && pendingAction === 'complete'}
-                        disabled={isSubmitting}
+                        loading={
+                            completionPhase === 'evaluating' ||
+                            (isSubmitting && pendingAction === 'complete')
+                        }
+                        disabled={isSubmitting || completionPhase !== 'idle'}
                         onClick={() => {
                             setPendingAction('complete')
                             onComplete?.()

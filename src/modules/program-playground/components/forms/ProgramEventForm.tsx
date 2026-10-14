@@ -18,6 +18,11 @@ import {
 } from '@nnkogift/dhis2-form-utils-rules'
 import i18n from '@dhis2/d2-i18n'
 import React, { useEffect, useMemo, useState } from 'react'
+import { CompletionBanner } from './CompletionBanner'
+import {
+    useCompletionMessageCollector,
+    useCompletionPass,
+} from '@/modules/program-playground/hooks/useCompletionPass'
 import { GhostToggleButton } from '@/modules/program-playground/components/rules/GhostToggleButton'
 import { LazyRulesPanel } from '@/modules/program-playground/components/rules/LazyRulesPanel'
 import { RuleDisplayProvider } from '@/modules/program-playground/components/rules/RuleDisplayContext'
@@ -66,6 +71,7 @@ export function ProgramEventForm({
 }: ProgramEventFormProps) {
     const dataEngine = useDataEngine()
 
+    const completionCollector = useCompletionMessageCollector()
     const { form, formStore } = useEventForm<EventFormValues>({
         options: {
             programStageId,
@@ -74,6 +80,7 @@ export function ProgramEventForm({
             events,
             supplementaryData,
             optionGroups,
+            effectHandlers: completionCollector.handlers,
         },
         formOptions: {
             mode: 'onBlur',
@@ -101,6 +108,22 @@ export function ProgramEventForm({
         () => createLabelLookup(rulesMetadata),
         [rulesMetadata]
     )
+
+    const mandatoryFieldIds = useMemo(
+        () =>
+            (stageMetadata.programStageDataElements ?? [])
+                .filter((element) => element.compulsory)
+                .map((element) => element.dataElement?.id)
+                .filter((id): id is string => Boolean(id)),
+        [stageMetadata]
+    )
+    const completion = useCompletionPass({
+        form,
+        formStore,
+        collector: completionCollector,
+        mandatoryFieldIds,
+        resolveFieldName: labelLookup.resolveFieldName,
+    })
 
     useEffect(() => {
         form.setValue('orgUnit', orgUnitId, { shouldValidate: false })
@@ -150,6 +173,7 @@ export function ProgramEventForm({
                 })
 
                 form.reset(values)
+                completion.finish()
                 setSuccess({
                     status,
                     message:
@@ -163,6 +187,19 @@ export function ProgramEventForm({
                 })
             }
         })
+
+    const handleComplete = async () => {
+        if ((await completion.start()) === 'proceed') {
+            await submit('COMPLETED')()
+        }
+    }
+
+    const handleSave = () => {
+        if (completion.phase !== 'idle') {
+            completion.cancel()
+        }
+        void submit('ACTIVE')()
+    }
 
     return (
         <FormStateProvider<EventFormValues> formStore={formStore} form={form}>
@@ -189,9 +226,24 @@ export function ProgramEventForm({
                                 >
                                     <EventFormFields metadata={stageMetadata} />
                                 </RuleDisplayProvider>
+                                {completion.phase === 'review' ? (
+                                    <CompletionBanner
+                                        issues={completion.issues}
+                                        isSubmitting={
+                                            form.formState.isSubmitting
+                                        }
+                                        onBackToEditing={completion.cancel}
+                                        onCompleteAnyway={() => {
+                                            void submit('COMPLETED')()
+                                        }}
+                                    />
+                                ) : null}
                                 <ProgramFormActions
-                                    onSave={submit('ACTIVE')}
-                                    onComplete={submit('COMPLETED')}
+                                    completionPhase={completion.phase}
+                                    onSave={handleSave}
+                                    onComplete={() => {
+                                        void handleComplete()
+                                    }}
                                     errorTitle={i18n.t('Could not save event')}
                                     successMessage={success?.message}
                                     successTitle={

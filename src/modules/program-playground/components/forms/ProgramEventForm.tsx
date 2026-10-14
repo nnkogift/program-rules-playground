@@ -29,9 +29,12 @@ import {
     eventFormValuesSchema,
     type EventFormValues,
     type EventStatus,
+    withSystemFieldValues,
 } from '@/modules/program-playground/utils/trackerPayloads'
 import { EventFormFields } from './EventFormFields'
 import { ProgramFormActions } from './ProgramFormActions'
+
+const EVENT_FORM_SYSTEM_KEYS = ['orgUnit', 'occurredAt'] as const
 
 type ProgramEventFormProps = {
     program: EventProgramMetadata
@@ -108,9 +111,14 @@ export function ProgramEventForm({
     }, [form, occurredAt])
 
     const submit = (status: EventStatus) =>
-        form.handleSubmit(async (values) => {
+        form.handleSubmit(async (resolvedValues) => {
             form.clearErrors('root')
             setSuccess(undefined)
+            const values = withSystemFieldValues(
+                resolvedValues,
+                form.getValues(),
+                EVENT_FORM_SYSTEM_KEYS
+            )
 
             try {
                 const parsedValues = eventFormValuesSchema.safeParse(

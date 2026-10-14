@@ -29,10 +29,17 @@ import {
     buildTrackerRegistrationPayload,
     trackerRegistrationValuesSchema,
     type TrackerRegistrationValues,
+    withSystemFieldValues,
 } from '@/modules/program-playground/utils/trackerPayloads'
 import { FormDateField } from './FormDateField'
 import { ProgramFormActions } from './ProgramFormActions'
 import { RegistrationFormFields } from './RegistrationFormFields'
+
+const REGISTRATION_FORM_SYSTEM_KEYS = [
+    'orgUnit',
+    'enrolledAt',
+    'occurredAt',
+] as const
 
 type ProgramRegistrationFormProps = {
     programId: string
@@ -103,9 +110,14 @@ export function ProgramRegistrationForm({
         form.setValue('enrolledAt', enrolledAt, { shouldValidate: false })
     }, [form, enrolledAt])
 
-    const handleSubmit = form.handleSubmit(async (values) => {
+    const handleSubmit = form.handleSubmit(async (resolvedValues) => {
         form.clearErrors('root')
         setSuccessMessage(undefined)
+        const values = withSystemFieldValues(
+            resolvedValues,
+            form.getValues(),
+            REGISTRATION_FORM_SYSTEM_KEYS
+        )
 
         try {
             const parsedValues = trackerRegistrationValuesSchema.safeParse(

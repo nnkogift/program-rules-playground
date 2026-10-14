@@ -2,6 +2,9 @@ import type { TrackerProgramMetadata } from '@nnkogift/dhis2-form-utils-hooks'
 import {
     buildEventPayload,
     buildTrackerRegistrationPayload,
+    eventFormValuesSchema,
+    trackerRegistrationValuesSchema,
+    withSystemFieldValues,
 } from './trackerPayloads'
 
 describe('trackerPayloads', () => {
@@ -163,6 +166,95 @@ describe('trackerPayloads', () => {
                     ],
                 },
             ],
+        })
+    })
+
+    describe('form value schemas', () => {
+        const system = { orgUnit: 'OrgUnit12345', occurredAt: '2026-07-02' }
+
+        it('accepts numeric, boolean and empty values in an event form', () => {
+            const result = eventFormValuesSchema.safeParse({
+                ...system,
+                deText: 'yes',
+                deNumber: 12,
+                deBoolean: true,
+                deEmpty: null,
+                deEmptyNumber: Number.NaN,
+            })
+
+            expect(result.success).toBe(true)
+        })
+
+        it('still rejects a missing event orgUnit', () => {
+            expect(
+                eventFormValuesSchema.safeParse({
+                    occurredAt: '2026-07-02',
+                    deNumber: 12,
+                }).success
+            ).toBe(false)
+        })
+
+        it('accepts numeric values in a registration form', () => {
+            expect(
+                trackerRegistrationValuesSchema.safeParse({
+                    orgUnit: 'OrgUnit12345',
+                    enrolledAt: '2026-07-02',
+                    teaNumber: 3,
+                }).success
+            ).toBe(true)
+        })
+    })
+
+    it('stringifies numeric event values and drops empty numbers', () => {
+        const { events } = buildEventPayload({
+            values: {
+                ...{ orgUnit: 'OrgUnit12345', occurredAt: '2026-07-02' },
+                deNumber: 12,
+                deBoolean: false,
+                deEmptyNumber: Number.NaN,
+                deNull: null,
+            },
+            programId: 'Program12345',
+            programStageId: 'Stage1234567',
+        })
+
+        expect(events[0].dataValues).toEqual([
+            { dataElement: 'deNumber', value: '12' },
+            { dataElement: 'deBoolean', value: 'false' },
+        ])
+    })
+
+    describe('withSystemFieldValues', () => {
+        it('adds the system fields the form resolver stripped', () => {
+            expect(
+                withSystemFieldValues(
+                    { deAlpha: 'yes' },
+                    {
+                        deAlpha: 'raw',
+                        orgUnit: 'OrgUnit12345',
+                        occurredAt: '2026-07-02',
+                    },
+                    ['orgUnit', 'occurredAt']
+                )
+            ).toEqual({
+                deAlpha: 'yes',
+                orgUnit: 'OrgUnit12345',
+                occurredAt: '2026-07-02',
+            })
+        })
+
+        it('skips system fields that have no value', () => {
+            const result = withSystemFieldValues(
+                { teaAlpha: 'x' },
+                { orgUnit: 'OrgUnit12345', occurredAt: undefined },
+                ['orgUnit', 'occurredAt']
+            )
+
+            expect(result).toEqual({
+                teaAlpha: 'x',
+                orgUnit: 'OrgUnit12345',
+            })
+            expect(result).not.toHaveProperty('occurredAt')
         })
     })
 })

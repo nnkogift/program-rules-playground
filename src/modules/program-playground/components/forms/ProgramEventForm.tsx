@@ -38,6 +38,7 @@ import {
 } from '@/modules/program-playground/utils/trackerPayloads'
 import { EventFormFields } from './EventFormFields'
 import { ProgramFormActions } from './ProgramFormActions'
+import { SaveReviewDialog } from './SaveReviewDialog'
 
 const EVENT_FORM_SYSTEM_KEYS = ['orgUnit', 'occurredAt'] as const
 
@@ -96,6 +97,10 @@ export function ProgramEventForm({
         message: string
     }>()
     const [ghostsEnabled, setGhostsEnabled] = useState(true)
+    const [review, setReview] = useState<{
+        status: EventStatus
+        values: Record<string, unknown>
+    }>()
     const rulesMetadata = useMemo(
         () => ({
             formKind: 'event' as const,
@@ -188,9 +193,33 @@ export function ProgramEventForm({
             }
         })
 
+    // The importer runs server-side rule actions for both statuses, so every
+    // submit is reviewed before anything is posted.
+    const openReview = (status: EventStatus) => {
+        setReview({
+            status,
+            values: { ...enrollment?.values, ...form.getValues() },
+        })
+    }
+
+    const handleCancelReview = () => {
+        if (review?.status === 'COMPLETED') {
+            completion.cancel()
+        }
+        setReview(undefined)
+    }
+
+    const handleConfirmReview = () => {
+        if (!review) {
+            return
+        }
+        setReview(undefined)
+        void submit(review.status)()
+    }
+
     const handleComplete = async () => {
         if ((await completion.start()) === 'proceed') {
-            await submit('COMPLETED')()
+            openReview('COMPLETED')
         }
     }
 
@@ -198,7 +227,7 @@ export function ProgramEventForm({
         if (completion.phase !== 'idle') {
             completion.cancel()
         }
-        void submit('ACTIVE')()
+        openReview('ACTIVE')
     }
 
     return (
@@ -206,7 +235,10 @@ export function ProgramEventForm({
             <RuleDevtoolsScope formStore={formStore}>
                 <div className="flex h-full w-full flex-1 min-h-0">
                     <form
-                        onSubmit={submit('ACTIVE')}
+                        onSubmit={(event) => {
+                            event.preventDefault()
+                            handleSave()
+                        }}
                         className="flex min-w-0 flex-1 flex-col overflow-auto pt-4 px-7 pb-7"
                     >
                         <GhostToggleButton
@@ -234,7 +266,7 @@ export function ProgramEventForm({
                                         }
                                         onBackToEditing={completion.cancel}
                                         onCompleteAnyway={() => {
-                                            void submit('COMPLETED')()
+                                            openReview('COMPLETED')
                                         }}
                                     />
                                 ) : null}
@@ -256,6 +288,17 @@ export function ProgramEventForm({
                         </div>
                     </form>
                     <LazyRulesPanel metadata={rulesMetadata} />
+                    {review ? (
+                        <SaveReviewDialog
+                            formStore={formStore}
+                            status={review.status}
+                            programId={program.id}
+                            values={review.values}
+                            labelLookup={labelLookup}
+                            onCancel={handleCancelReview}
+                            onConfirm={handleConfirmReview}
+                        />
+                    ) : null}
                 </div>
             </RuleDevtoolsScope>
         </FormStateProvider>

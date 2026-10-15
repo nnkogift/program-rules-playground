@@ -21,8 +21,12 @@ describe('ProgramFormActions', () => {
                 .getByRole('button', { name: 'Register' })
                 .getAttribute('type')
         ).toBe('submit')
-        expect(screen.queryByRole('button', { name: 'Save' })).toBeNull()
-        expect(screen.queryByRole('button', { name: 'Complete' })).toBeNull()
+        expect(
+            screen.queryByRole('button', { name: 'Trigger server rules' })
+        ).toBeNull()
+        expect(
+            screen.queryByRole('button', { name: 'Trigger on-complete rules' })
+        ).toBeNull()
     })
 
     it('calls the matching callback for Save and Complete', () => {
@@ -38,11 +42,15 @@ describe('ProgramFormActions', () => {
             </Wrapper>
         )
 
-        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+        fireEvent.click(
+            screen.getByRole('button', { name: 'Trigger server rules' })
+        )
         expect(onSave).toHaveBeenCalledTimes(1)
         expect(onComplete).not.toHaveBeenCalled()
 
-        fireEvent.click(screen.getByRole('button', { name: 'Complete' }))
+        fireEvent.click(
+            screen.getByRole('button', { name: 'Trigger on-complete rules' })
+        )
         expect(onComplete).toHaveBeenCalledTimes(1)
     })
 

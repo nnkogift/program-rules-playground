@@ -323,6 +323,11 @@ export function ProgramEventForm({
                         <SaveReviewDialog
                             formStore={formStore}
                             status={review.status}
+                            confirmLabel={
+                                review.status === 'COMPLETED'
+                                    ? i18n.t('Trigger on-complete rules')
+                                    : i18n.t('Trigger server rules')
+                            }
                             programId={program.id}
                             values={review.values}
                             labelLookup={labelLookup}

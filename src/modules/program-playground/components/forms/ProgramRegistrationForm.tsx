@@ -32,6 +32,7 @@ import {
     withSystemFieldValues,
 } from '@/modules/program-playground/utils/trackerPayloads'
 import { FormDateField } from './FormDateField'
+import { SaveReviewDialog } from './SaveReviewDialog'
 import { ProgramFormActions } from './ProgramFormActions'
 import { RegistrationFormFields } from './RegistrationFormFields'
 
@@ -93,6 +94,7 @@ export function ProgramRegistrationForm({
     usePublishFormValues(form, onValuesChange)
     const [successMessage, setSuccessMessage] = useState<string>()
     const [ghostsEnabled, setGhostsEnabled] = useState(true)
+    const [review, setReview] = useState<{ values: Record<string, unknown> }>()
     const rulesMetadata = useMemo(
         () => ({ formKind: 'tracker' as const, metadata, programStages }),
         [metadata, programStages]
@@ -102,6 +104,21 @@ export function ProgramRegistrationForm({
         [rulesMetadata]
     )
 
+    const actionTypesByRule = useMemo(() => {
+        const byRule = new Map<string, string[]>()
+        for (const rule of metadata.programRules) {
+            if (rule.id) {
+                byRule.set(
+                    rule.id,
+                    rule.programRuleActions.map(
+                        (action) => action.programRuleActionType
+                    )
+                )
+            }
+        }
+        return byRule
+    }, [metadata.programRules])
+
     useEffect(() => {
         form.setValue('orgUnit', orgUnitId, { shouldValidate: false })
     }, [form, orgUnitId])
@@ -110,36 +127,47 @@ export function ProgramRegistrationForm({
         form.setValue('enrolledAt', enrolledAt, { shouldValidate: false })
     }, [form, enrolledAt])
 
-    const handleSubmit = form.handleSubmit(async (resolvedValues) => {
-        form.clearErrors('root')
-        setSuccessMessage(undefined)
+    // Shared by Confirm and Verify so the dry run posts exactly what Confirm does.
+    const buildRegistrationSubmission = (
+        resolvedValues: TrackerRegistrationValues
+    ) => {
+        const definedValues = Object.fromEntries(
+            Object.entries(resolvedValues).filter(
+                ([, value]) => value !== undefined
+            )
+        ) as TrackerRegistrationValues
         const values = withSystemFieldValues(
-            resolvedValues,
+            definedValues,
             form.getValues(),
             REGISTRATION_FORM_SYSTEM_KEYS
         )
+        const parsedValues = trackerRegistrationValuesSchema.safeParse(
+            filterPayload(
+                values,
+                formStore.fieldStore.getSnapshot(),
+                formStore.optionGroups
+            )
+        )
+        if (!parsedValues.success) {
+            throw new Error(
+                i18n.t('The form values could not be validated before saving')
+            )
+        }
+        const payload = buildTrackerRegistrationPayload({
+            values: parsedValues.data,
+            metadata,
+            programId,
+        })
+        return { values, payload }
+    }
+
+    const submit = form.handleSubmit(async (resolvedValues) => {
+        form.clearErrors('root')
+        setSuccessMessage(undefined)
 
         try {
-            const parsedValues = trackerRegistrationValuesSchema.safeParse(
-                filterPayload(
-                    values,
-                    formStore.fieldStore.getSnapshot(),
-                    formStore.optionGroups
-                )
-            )
-            if (!parsedValues.success) {
-                throw new Error(
-                    i18n.t(
-                        'The form values could not be validated before saving'
-                    )
-                )
-            }
-            const filteredValues = parsedValues.data
-            const payload = buildTrackerRegistrationPayload({
-                values: filteredValues,
-                metadata,
-                programId,
-            })
+            const { values, payload } =
+                buildRegistrationSubmission(resolvedValues)
 
             await dataEngine.mutate({
                 resource: 'tracker',
@@ -156,6 +184,17 @@ export function ProgramRegistrationForm({
         }
     })
 
+    // The importer runs server-side rule actions on registration too, so the
+    // submit is reviewed before anything is posted.
+    const handleReview = () => {
+        setReview({ values: form.getValues() })
+    }
+
+    const handleConfirmReview = () => {
+        setReview(undefined)
+        void submit()
+    }
+
     return (
         <FormStateProvider<TrackerRegistrationValues>
             formStore={formStore}
@@ -165,7 +204,10 @@ export function ProgramRegistrationForm({
                 <div className="flex h-full w-full flex-1 min-h-0">
                     <FormProvider {...form}>
                         <form
-                            onSubmit={handleSubmit}
+                            onSubmit={(event) => {
+                                event.preventDefault()
+                                handleReview()
+                            }}
                             className="flex min-w-0 flex-1 flex-col overflow-auto pt-4 px-7 pb-7"
                         >
                             {metadata.displayIncidentDate ? (
@@ -201,7 +243,7 @@ export function ProgramRegistrationForm({
                                     </RuleDisplayProvider>
                                     <ProgramFormActions
                                         submitLabel={i18n.t(
-                                            'Register tracked entity'
+                                            'Trigger server rules'
                                         )}
                                         errorTitle={i18n.t(
                                             'Could not save registration'
@@ -216,6 +258,25 @@ export function ProgramRegistrationForm({
                         </form>
                     </FormProvider>
                     <LazyRulesPanel metadata={rulesMetadata} />
+                    {review ? (
+                        <SaveReviewDialog
+                            formStore={formStore}
+                            status="ACTIVE"
+                            confirmLabel={i18n.t('Trigger server rules')}
+                            programId={programId}
+                            values={review.values}
+                            labelLookup={labelLookup}
+                            buildPayload={() =>
+                                buildRegistrationSubmission(form.getValues())
+                                    .payload
+                            }
+                            actionTypesByRule={actionTypesByRule}
+                            onCancel={() => {
+                                setReview(undefined)
+                            }}
+                            onConfirm={handleConfirmReview}
+                        />
+                    ) : null}
                 </div>
             </RuleDevtoolsScope>
         </FormStateProvider>

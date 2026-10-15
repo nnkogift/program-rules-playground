@@ -21,6 +21,7 @@ const renderDialog = () =>
         <SaveReviewDialog
             formStore={{ subscribeTrace: () => () => undefined } as never}
             status="ACTIVE"
+            confirmLabel="Trigger server rules"
             programId="p1"
             values={{}}
             labelLookup={{} as never}

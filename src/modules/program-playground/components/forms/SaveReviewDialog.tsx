@@ -14,6 +14,7 @@ import type { EventStatus } from '@/modules/program-playground/utils/trackerPayl
 type SaveReviewDialogProps = {
     formStore: FormStore
     status: EventStatus
+    confirmLabel: string
     programId: string
     /** Snapshot taken when the dialog opened, including enrollment values for `A{}` placeholders. */
     values: Record<string, unknown>
@@ -34,6 +35,7 @@ type SaveReviewDialogProps = {
 export function SaveReviewDialog({
     formStore,
     status,
+    confirmLabel,
     programId,
     values,
     labelLookup,
@@ -96,9 +98,7 @@ export function SaveReviewDialog({
                             {i18n.t('Cancel')}
                         </Button>
                         <Button primary type="button" onClick={onConfirm}>
-                            {status === 'COMPLETED'
-                                ? i18n.t('Confirm complete')
-                                : i18n.t('Confirm save')}
+                            {confirmLabel}
                         </Button>
                     </ButtonStrip>
                 </div>

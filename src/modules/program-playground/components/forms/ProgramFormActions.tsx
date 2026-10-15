@@ -64,7 +64,7 @@ export function ProgramFormActions({
                             onSave?.()
                         }}
                     >
-                        {i18n.t('Save')}
+                        {i18n.t('Trigger server rules')}
                     </Button>
                 )}
                 {hasSplitActions && (
@@ -81,7 +81,7 @@ export function ProgramFormActions({
                             onComplete?.()
                         }}
                     >
-                        {i18n.t('Complete')}
+                        {i18n.t('Trigger on-complete rules')}
                     </Button>
                 )}
                 {!hasSplitActions && (

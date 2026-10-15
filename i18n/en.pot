@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-15T17:20:08.662Z\n"
-"PO-Revision-Date: 2026-10-15T17:20:08.662Z\n"
+"POT-Creation-Date: 2026-10-15T17:31:51.464Z\n"
+"PO-Revision-Date: 2026-10-15T17:31:51.465Z\n"
 
 msgid "All"
 msgstr "All"
@@ -119,23 +119,20 @@ msgstr "Event completed"
 msgid "Event saved"
 msgstr "Event saved"
 
+msgid "Trigger on-complete rules"
+msgstr "Trigger on-complete rules"
+
+msgid "Trigger server rules"
+msgstr "Trigger server rules"
+
 msgid "Saved"
 msgstr "Saved"
-
-msgid "Save"
-msgstr "Save"
-
-msgid "Complete"
-msgstr "Complete"
 
 msgid "Tracked entity registered successfully"
 msgstr "Tracked entity registered successfully"
 
 msgid "Incident date"
 msgstr "Incident date"
-
-msgid "Register tracked entity"
-msgstr "Register tracked entity"
 
 msgid "Could not save registration"
 msgstr "Could not save registration"
@@ -177,12 +174,6 @@ msgstr "Verify with server"
 
 msgid "Cancel"
 msgstr "Cancel"
-
-msgid "Confirm complete"
-msgstr "Confirm complete"
-
-msgid "Confirm save"
-msgstr "Confirm save"
 
 msgid "Hidden"
 msgstr "Hidden"

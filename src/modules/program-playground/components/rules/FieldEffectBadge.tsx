@@ -33,7 +33,7 @@ export function FieldEffectBadge({
     const Icon = EFFECT_ICONS[variant]
     const baseLabel = BADGE_LABELS[variant] ?? visual.shortLabel
     const label = onComplete
-        ? i18n.t('On complete: {{label}}', { label: baseLabel.toLowerCase() })
+        ? `${i18n.t('On complete')}: ${baseLabel.toLowerCase()}`
         : baseLabel
 
     return (

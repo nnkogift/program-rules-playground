@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-15T16:51:56.895Z\n"
-"PO-Revision-Date: 2026-10-15T16:51:56.895Z\n"
+"POT-Creation-Date: 2026-10-15T17:20:08.662Z\n"
+"PO-Revision-Date: 2026-10-15T17:20:08.662Z\n"
 
 msgid "All"
 msgstr "All"
@@ -196,6 +196,9 @@ msgstr "Assigned"
 msgid "Required by rule"
 msgstr "Required by rule"
 
+msgid "On complete"
+msgstr "On complete"
+
 msgid "{{actionType}} from rule"
 msgstr "{{actionType}} from rule"
 
@@ -216,9 +219,6 @@ msgstr "Section hidden by {{ruleName}}"
 
 msgid "completion pass"
 msgstr "completion pass"
-
-msgid "On complete"
-msgstr "On complete"
 
 msgid "{{actionType}} · {{ruleName}}"
 msgstr "{{actionType}} · {{ruleName}}"

@@ -11,6 +11,26 @@ import { OtherImportErrors } from './OtherImportErrors'
 import { useServerVerification } from '@/modules/program-playground/hooks/useServerVerification'
 import type { EventStatus } from '@/modules/program-playground/utils/trackerPayloads'
 
+function describeVerification(
+    state: ReturnType<typeof useServerVerification>['state']
+): string | undefined {
+    if (state.phase === 'loading') {
+        return i18n.t('Verifying with server…')
+    }
+    if (state.phase !== 'done') {
+        return undefined
+    }
+    const ruleCount = state.report.verification.entries.length
+    const otherCount = state.report.otherErrors.length
+    if (ruleCount === 0 && otherCount === 0) {
+        return i18n.t('Server check complete: no rule errors or warnings.')
+    }
+    return i18n.t(
+        'Server check complete: {{ruleCount}} from rules, {{otherCount}} other errors.',
+        { ruleCount, otherCount }
+    )
+}
+
 type SaveReviewDialogProps = {
     formStore: FormStore
     status: EventStatus
@@ -51,6 +71,9 @@ export function SaveReviewDialog({
         buildPayload,
     })
     const report = verification.phase === 'done' ? verification.report : null
+    const hasVerified =
+        verification.phase === 'done' || verification.phase === 'error'
+    const statusMessage = describeVerification(verification)
 
     // `subscribeTrace` replays the latest entry, so this lands the current one.
     useEffect(() => formStore.subscribeTrace(setTraceEntry), [formStore])
@@ -71,18 +94,32 @@ export function SaveReviewDialog({
                             "The dry run doesn't report notifications, so notification rows stay Simulated."
                         )}
                     </p>
-                    {report ? (
-                        <OtherImportErrors errors={report.otherErrors} />
-                    ) : null}
-                    {verification.phase === 'error' ? (
-                        <NoticeBox
-                            error
-                            title={i18n.t('Could not verify with server')}
-                        >
-                            {verification.message}
-                        </NoticeBox>
-                    ) : null}
+                    <div aria-live="polite" className="flex flex-col gap-dp8">
+                        {statusMessage ? (
+                            <p className="m-0 text-sm font-medium">
+                                {statusMessage}
+                            </p>
+                        ) : null}
+                        {report ? (
+                            <OtherImportErrors errors={report.otherErrors} />
+                        ) : null}
+                        {verification.phase === 'error' ? (
+                            <div role="alert">
+                                <NoticeBox
+                                    error
+                                    title={i18n.t(
+                                        'Could not verify with server'
+                                    )}
+                                >
+                                    {verification.message}
+                                </NoticeBox>
+                            </div>
+                        ) : null}
+                    </div>
                     <ButtonStrip end>
+                        <Button secondary type="button" onClick={onCancel}>
+                            {i18n.t('Cancel')}
+                        </Button>
                         <Button
                             secondary
                             type="button"
@@ -92,10 +129,9 @@ export function SaveReviewDialog({
                                 void verify()
                             }}
                         >
-                            {i18n.t('Verify with server')}
-                        </Button>
-                        <Button secondary type="button" onClick={onCancel}>
-                            {i18n.t('Cancel')}
+                            {hasVerified
+                                ? i18n.t('Verify again')
+                                : i18n.t('Verify with server')}
                         </Button>
                         <Button primary type="button" onClick={onConfirm}>
                             {confirmLabel}

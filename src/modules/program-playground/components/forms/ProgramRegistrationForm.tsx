@@ -176,7 +176,7 @@ export function ProgramRegistrationForm({
             })
 
             form.reset(values)
-            setSuccessMessage(i18n.t('Tracked entity registered successfully'))
+            setSuccessMessage(i18n.t('Server rules ran on the registration'))
         } catch (error) {
             form.setError('root', {
                 message: formatDhis2Error(error),
@@ -246,11 +246,11 @@ export function ProgramRegistrationForm({
                                             'Trigger server rules'
                                         )}
                                         errorTitle={i18n.t(
-                                            'Could not save registration'
+                                            'Could not trigger server rules'
                                         )}
                                         successMessage={successMessage}
                                         successTitle={i18n.t(
-                                            'Registration saved'
+                                            'Server rules triggered'
                                         )}
                                     />
                                 </div>

@@ -214,8 +214,8 @@ export function ProgramEventForm({
                     status,
                     message:
                         status === 'COMPLETED'
-                            ? i18n.t('Event completed successfully')
-                            : i18n.t('Event saved successfully'),
+                            ? i18n.t('Server rules ran on the completed event')
+                            : i18n.t('Server rules ran on the event'),
                 })
             } catch (error) {
                 form.setError('root', {
@@ -307,13 +307,13 @@ export function ProgramEventForm({
                                     onComplete={() => {
                                         void handleComplete()
                                     }}
-                                    errorTitle={i18n.t('Could not save event')}
+                                    errorTitle={i18n.t(
+                                        'Could not trigger server rules'
+                                    )}
                                     successMessage={success?.message}
-                                    successTitle={
-                                        success?.status === 'COMPLETED'
-                                            ? i18n.t('Event completed')
-                                            : i18n.t('Event saved')
-                                    }
+                                    successTitle={i18n.t(
+                                        'Server rules triggered'
+                                    )}
                                 />
                             </div>
                         </div>

@@ -77,4 +77,28 @@ describe('SaveReviewDialog', () => {
 
         expect(await screen.findByText('Other import errors')).not.toBeNull()
     })
+
+    it('reports a clean server check and offers to verify again', async () => {
+        mockMutate.mockResolvedValue({})
+        renderDialog()
+
+        fireEvent.click(screen.getByText('Verify with server'))
+
+        expect(
+            await screen.findByText(
+                'Server check complete: no rule errors or warnings.'
+            )
+        ).not.toBeNull()
+        expect(screen.getByText('Verify again')).not.toBeNull()
+    })
+
+    it('announces a failed verification as an alert', async () => {
+        mockMutate.mockRejectedValue(new Error('Network down'))
+        renderDialog()
+
+        fireEvent.click(screen.getByText('Verify with server'))
+
+        const alert = await screen.findByRole('alert')
+        expect(alert.textContent).toContain('Network down')
+    })
 })

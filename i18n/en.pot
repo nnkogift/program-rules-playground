@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-15T17:31:51.464Z\n"
-"PO-Revision-Date: 2026-10-15T17:31:51.465Z\n"
+"POT-Creation-Date: 2026-10-15T17:56:01.088Z\n"
+"PO-Revision-Date: 2026-10-15T17:56:01.089Z\n"
 
 msgid "All"
 msgstr "All"
@@ -104,20 +104,17 @@ msgstr "Other import errors"
 msgid "The form values could not be validated before saving"
 msgstr "The form values could not be validated before saving"
 
-msgid "Event completed successfully"
-msgstr "Event completed successfully"
+msgid "Server rules ran on the completed event"
+msgstr "Server rules ran on the completed event"
 
-msgid "Event saved successfully"
-msgstr "Event saved successfully"
+msgid "Server rules ran on the event"
+msgstr "Server rules ran on the event"
 
-msgid "Could not save event"
-msgstr "Could not save event"
+msgid "Could not trigger server rules"
+msgstr "Could not trigger server rules"
 
-msgid "Event completed"
-msgstr "Event completed"
-
-msgid "Event saved"
-msgstr "Event saved"
+msgid "Server rules triggered"
+msgstr "Server rules triggered"
 
 msgid "Trigger on-complete rules"
 msgstr "Trigger on-complete rules"
@@ -128,17 +125,11 @@ msgstr "Trigger server rules"
 msgid "Saved"
 msgstr "Saved"
 
-msgid "Tracked entity registered successfully"
-msgstr "Tracked entity registered successfully"
+msgid "Server rules ran on the registration"
+msgstr "Server rules ran on the registration"
 
 msgid "Incident date"
 msgstr "Incident date"
-
-msgid "Could not save registration"
-msgstr "Could not save registration"
-
-msgid "Registration saved"
-msgstr "Registration saved"
 
 msgid "Could not load registration form"
 msgstr "Could not load registration form"
@@ -159,6 +150,9 @@ msgstr ""
 msgid "This program stage does not have a form to render."
 msgstr "This program stage does not have a form to render."
 
+msgid "Verifying with server…"
+msgstr "Verifying with server…"
+
 msgid ""
 "The dry run doesn't report notifications, so notification rows stay "
 "Simulated."
@@ -169,11 +163,14 @@ msgstr ""
 msgid "Could not verify with server"
 msgstr "Could not verify with server"
 
-msgid "Verify with server"
-msgstr "Verify with server"
-
 msgid "Cancel"
 msgstr "Cancel"
+
+msgid "Verify again"
+msgstr "Verify again"
+
+msgid "Verify with server"
+msgstr "Verify with server"
 
 msgid "Hidden"
 msgstr "Hidden"

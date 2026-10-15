@@ -114,6 +114,21 @@ export function ProgramEventForm({
         [rulesMetadata]
     )
 
+    const actionTypesByRule = useMemo(() => {
+        const byRule = new Map<string, string[]>()
+        for (const rule of program.programRules) {
+            if (rule.id) {
+                byRule.set(
+                    rule.id,
+                    (rule.programRuleActions ?? []).map(
+                        (action) => action.programRuleActionType
+                    )
+                )
+            }
+        }
+        return byRule
+    }, [program.programRules])
+
     const mandatoryFieldIds = useMemo(
         () =>
             (stageMetadata.programStageDataElements ?? [])
@@ -138,38 +153,54 @@ export function ProgramEventForm({
         form.setValue('occurredAt', occurredAt, { shouldValidate: false })
     }, [form, occurredAt])
 
+    // Shared by Confirm and Verify so the dry run posts exactly what the save does.
+    const buildEventSubmission = (
+        status: EventStatus,
+        resolvedValues: EventFormValues
+    ) => {
+        // `getValues()` carries untouched fields as `undefined`, which the
+        // schema rejects; the resolver output the save path gets omits them.
+        const definedValues = Object.fromEntries(
+            Object.entries(resolvedValues).filter(
+                ([, value]) => value !== undefined
+            )
+        ) as EventFormValues
+        const values = withSystemFieldValues(
+            definedValues,
+            form.getValues(),
+            EVENT_FORM_SYSTEM_KEYS
+        )
+        const parsedValues = eventFormValuesSchema.safeParse(
+            filterPayload(
+                values,
+                formStore.fieldStore.getSnapshot(),
+                formStore.optionGroups
+            )
+        )
+        if (!parsedValues.success) {
+            throw new Error(
+                i18n.t('The form values could not be validated before saving')
+            )
+        }
+        const payload = buildEventPayload({
+            values: parsedValues.data,
+            programId: program.id,
+            programStageId,
+            status,
+        })
+        return { values, payload }
+    }
+
     const submit = (status: EventStatus) =>
         form.handleSubmit(async (resolvedValues) => {
             form.clearErrors('root')
             setSuccess(undefined)
-            const values = withSystemFieldValues(
-                resolvedValues,
-                form.getValues(),
-                EVENT_FORM_SYSTEM_KEYS
-            )
 
             try {
-                const parsedValues = eventFormValuesSchema.safeParse(
-                    filterPayload(
-                        values,
-                        formStore.fieldStore.getSnapshot(),
-                        formStore.optionGroups
-                    )
-                )
-                if (!parsedValues.success) {
-                    throw new Error(
-                        i18n.t(
-                            'The form values could not be validated before saving'
-                        )
-                    )
-                }
-                const filteredValues = parsedValues.data
-                const payload = buildEventPayload({
-                    values: filteredValues,
-                    programId: program.id,
-                    programStageId,
+                const { values, payload } = buildEventSubmission(
                     status,
-                })
+                    resolvedValues
+                )
 
                 await dataEngine.mutate({
                     resource: 'tracker',
@@ -295,6 +326,13 @@ export function ProgramEventForm({
                             programId={program.id}
                             values={review.values}
                             labelLookup={labelLookup}
+                            buildPayload={() =>
+                                buildEventSubmission(
+                                    review.status,
+                                    form.getValues()
+                                ).payload
+                            }
+                            actionTypesByRule={actionTypesByRule}
                             onCancel={handleCancelReview}
                             onConfirm={handleConfirmReview}
                         />

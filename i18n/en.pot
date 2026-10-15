@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-15T16:30:22.482Z\n"
-"PO-Revision-Date: 2026-10-15T16:30:22.482Z\n"
+"POT-Creation-Date: 2026-10-15T16:51:56.895Z\n"
+"PO-Revision-Date: 2026-10-15T16:51:56.895Z\n"
 
 msgid "All"
 msgstr "All"
@@ -98,6 +98,9 @@ msgstr "a rule"
 msgid "Section"
 msgstr "Section"
 
+msgid "Other import errors"
+msgstr "Other import errors"
+
 msgid "The form values could not be validated before saving"
 msgstr "The form values could not be validated before saving"
 
@@ -158,6 +161,19 @@ msgstr ""
 
 msgid "This program stage does not have a form to render."
 msgstr "This program stage does not have a form to render."
+
+msgid ""
+"The dry run doesn't report notifications, so notification rows stay "
+"Simulated."
+msgstr ""
+"The dry run doesn't report notifications, so notification rows stay "
+"Simulated."
+
+msgid "Could not verify with server"
+msgstr "Could not verify with server"
+
+msgid "Verify with server"
+msgstr "Verify with server"
 
 msgid "Cancel"
 msgstr "Cancel"

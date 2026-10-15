@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-14T14:24:05.044Z\n"
-"PO-Revision-Date: 2026-10-14T14:24:05.044Z\n"
+"POT-Creation-Date: 2026-10-15T16:30:22.482Z\n"
+"PO-Revision-Date: 2026-10-15T16:30:22.482Z\n"
 
 msgid "All"
 msgstr "All"
@@ -158,6 +158,15 @@ msgstr ""
 
 msgid "This program stage does not have a form to render."
 msgstr "This program stage does not have a form to render."
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Confirm complete"
+msgstr "Confirm complete"
+
+msgid "Confirm save"
+msgstr "Confirm save"
 
 msgid "Hidden"
 msgstr "Hidden"

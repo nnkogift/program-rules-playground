@@ -2,7 +2,10 @@ import i18n from '@dhis2/d2-i18n'
 import { CircularLoader, IconCheckmarkCircle16, IconWarning16 } from '@dhis2/ui'
 import type { ReactNode } from 'react'
 import { OtherImportErrors } from './OtherImportErrors'
-import type { ServerVerificationState } from '@/modules/program-playground/hooks/useServerVerification'
+import {
+    currentReport,
+    type ServerVerificationState,
+} from '@/modules/program-playground/hooks/useServerVerification'
 
 type ServerCheckStatusProps = {
     state: ServerVerificationState
@@ -41,6 +44,14 @@ function describe(state: ServerVerificationState): StatusLine | undefined {
                 tone: 'text-dhis2-grey-900',
             }
         }
+        case 'error':
+            return state.previous
+                ? {
+                      icon: <IconWarning16 />,
+                      text: i18n.t('Showing the previous server check.'),
+                      tone: 'text-dhis2-grey-900',
+                  }
+                : undefined
         default:
             return undefined
     }
@@ -53,6 +64,7 @@ function describe(state: ServerVerificationState): StatusLine | undefined {
  */
 export function ServerCheckStatus({ state }: ServerCheckStatusProps) {
     const line = describe(state)
+    const report = currentReport(state)
 
     return (
         <div className="flex max-w-[380px] flex-col gap-1 text-left">
@@ -71,8 +83,8 @@ export function ServerCheckStatus({ state }: ServerCheckStatusProps) {
                         <span>{line.text}</span>
                     </p>
                 ) : null}
-                {state.phase === 'done' ? (
-                    <OtherImportErrors errors={state.report.otherErrors} />
+                {report ? (
+                    <OtherImportErrors errors={report.otherErrors} />
                 ) : null}
             </div>
             <p className="m-0 text-xs leading-4 text-dhis2-grey-700">

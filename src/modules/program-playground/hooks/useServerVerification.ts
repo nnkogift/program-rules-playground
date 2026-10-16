@@ -12,9 +12,24 @@ const DRY_RUN_PARAMS = { importMode: 'VALIDATE', async: false } as const
 
 export type ServerVerificationState =
     | { phase: 'idle' }
-    | { phase: 'loading' }
+    | { phase: 'loading'; previous?: ParsedRuleValidationReport }
     | { phase: 'done'; report: ParsedRuleValidationReport }
-    | { phase: 'error'; message: string }
+    | {
+          phase: 'error'
+          message: string
+          previous?: ParsedRuleValidationReport
+      }
+
+/** The last completed check, kept visible while a retry runs or fails. */
+export function currentReport(
+    state: ServerVerificationState
+): ParsedRuleValidationReport | undefined {
+    return state.phase === 'done'
+        ? state.report
+        : 'previous' in state
+          ? state.previous
+          : undefined
+}
 
 type UseServerVerificationOptions = {
     status: EventStatus
@@ -42,7 +57,10 @@ export function useServerVerification({
 
     const verify = useCallback(async () => {
         const parseOptions = { status, actionTypesByRule }
-        setState({ phase: 'loading' })
+        setState((current) => ({
+            phase: 'loading',
+            previous: currentReport(current),
+        }))
         try {
             const response = await dataEngine.mutate({
                 resource: 'tracker',
@@ -65,7 +83,11 @@ export function useServerVerification({
                 return
             }
             const message = formatDhis2Error(error)
-            setState({ phase: 'error', message })
+            setState((current) => ({
+                phase: 'error',
+                message,
+                previous: currentReport(current),
+            }))
             onError(message)
         }
     }, [dataEngine, buildPayload, status, actionTypesByRule, onError])

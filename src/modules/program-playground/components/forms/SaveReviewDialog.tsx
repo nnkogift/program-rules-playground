@@ -9,7 +9,10 @@ import type {
 } from '@nnkogift/dhis2-form-utils-hooks'
 import { useEffect, useState } from 'react'
 import { ServerCheckStatus } from './ServerCheckStatus'
-import { useServerVerification } from '@/modules/program-playground/hooks/useServerVerification'
+import {
+    currentReport,
+    useServerVerification,
+} from '@/modules/program-playground/hooks/useServerVerification'
 import type { EventStatus } from '@/modules/program-playground/utils/trackerPayloads'
 
 type SaveReviewDialogProps = {
@@ -57,7 +60,7 @@ export function SaveReviewDialog({
         buildPayload,
         onError: showError,
     })
-    const report = verification.phase === 'done' ? verification.report : null
+    const report = currentReport(verification)
     const hasVerified =
         verification.phase === 'done' || verification.phase === 'error'
 
@@ -79,6 +82,7 @@ export function SaveReviewDialog({
                 <ServerCheckStatus key="status" state={verification} />,
                 <Button
                     key="verify"
+                    className="whitespace-nowrap"
                     secondary
                     type="button"
                     loading={verification.phase === 'loading'}
@@ -91,7 +95,13 @@ export function SaveReviewDialog({
                         ? i18n.t('Verify again')
                         : i18n.t('Verify with server')}
                 </Button>,
-                <Button key="confirm" primary type="button" onClick={onConfirm}>
+                <Button
+                    key="confirm"
+                    className="whitespace-nowrap"
+                    primary
+                    type="button"
+                    onClick={onConfirm}
+                >
                     {confirmLabel}
                 </Button>,
             ]}

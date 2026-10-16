@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-16T19:23:55.268Z\n"
-"PO-Revision-Date: 2026-10-16T19:23:55.268Z\n"
+"POT-Creation-Date: 2026-10-16T19:43:25.725Z\n"
+"PO-Revision-Date: 2026-10-16T19:43:25.726Z\n"
 
 msgid "All"
 msgstr "All"
@@ -161,6 +161,9 @@ msgstr "Server found no rule errors or warnings."
 
 msgid "Server reported {{ruleCount}} from rules and {{otherCount}} other errors."
 msgstr "Server reported {{ruleCount}} from rules and {{otherCount}} other errors."
+
+msgid "Showing the previous server check."
+msgstr "Showing the previous server check."
 
 msgid ""
 "The dry run doesn't report notifications, so notification rows stay "

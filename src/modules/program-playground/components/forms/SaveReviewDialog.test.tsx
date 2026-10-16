@@ -106,4 +106,43 @@ describe('SaveReviewDialog', () => {
         })
         expect(screen.queryByText('Could not verify with server')).toBeNull()
     })
+
+    it('keeps the last good result visible when a retry fails', async () => {
+        mockMutate.mockRejectedValueOnce({
+            details: {
+                validationReport: {
+                    errorReports: [
+                        { errorCode: 'E1302', message: 'Invalid value' },
+                    ],
+                },
+            },
+        })
+        mockMutate.mockRejectedValueOnce(new Error('Network down'))
+        renderDialog()
+
+        fireEvent.click(screen.getByText('Verify with server'))
+        expect(
+            await screen.findByText('Other import errors (1)')
+        ).not.toBeNull()
+
+        fireEvent.click(screen.getByText('Verify again'))
+
+        await waitFor(() => {
+            expect(mockShowAlert).toHaveBeenCalledWith('Network down')
+        })
+        expect(screen.getByText('Other import errors (1)')).not.toBeNull()
+        expect(
+            screen.getByText('Showing the previous server check.')
+        ).not.toBeNull()
+    })
+
+    it('keeps the action labels on one line', () => {
+        renderDialog()
+
+        for (const label of ['Verify with server', 'Trigger server rules']) {
+            expect(
+                screen.getByText(label).closest('button')?.className
+            ).toContain('whitespace-nowrap')
+        }
+    })
 })

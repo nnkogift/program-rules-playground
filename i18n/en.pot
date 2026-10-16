@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-16T19:43:25.725Z\n"
-"PO-Revision-Date: 2026-10-16T19:43:25.726Z\n"
+"POT-Creation-Date: 2026-10-16T19:46:13.400Z\n"
+"PO-Revision-Date: 2026-10-16T19:46:13.400Z\n"
 
 msgid "All"
 msgstr "All"
@@ -121,6 +121,15 @@ msgstr "Trigger server rules"
 
 msgid "Saved"
 msgstr "Saved"
+
+msgid "Form is valid"
+msgstr "Form is valid"
+
+msgid "No validation issues were found."
+msgstr "No validation issues were found."
+
+msgid "Validate form"
+msgstr "Validate form"
 
 msgid "Server rules ran on the registration"
 msgstr "Server rules ran on the registration"

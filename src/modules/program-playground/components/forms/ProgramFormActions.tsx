@@ -9,6 +9,8 @@ type ProgramFormActionsBaseProps = {
     successTitle?: string
     /** Complete is mid-pass (loading) or awaiting the banner's decision (disabled). */
     completionPhase?: 'idle' | 'evaluating' | 'review'
+    /** Runs the form's validation only, resolving to whether it passed. */
+    onValidate?: () => Promise<boolean>
 }
 
 type SingleActionProps = ProgramFormActionsBaseProps & {
@@ -25,7 +27,7 @@ type SaveCompleteActionProps = ProgramFormActionsBaseProps & {
 
 type ProgramFormActionsProps = SingleActionProps | SaveCompleteActionProps
 
-type PendingAction = 'save' | 'complete'
+type PendingAction = 'save' | 'complete' | 'validate'
 
 export function ProgramFormActions({
     submitLabel,
@@ -35,10 +37,21 @@ export function ProgramFormActions({
     onSave,
     onComplete,
     completionPhase = 'idle',
+    onValidate,
 }: ProgramFormActionsProps) {
     const { isSubmitting, errors } = useFormState()
     const [pendingAction, setPendingAction] = useState<PendingAction>()
+    const [validationPassed, setValidationPassed] = useState(false)
     const hasSplitActions = onSave !== undefined && onComplete !== undefined
+
+    const handleValidate = async () => {
+        if (!onValidate) {
+            return
+        }
+        setPendingAction('validate')
+        setValidationPassed(false)
+        setValidationPassed(await onValidate())
+    }
 
     return (
         <>
@@ -50,7 +63,26 @@ export function ProgramFormActions({
             {successMessage ? (
                 <NoticeBox title={successTitle}>{successMessage}</NoticeBox>
             ) : null}
+            {validationPassed && !errors.root?.message ? (
+                <NoticeBox title={i18n.t('Form is valid')}>
+                    {i18n.t('No validation issues were found.')}
+                </NoticeBox>
+            ) : null}
             <ButtonStrip end>
+                {onValidate && (
+                    <Button
+                        type="button"
+                        loading={isSubmitting && pendingAction === 'validate'}
+                        disabled={
+                            isSubmitting || completionPhase === 'evaluating'
+                        }
+                        onClick={() => {
+                            void handleValidate()
+                        }}
+                    >
+                        {i18n.t('Validate form')}
+                    </Button>
+                )}
                 {hasSplitActions && (
                     <Button
                         secondary

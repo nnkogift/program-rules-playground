@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ProgramFormActions } from './ProgramFormActions'
@@ -68,5 +68,49 @@ describe('ProgramFormActions', () => {
         )
 
         expect(screen.getByText('Event completed successfully')).toBeTruthy()
+    })
+
+    it('validates without saving and confirms when the form is valid', async () => {
+        const onSave = jest.fn()
+        const onValidate = jest.fn().mockResolvedValue(true)
+        render(
+            <Wrapper>
+                <ProgramFormActions
+                    onSave={onSave}
+                    onComplete={jest.fn()}
+                    onValidate={onValidate}
+                    errorTitle="Error"
+                />
+            </Wrapper>
+        )
+
+        fireEvent.click(screen.getByRole('button', { name: 'Validate form' }))
+
+        await waitFor(() => {
+            expect(screen.getByText('Form is valid')).toBeTruthy()
+        })
+        expect(onValidate).toHaveBeenCalledTimes(1)
+        expect(onSave).not.toHaveBeenCalled()
+    })
+
+    it('stays quiet when validation fails, leaving errors on the fields', async () => {
+        render(
+            <Wrapper>
+                <ProgramFormActions
+                    submitLabel="Register"
+                    onValidate={jest.fn().mockResolvedValue(false)}
+                    errorTitle="Error"
+                />
+            </Wrapper>
+        )
+
+        fireEvent.click(screen.getByRole('button', { name: 'Validate form' }))
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: 'Validate form' })
+            ).toBeTruthy()
+        })
+        expect(screen.queryByText('Form is valid')).toBeNull()
     })
 })

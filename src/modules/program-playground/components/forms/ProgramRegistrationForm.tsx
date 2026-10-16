@@ -184,6 +184,15 @@ export function ProgramRegistrationForm({
         }
     })
 
+    // Runs the form's own validation so field errors are highlighted, nothing is posted.
+    const validate = async () => {
+        let valid = false
+        await form.handleSubmit(() => {
+            valid = true
+        })()
+        return valid
+    }
+
     // The importer runs server-side rule actions on registration too, so the
     // submit is reviewed before anything is posted.
     const handleReview = () => {
@@ -242,6 +251,7 @@ export function ProgramRegistrationForm({
                                         />
                                     </RuleDisplayProvider>
                                     <ProgramFormActions
+                                        onValidate={validate}
                                         submitLabel={i18n.t(
                                             'Trigger server rules'
                                         )}

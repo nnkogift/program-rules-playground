@@ -224,6 +224,15 @@ export function ProgramEventForm({
             }
         })
 
+    // Runs the form's own validation so field errors are highlighted, nothing is posted.
+    const validate = async () => {
+        let valid = false
+        await form.handleSubmit(() => {
+            valid = true
+        })()
+        return valid
+    }
+
     // The importer runs server-side rule actions for both statuses, so every
     // submit is reviewed before anything is posted.
     const openReview = (status: EventStatus) => {
@@ -303,6 +312,7 @@ export function ProgramEventForm({
                                 ) : null}
                                 <ProgramFormActions
                                     completionPhase={completion.phase}
+                                    onValidate={validate}
                                     onSave={handleSave}
                                     onComplete={() => {
                                         void handleComplete()

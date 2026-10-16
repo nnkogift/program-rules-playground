@@ -3,9 +3,11 @@ import type { ReactNode } from 'react'
 import { SaveReviewDialog } from './SaveReviewDialog'
 
 const mockMutate = jest.fn()
+const mockShowAlert = jest.fn()
 
 jest.mock('@dhis2/app-runtime', () => ({
     useDataEngine: () => ({ mutate: mockMutate }),
+    useAlert: () => ({ show: mockShowAlert }),
 }))
 
 jest.mock('@nnkogift/dhis2-form-utils-devtools', () => ({
@@ -35,6 +37,7 @@ const renderDialog = () =>
 describe('SaveReviewDialog', () => {
     beforeEach(() => {
         mockMutate.mockReset()
+        mockShowAlert.mockReset()
     })
 
     it('does not run the dry run on open', () => {
@@ -75,7 +78,9 @@ describe('SaveReviewDialog', () => {
 
         fireEvent.click(screen.getByText('Verify with server'))
 
-        expect(await screen.findByText('Other import errors')).not.toBeNull()
+        expect(
+            await screen.findByText('Other import errors (1)')
+        ).not.toBeNull()
     })
 
     it('reports a clean server check and offers to verify again', async () => {
@@ -85,20 +90,20 @@ describe('SaveReviewDialog', () => {
         fireEvent.click(screen.getByText('Verify with server'))
 
         expect(
-            await screen.findByText(
-                'Server check complete: no rule errors or warnings.'
-            )
+            await screen.findByText('Server found no rule errors or warnings.')
         ).not.toBeNull()
         expect(screen.getByText('Verify again')).not.toBeNull()
     })
 
-    it('announces a failed verification as an alert', async () => {
+    it('raises an alert instead of a footer notice when verification fails', async () => {
         mockMutate.mockRejectedValue(new Error('Network down'))
         renderDialog()
 
         fireEvent.click(screen.getByText('Verify with server'))
 
-        const alert = await screen.findByRole('alert')
-        expect(alert.textContent).toContain('Network down')
+        await waitFor(() => {
+            expect(mockShowAlert).toHaveBeenCalledWith('Network down')
+        })
+        expect(screen.queryByText('Could not verify with server')).toBeNull()
     })
 })

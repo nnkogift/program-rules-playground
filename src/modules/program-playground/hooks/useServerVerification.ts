@@ -10,7 +10,7 @@ import type { EventStatus } from '@/modules/program-playground/utils/trackerPayl
 
 const DRY_RUN_PARAMS = { importMode: 'VALIDATE', async: false } as const
 
-type ServerVerificationState =
+export type ServerVerificationState =
     | { phase: 'idle' }
     | { phase: 'loading' }
     | { phase: 'done'; report: ParsedRuleValidationReport }
@@ -21,6 +21,8 @@ type UseServerVerificationOptions = {
     actionTypesByRule: ParseOptions['actionTypesByRule']
     /** Builds the exact payload the save would send; may throw. */
     buildPayload: () => object
+    /** Called with the failure message when the dry run could not complete. */
+    onError: (message: string) => void
 }
 
 /**
@@ -31,6 +33,7 @@ export function useServerVerification({
     status,
     actionTypesByRule,
     buildPayload,
+    onError,
 }: UseServerVerificationOptions) {
     const dataEngine = useDataEngine()
     const [state, setState] = useState<ServerVerificationState>({
@@ -61,9 +64,11 @@ export function useServerVerification({
                 setState({ phase: 'done', report })
                 return
             }
-            setState({ phase: 'error', message: formatDhis2Error(error) })
+            const message = formatDhis2Error(error)
+            setState({ phase: 'error', message })
+            onError(message)
         }
-    }, [dataEngine, buildPayload, status, actionTypesByRule])
+    }, [dataEngine, buildPayload, status, actionTypesByRule, onError])
 
     return { state, verify }
 }

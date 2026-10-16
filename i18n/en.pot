@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-15T17:56:01.088Z\n"
-"PO-Revision-Date: 2026-10-15T17:56:01.089Z\n"
+"POT-Creation-Date: 2026-10-16T19:23:55.268Z\n"
+"PO-Revision-Date: 2026-10-16T19:23:55.268Z\n"
 
 msgid "All"
 msgstr "All"
@@ -98,9 +98,6 @@ msgstr "a rule"
 msgid "Section"
 msgstr "Section"
 
-msgid "Other import errors"
-msgstr "Other import errors"
-
 msgid "The form values could not be validated before saving"
 msgstr "The form values could not be validated before saving"
 
@@ -150,8 +147,20 @@ msgstr ""
 msgid "This program stage does not have a form to render."
 msgstr "This program stage does not have a form to render."
 
+msgid "Verify again"
+msgstr "Verify again"
+
+msgid "Verify with server"
+msgstr "Verify with server"
+
 msgid "Verifying with server…"
 msgstr "Verifying with server…"
+
+msgid "Server found no rule errors or warnings."
+msgstr "Server found no rule errors or warnings."
+
+msgid "Server reported {{ruleCount}} from rules and {{otherCount}} other errors."
+msgstr "Server reported {{ruleCount}} from rules and {{otherCount}} other errors."
 
 msgid ""
 "The dry run doesn't report notifications, so notification rows stay "
@@ -159,18 +168,6 @@ msgid ""
 msgstr ""
 "The dry run doesn't report notifications, so notification rows stay "
 "Simulated."
-
-msgid "Could not verify with server"
-msgstr "Could not verify with server"
-
-msgid "Cancel"
-msgstr "Cancel"
-
-msgid "Verify again"
-msgstr "Verify again"
-
-msgid "Verify with server"
-msgstr "Verify with server"
 
 msgid "Hidden"
 msgstr "Hidden"

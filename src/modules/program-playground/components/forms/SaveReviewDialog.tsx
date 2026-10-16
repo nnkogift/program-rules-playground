@@ -51,7 +51,7 @@ export function SaveReviewDialog({
     const [traceEntry, setTraceEntry] = useState<RuleTraceEntry | null>(null)
     const { show: showError } = useAlert(
         (message: string) =>
-            i18n.t('Could not verify with server: {{message}}', { message }),
+            `${i18n.t('Could not verify with server')}: ${message}`,
         { critical: true }
     )
     const { state: verification, verify } = useServerVerification({

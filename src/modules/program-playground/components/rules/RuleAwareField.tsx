@@ -41,10 +41,6 @@ export const RuleAwareField = memo(function RuleAwareField({
     const ruleName = ruleEffect
         ? labelLookup.resolveRuleName(ruleEffect.ruleId)
         : null
-    const label = control.fieldConfig.label
-    const effectIsOnComplete =
-        ruleEffect?.ruleActionType === ProgramRuleActionType.ERRORONCOMPLETE ||
-        ruleEffect?.ruleActionType === ProgramRuleActionType.WARNINGONCOMPLETE
     const onComplete = resolveOnCompleteMessage(status, fieldState)
     const widgetControl = {
         ...control,
@@ -56,33 +52,15 @@ export const RuleAwareField = memo(function RuleAwareField({
             className="flex min-w-0 flex-col gap-1.5"
             data-field-id={control.fieldId}
         >
-            <div className="flex min-w-0 items-center gap-2">
-                <span
-                    id={labelId}
-                    className={`text-sm leading-5 ${control.isHidden ? 'text-dhis2-grey-600' : 'text-dhis2-grey-900'}`}
-                >
-                    {label}
-                    {control.isMandatory ? '*' : ''}
-                </span>
-                {ruleEffect && ruleName ? (
-                    <FieldEffectBadge
-                        onComplete={effectIsOnComplete}
-                        actionType={ruleEffect.ruleActionType}
-                        ruleName={ruleName}
-                    />
-                ) : null}
-                {onComplete && !effectIsOnComplete ? (
-                    <FieldEffectBadge
-                        onComplete
-                        actionType={
-                            onComplete.kind === 'error'
-                                ? ProgramRuleActionType.ERRORONCOMPLETE
-                                : ProgramRuleActionType.WARNINGONCOMPLETE
-                        }
-                        ruleName={i18n.t('completion pass')}
-                    />
-                ) : null}
-            </div>
+            <FieldLabelRow
+                labelId={labelId}
+                label={control.fieldConfig.label}
+                isHidden={control.isHidden}
+                isMandatory={control.isMandatory}
+                ruleEffect={ruleEffect}
+                ruleName={ruleName}
+                onComplete={onComplete}
+            />
             {control.isHidden ? (
                 <HiddenFieldPlaceholder
                     ruleName={ruleName ?? i18n.t('a rule')}
@@ -162,5 +140,65 @@ function OrgUnitWidget({ control, programOrgUnits }: OrgUnitWidgetProps) {
             error={control.hasError}
             validationText={control.errorMessage ?? control.warningMessage}
         />
+    )
+}
+
+const ON_COMPLETE_ACTION_TYPES: ReadonlySet<string> = new Set([
+    ProgramRuleActionType.ERRORONCOMPLETE,
+    ProgramRuleActionType.WARNINGONCOMPLETE,
+])
+
+type FieldLabelRowProps = {
+    labelId: string
+    label: string
+    isHidden: boolean
+    isMandatory: boolean
+    ruleEffect: ReturnType<typeof useFieldRuleEffect>
+    ruleName: string | null
+    onComplete: OnCompleteMessage | null
+}
+
+function FieldLabelRow({
+    labelId,
+    label,
+    isHidden,
+    isMandatory,
+    ruleEffect,
+    ruleName,
+    onComplete,
+}: FieldLabelRowProps) {
+    const effectIsOnComplete = ON_COMPLETE_ACTION_TYPES.has(
+        ruleEffect?.ruleActionType ?? ''
+    )
+    const showCompletionBadge = onComplete && !effectIsOnComplete
+
+    return (
+        <div className="flex min-w-0 items-center gap-2">
+            <span
+                id={labelId}
+                className={`text-sm leading-5 ${isHidden ? 'text-dhis2-grey-600' : 'text-dhis2-grey-900'}`}
+            >
+                {label}
+                {isMandatory ? '*' : ''}
+            </span>
+            {ruleEffect && ruleName ? (
+                <FieldEffectBadge
+                    onComplete={effectIsOnComplete}
+                    actionType={ruleEffect.ruleActionType}
+                    ruleName={ruleName}
+                />
+            ) : null}
+            {showCompletionBadge ? (
+                <FieldEffectBadge
+                    onComplete
+                    actionType={
+                        onComplete.kind === 'error'
+                            ? ProgramRuleActionType.ERRORONCOMPLETE
+                            : ProgramRuleActionType.WARNINGONCOMPLETE
+                    }
+                    ruleName={i18n.t('completion pass')}
+                />
+            ) : null}
+        </div>
     )
 }

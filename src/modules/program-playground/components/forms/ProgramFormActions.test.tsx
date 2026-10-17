@@ -192,4 +192,45 @@ describe('ProgramFormActions', () => {
         const alert = await screen.findByRole('alert')
         expect(alert.textContent).toContain('boom')
     })
+
+    it('disables complete unless the completion pass is idle', () => {
+        render(
+            <Wrapper>
+                <ProgramFormActions
+                    onSave={jest.fn()}
+                    onComplete={jest.fn()}
+                    completionPhase="review"
+                />
+            </Wrapper>
+        )
+
+        const complete = screen.getByRole('button', {
+            name: 'Trigger on-complete rules',
+        }) as HTMLButtonElement
+        const save = screen.getByRole('button', {
+            name: 'Trigger server rules',
+        }) as HTMLButtonElement
+        expect(complete.disabled).toBe(true)
+        expect(save.disabled).toBe(false)
+    })
+
+    it('disables verifying while the server check is loading', () => {
+        render(
+            <Wrapper>
+                <ProgramFormActions
+                    submitLabel="Register"
+                    serverCheck={{
+                        state: { phase: 'loading' },
+                        unplaced: [],
+                        onVerify: jest.fn(),
+                    }}
+                />
+            </Wrapper>
+        )
+
+        const verify = screen
+            .getByText('Verify with server')
+            .closest('button') as HTMLButtonElement
+        expect(verify.disabled).toBe(true)
+    })
 })

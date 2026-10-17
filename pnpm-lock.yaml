@@ -1,3 +1,161 @@
+---
+lockfileVersion: '9.0'
+
+importers:
+
+  .:
+    configDependencies: {}
+    packageManagerDependencies:
+      pnpm:
+        specifier: 12.11.2
+        version: 12.11.2
+
+packages:
+
+  '@pnpm/exe.android-arm64@12.11.2':
+    resolution: {integrity: sha512-owLw13OfPkEoY+hLBNeeG+dCFhywr7q2d/EHPz4mNL2RhKnv8gNwMARkjkiDQu234aItVwFNDeGnmQXm+ikkAg==}
+    cpu: [arm64]
+    os: [android]
+
+  '@pnpm/exe.android-x64@12.11.2':
+    resolution: {integrity: sha512-GYPkVebl4iokOA/4MPSpGoUVfFlsth7uqOCe1XiaiM23LAdvUOMJBObqHJijr89ZqjwHm9pO6vO45GRwJ2U2qA==}
+    cpu: [x64]
+    os: [android]
+
+  '@pnpm/exe.darwin-arm64@12.11.2':
+    resolution: {integrity: sha512-n9M4On66y8FDxUAKgMO1FXt0qihyG4e+56p3/F0uo8Bx9KplW8BwKVnXigzCJ8aNM6sVVPkOE6M9XXbeVIxnZA==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@pnpm/exe.darwin-x64@12.11.2':
+    resolution: {integrity: sha512-oSW7n3sBT0c0cyk4kj10T2Y6Mpm+OFEiCAWozgX039tdoI6yqJF1uaFD3sw7ugLdu6VV3+uY0pa1TUZIPdxDWA==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@pnpm/exe.freebsd-x64@12.11.2':
+    resolution: {integrity: sha512-qbzc3KoDpa/Lkf8vs3jnDe6dUUbso+6eLIyssYFMiliLpYNxn8dirk11YoNnOQcdHVB50v5RFls1Yid6ttT5pg==}
+    cpu: [x64]
+    os: [freebsd]
+
+  '@pnpm/exe.linux-arm64-musl@12.11.2':
+    resolution: {integrity: sha512-uMEYDwKRktGwANubQ+kYCwmhNwg3Ik6qK89ahsbQ5cP30R/5FVJb/T99vr9XRUBC/A7mZI6eeT92oyVas9ACyg==}
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
+  '@pnpm/exe.linux-arm64@12.11.2':
+    resolution: {integrity: sha512-6e8ZAQUwFXAWHHHv5FesWqf/kEK04wuitBv5f/gxzkC0DiBfaixr+f+6JQede8SF4Ji5LcMwVFJbzAtffpWxEg==}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@pnpm/exe.linux-ppc64@12.11.2':
+    resolution: {integrity: sha512-Ui8A4nepkVupx2VpuFfysEluMvWK6gTB5rgVts7Ss/+8dj0RD28x3F/seNeH/zSypgC6yKdV6qsKVQh/uffTuQ==}
+    cpu: [ppc64]
+    os: [linux]
+    libc: [glibc]
+
+  '@pnpm/exe.linux-riscv64@12.11.2':
+    resolution: {integrity: sha512-i1yLdQ5bu+wjQ+srtFoJAaY2gN/+oXHFdjul4llCeoDxHE0rTIG3R41NhHfCjyFPW4+CpbBT58933CL9sMOCnA==}
+    cpu: [riscv64]
+    os: [linux]
+    libc: [glibc]
+
+  '@pnpm/exe.linux-s390x@12.11.2':
+    resolution: {integrity: sha512-YS1/lhPjjTsN4QL50VaFZKRa3Uc/bDnhE8eKbJMFvuX06UuFS5YaiDg04APoZdfVSGqTfX27QAg7rfLMSWaqxA==}
+    cpu: [s390x]
+    os: [linux]
+    libc: [glibc]
+
+  '@pnpm/exe.linux-x64-musl@12.11.2':
+    resolution: {integrity: sha512-7eIxQR05fvJxCujUSKp5KTtehJ7QqrgqP/HD1+BcB/SaV2Be4XI1PEHiOgA1zxsiMIeMvTF6E4G4dYHrFjeXRg==}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  '@pnpm/exe.linux-x64@12.11.2':
+    resolution: {integrity: sha512-FK7QKe24AYgppJwO3mpooYptduuvIGqKJPi5ac7MdnWkjUy46JBfYhCW0grnkWKC8YOf0x+vGviuQqJEj3SpQQ==}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@pnpm/exe.win32-arm64@12.11.2':
+    resolution: {integrity: sha512-PCTjVDdJb6VvraZxrEeFv6EqEA0hhIsAySx28e95J2Tqpi88hLpgOXgNqV0vpxq9A+b8GLQfyk/D+1UlJPv/YQ==}
+    cpu: [arm64]
+    os: [win32]
+
+  '@pnpm/exe.win32-x64@12.11.2':
+    resolution: {integrity: sha512-8sgX86OvRjJ3yZs/TvGR2L31wH9ScPZ+f+geKI3ikuB0RRiK3i4LlTRO8OXN6pdRqj8epMde4312MCjj7JsJdA==}
+    cpu: [x64]
+    os: [win32]
+
+  pnpm@12.11.2:
+    resolution: {integrity: sha512-JaUWUqGWeFr18ovabf6NxYLr76SsHRgCIc4TkCMcX7dmN4IupLbkYzznSs3LCnf3Ja8RutOBd/3t2u6BipVcuQ==}
+    engines: {node: '>=18.*'}
+    hasBin: true
+
+snapshots:
+
+  '@pnpm/exe.android-arm64@12.11.2':
+    optional: true
+
+  '@pnpm/exe.android-x64@12.11.2':
+    optional: true
+
+  '@pnpm/exe.darwin-arm64@12.11.2':
+    optional: true
+
+  '@pnpm/exe.darwin-x64@12.11.2':
+    optional: true
+
+  '@pnpm/exe.freebsd-x64@12.11.2':
+    optional: true
+
+  '@pnpm/exe.linux-arm64-musl@12.11.2':
+    optional: true
+
+  '@pnpm/exe.linux-arm64@12.11.2':
+    optional: true
+
+  '@pnpm/exe.linux-ppc64@12.11.2':
+    optional: true
+
+  '@pnpm/exe.linux-riscv64@12.11.2':
+    optional: true
+
+  '@pnpm/exe.linux-s390x@12.11.2':
+    optional: true
+
+  '@pnpm/exe.linux-x64-musl@12.11.2':
+    optional: true
+
+  '@pnpm/exe.linux-x64@12.11.2':
+    optional: true
+
+  '@pnpm/exe.win32-arm64@12.11.2':
+    optional: true
+
+  '@pnpm/exe.win32-x64@12.11.2':
+    optional: true
+
+  pnpm@12.11.2:
+    optionalDependencies:
+      '@pnpm/exe.android-arm64': 12.11.2
+      '@pnpm/exe.android-x64': 12.11.2
+      '@pnpm/exe.darwin-arm64': 12.11.2
+      '@pnpm/exe.darwin-x64': 12.11.2
+      '@pnpm/exe.freebsd-x64': 12.11.2
+      '@pnpm/exe.linux-arm64': 12.11.2
+      '@pnpm/exe.linux-arm64-musl': 12.11.2
+      '@pnpm/exe.linux-ppc64': 12.11.2
+      '@pnpm/exe.linux-riscv64': 12.11.2
+      '@pnpm/exe.linux-s390x': 12.11.2
+      '@pnpm/exe.linux-x64': 12.11.2
+      '@pnpm/exe.linux-x64-musl': 12.11.2
+      '@pnpm/exe.win32-arm64': 12.11.2
+      '@pnpm/exe.win32-x64': 12.11.2
+
+---
 lockfileVersion: '9.0'
 
 settings:
@@ -21,20 +179,20 @@ importers:
         specifier: ^5.2.2
         version: 5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76)
       '@nnkogift/dhis2-form-utils-devtools':
-        specifier: 0.1.0-alpha.9
-        version: 0.1.0-alpha.9(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7(supports-color@8.1.1))(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(immer@11.1.16)(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
+        specifier: 0.1.0-alpha.12
+        version: 0.1.0-alpha.12(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7(supports-color@8.1.1))(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(immer@11.1.16)(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
       '@nnkogift/dhis2-form-utils-dhis2-ui':
-        specifier: 0.1.0-alpha.9
-        version: 0.1.0-alpha.9(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7(supports-color@8.1.1))(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
+        specifier: 0.1.0-alpha.12
+        version: 0.1.0-alpha.12(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7(supports-color@8.1.1))(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
       '@nnkogift/dhis2-form-utils-hooks':
-        specifier: 0.1.0-alpha.9
-        version: 0.1.0-alpha.9(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
+        specifier: 0.1.0-alpha.12
+        version: 0.1.0-alpha.12(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
       '@nnkogift/dhis2-form-utils-metadata':
-        specifier: 0.1.0-alpha.9
-        version: 0.1.0-alpha.9(zod@3.25.76)
+        specifier: 0.1.0-alpha.12
+        version: 0.1.0-alpha.12(@dhis2/d2-i18n@1.2.0)(zod@3.25.76)
       '@nnkogift/dhis2-form-utils-rules':
-        specifier: 0.1.0-alpha.9
-        version: 0.1.0-alpha.9(@dhis2/rule-engine@3.8.2)(zod@3.25.76)
+        specifier: 0.1.0-alpha.12
+        version: 0.1.0-alpha.12(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(zod@3.25.76)
       immer:
         specifier: ^11.1.16
         version: 11.1.16
@@ -1788,8 +1946,8 @@ packages:
     os: [linux]
     libc: [glibc]
 
-  '@nnkogift/dhis2-form-utils-devtools@0.1.0-alpha.9':
-    resolution: {integrity: sha512-5RfrWyvtVoFRSXx+Q+DqyeEzvsCR3hjsxveSu2AwKQiL9jGJK4Haxhpmwx98k9thbI2AAFHmqki9W9P1ymKbiw==}
+  '@nnkogift/dhis2-form-utils-devtools@0.1.0-alpha.12':
+    resolution: {integrity: sha512-Qi/bRtNUO4LeOUY13uStF9DC3Q9hNRYtV/qziMfLt8chgshzQ7Mbv0mdrqChL4/o3GllpiXa8QjZVdGDl1dHrw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@dhis2/app-runtime': '>=3.0.0'
@@ -1798,8 +1956,8 @@ packages:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
 
-  '@nnkogift/dhis2-form-utils-dhis2-ui@0.1.0-alpha.9':
-    resolution: {integrity: sha512-3wB+THHa/88dlTjiiuxGrmpi3PEngMFjzT4zAEQO2WYeDNiiTYT3KCzwohSLYR3Tm1xcA0sKpBp7r/OREdVuUA==}
+  '@nnkogift/dhis2-form-utils-dhis2-ui@0.1.0-alpha.12':
+    resolution: {integrity: sha512-OkoORj9RF2TgXMBFlvO4wWphRUcbuSeheVuWVjCaDHEliVecO44sC0ZVhMEq2A9rF//sQs/Wc+Ltg3Sogi4Njg==}
     engines: {node: '>=18'}
     peerDependencies:
       '@dhis2/app-runtime': '>=3.0.0'
@@ -1808,8 +1966,8 @@ packages:
       react-dom: '>=18.0.0'
       react-hook-form: '>=7.0.0'
 
-  '@nnkogift/dhis2-form-utils-hooks@0.1.0-alpha.9':
-    resolution: {integrity: sha512-+Z5NAT865giVfU2Uqim5jGMs07utFjcfHbW6BVff7ioB8bYGTd/112KEDxO0I/V24I/1DYCTUmDKeipM4WPK1g==}
+  '@nnkogift/dhis2-form-utils-hooks@0.1.0-alpha.12':
+    resolution: {integrity: sha512-pYqT4Npam9E66qgeSvd+MOYnLDSejLhHoSv30D7wxcL1wlmTTFLlhxlbXE8QKxlrxJWXhY75aX5VfpsA1CZfOA==}
     engines: {node: '>=18'}
     peerDependencies:
       '@dhis2/app-runtime': '>=3.0.0'
@@ -1819,14 +1977,15 @@ packages:
       react-hook-form: '>=7.0.0'
       zod: '>=3.0.0'
 
-  '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.9':
-    resolution: {integrity: sha512-Pj7i0gwLfJPEGrcttUKD24RBJB58O6KIwzft5/BBKVT4ZDi5BcKAaK4sKhysZg1hVZYv+r668GVbmuG8EcWLbQ==}
+  '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.12':
+    resolution: {integrity: sha512-N/kVcu203BEA7Y+zhkoJTBJJLGtT/seg9cGVvg0BcNSFF3nlMyJWDF+OtZHHfrRYVyYN7k2RHWxAoXommxNpUg==}
     engines: {node: '>=18'}
     peerDependencies:
+      '@dhis2/d2-i18n': '>=1.0.0'
       zod: '>=3.0.0'
 
-  '@nnkogift/dhis2-form-utils-rules@0.1.0-alpha.9':
-    resolution: {integrity: sha512-ifnu6PFHfqIvb7GdHALiy92YUgeSjoowj6+4IaDY1ow5ZQayZjpcOn/UAHMLW33Se5/siv+v3q57sZPdhSPMTQ==}
+  '@nnkogift/dhis2-form-utils-rules@0.1.0-alpha.12':
+    resolution: {integrity: sha512-Jlej7T1caIrc52yg+mNZBpHx9NCzqeREQtljYNO0WoU+j1eaypYIoi7IiMYcsvaSU2Uqk9gEvJj0asGJNqU0vA==}
     engines: {node: '>=18'}
     peerDependencies:
       '@dhis2/rule-engine': '>=3.8.2'
@@ -9262,13 +9421,13 @@ snapshots:
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     optional: true
 
-  '@nnkogift/dhis2-form-utils-devtools@0.1.0-alpha.9(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7(supports-color@8.1.1))(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(immer@11.1.16)(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
+  '@nnkogift/dhis2-form-utils-devtools@0.1.0-alpha.12(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7(supports-color@8.1.1))(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(immer@11.1.16)(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
     dependencies:
       '@dhis2/app-runtime': 3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@dhis2/d2-i18n': 1.2.0
       '@dhis2/ui': 10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7(supports-color@8.1.1))(react@18.3.1))
-      '@nnkogift/dhis2-form-utils-hooks': 0.1.0-alpha.9(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
-      '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.9(zod@3.25.76)
+      '@nnkogift/dhis2-form-utils-hooks': 0.1.0-alpha.12(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
+      '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.12(@dhis2/d2-i18n@1.2.0)(zod@3.25.76)
       '@xyflow/react': 12.11.3(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(immer@11.1.16)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -9281,11 +9440,11 @@ snapshots:
       - react-hook-form
       - zod
 
-  '@nnkogift/dhis2-form-utils-dhis2-ui@0.1.0-alpha.9(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7(supports-color@8.1.1))(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
+  '@nnkogift/dhis2-form-utils-dhis2-ui@0.1.0-alpha.12(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@dhis2/ui@10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7(supports-color@8.1.1))(react@18.3.1)))(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
     dependencies:
       '@dhis2/app-runtime': 3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@dhis2/ui': 10.17.0(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-jsx@4.0.1(@babel/core@7.29.7(supports-color@8.1.1))(react@18.3.1))
-      '@nnkogift/dhis2-form-utils-hooks': 0.1.0-alpha.9(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
+      '@nnkogift/dhis2-form-utils-hooks': 0.1.0-alpha.12(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)
       maplibre-gl: 6.5.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -9293,32 +9452,36 @@ snapshots:
       terra-draw: 1.32.3
       terra-draw-maplibre-gl-adapter: 1.4.1(maplibre-gl@6.5.0)(terra-draw@1.32.3)
     transitivePeerDependencies:
+      - '@dhis2/d2-i18n'
       - '@dhis2/rule-engine'
       - '@hookform/resolvers'
       - zod
 
-  '@nnkogift/dhis2-form-utils-hooks@0.1.0-alpha.9(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
+  '@nnkogift/dhis2-form-utils-hooks@0.1.0-alpha.12(@dhis2/app-runtime@3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(@hookform/resolvers@5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.84.0(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
     dependencies:
       '@dhis2/app-runtime': 3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@hookform/resolvers': 5.7.1(@sinclair/typebox@0.34.52)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@18.3.1))(zod@3.25.76)
-      '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.9(zod@3.25.76)
-      '@nnkogift/dhis2-form-utils-rules': 0.1.0-alpha.9(@dhis2/rule-engine@3.8.2)(zod@3.25.76)
+      '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.12(@dhis2/d2-i18n@1.2.0)(zod@3.25.76)
+      '@nnkogift/dhis2-form-utils-rules': 0.1.0-alpha.12(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(zod@3.25.76)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-hook-form: 7.84.0(react@18.3.1)
       zod: 3.25.76
     transitivePeerDependencies:
+      - '@dhis2/d2-i18n'
       - '@dhis2/rule-engine'
 
-  '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.9(zod@3.25.76)':
+  '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.12(@dhis2/d2-i18n@1.2.0)(zod@3.25.76)':
     dependencies:
+      '@dhis2/d2-i18n': 1.2.0
       zod: 3.25.76
 
-  '@nnkogift/dhis2-form-utils-rules@0.1.0-alpha.9(@dhis2/rule-engine@3.8.2)(zod@3.25.76)':
+  '@nnkogift/dhis2-form-utils-rules@0.1.0-alpha.12(@dhis2/d2-i18n@1.2.0)(@dhis2/rule-engine@3.8.2)(zod@3.25.76)':
     dependencies:
       '@dhis2/rule-engine': 3.8.2
-      '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.9(zod@3.25.76)
+      '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.12(@dhis2/d2-i18n@1.2.0)(zod@3.25.76)
     transitivePeerDependencies:
+      - '@dhis2/d2-i18n'
       - zod
 
   '@nodelib/fs.scandir@2.1.5':

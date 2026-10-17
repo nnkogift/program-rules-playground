@@ -7,16 +7,30 @@
     "changesets": [
         "better-rocks-read",
         "big-dogs-eat",
+        "bump-form-utils-alpha-12",
         "cute-rockets-love",
         "dark-coins-ask",
         "dark-moles-cut",
         "dry-paths-beg",
+        "fix-event-save-validation",
         "flat-glasses-like",
         "loud-baths-grab",
+        "mandatory-field-asterisk",
         "odd-rice-lie",
         "pretty-singers-double",
+        "program-org-unit-selector",
+        "review-dialog-footer",
+        "review-dialog-layout",
+        "review-dialog-polish",
+        "split-save-complete",
         "tame-rats-smile",
         "tidy-otters-refactor",
-        "tidy-plums-relax"
+        "tidy-plums-relax",
+        "trigger-server-rules",
+        "typecheck-in-ci",
+        "validate-form-button",
+        "validate-form-feedback",
+        "verify-in-form",
+        "verify-with-server"
     ]
 }

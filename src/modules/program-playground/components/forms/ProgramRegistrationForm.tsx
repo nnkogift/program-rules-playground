@@ -11,16 +11,12 @@ import {
 } from '@nnkogift/dhis2-form-utils-hooks'
 import type { OptionGroupCodeMap } from '@nnkogift/dhis2-form-utils-metadata'
 import {
-    filterPayload,
     type RuleEventInput,
     type RuleSupplementaryDataInput,
 } from '@nnkogift/dhis2-form-utils-rules'
 import React, { useEffect, useMemo, useState } from 'react'
 import { FormProvider } from 'react-hook-form'
-import { GhostToggleButton } from '@/modules/program-playground/components/rules/GhostToggleButton'
 import { LazyRulesPanel } from '@/modules/program-playground/components/rules/LazyRulesPanel'
-import { RuleDisplayProvider } from '@/modules/program-playground/components/rules/RuleDisplayContext'
-import { RuleOutputColumn } from '@/modules/program-playground/components/rules/RuleOutputColumn'
 import { usePublishFormValues } from '@/modules/program-playground/hooks/usePublishFormValues'
 import { createTodayValue } from '@/modules/program-playground/utils/date.utils'
 import { currentReport } from '@/modules/program-playground/hooks/useServerVerification'
@@ -35,6 +31,8 @@ import { FormDateField } from './FormDateField'
 import { SaveReviewDialog } from './SaveReviewDialog'
 import { validateForm } from '@/modules/program-playground/utils/validateForm'
 import { ProgramFormActions } from './ProgramFormActions'
+import { RuleFormBody } from './RuleFormBody'
+import { parseFormValues } from '@/modules/program-playground/utils/parseFormValues'
 import { useOrgUnitGuard } from '@/modules/program-playground/components/orgUnit/ProgramOrgUnitsContext'
 import { RegistrationFormFields } from './RegistrationFormFields'
 
@@ -93,7 +91,6 @@ export function ProgramRegistrationForm({
         },
     })
     usePublishFormValues(form, onValuesChange)
-    const [ghostsEnabled, setGhostsEnabled] = useState(true)
     const ensureOrgUnit = useOrgUnitGuard(orgUnitId)
     const [review, setReview] = useState<{ values: Record<string, unknown> }>()
     const rulesMetadata = useMemo(
@@ -142,28 +139,13 @@ export function ProgramRegistrationForm({
             form.getValues(),
             REGISTRATION_FORM_SYSTEM_KEYS
         )
-        const parsedValues = trackerRegistrationValuesSchema.safeParse(
-            filterPayload(
-                values,
-                formStore.fieldStore.getSnapshot(),
-                formStore.optionGroups
-            )
+        const parsedValues = parseFormValues(
+            trackerRegistrationValuesSchema,
+            values,
+            { formStore, ensureOrgUnit }
         )
-        if (!parsedValues.success) {
-            if (!values.orgUnit) {
-                ensureOrgUnit()
-                throw new Error(
-                    i18n.t(
-                        'Select an organisation unit before saving or verifying'
-                    )
-                )
-            }
-            throw new Error(
-                i18n.t('The form values could not be validated before saving')
-            )
-        }
         const payload = buildTrackerRegistrationPayload({
-            values: parsedValues.data,
+            values: parsedValues,
             metadata,
             programId,
         })
@@ -209,48 +191,33 @@ export function ProgramRegistrationForm({
                                     disabled={form.formState.isSubmitting}
                                 />
                             ) : null}
-                            <GhostToggleButton
-                                enabled={ghostsEnabled}
-                                onToggle={() => {
-                                    setGhostsEnabled((current) => !current)
-                                }}
-                            />
-                            <div className="flex flex-1 flex-row-reverse items-start gap-5 pt-4">
-                                <div className="sticky top-0 shrink-0">
-                                    <RuleOutputColumn
-                                        metadata={rulesMetadata}
+                            <RuleFormBody
+                                rulesMetadata={rulesMetadata}
+                                labelLookup={labelLookup}
+                                fields={
+                                    <RegistrationFormFields
+                                        metadata={metadata}
                                     />
-                                </div>
-                                <div className="flex min-w-[520px] flex-1 flex-col gap-dp16">
-                                    <RuleDisplayProvider
-                                        ghostsEnabled={ghostsEnabled}
-                                        labelLookup={labelLookup}
-                                    >
-                                        <RegistrationFormFields
-                                            metadata={metadata}
-                                        />
-                                    </RuleDisplayProvider>
-                                    <ProgramFormActions
-                                        onValidate={() => {
-                                            ensureOrgUnit()
-                                            return validateForm(form)
-                                        }}
-                                        resolveFieldLabel={
-                                            labelLookup.resolveFieldName
-                                        }
-                                        serverCheck={{
-                                            state: serverCheck.state,
-                                            unplaced: serverCheck.unplaced,
-                                            onVerify: () => {
-                                                void serverCheck.verify()
-                                            },
-                                        }}
-                                        submitLabel={i18n.t(
-                                            'Trigger server rules'
-                                        )}
-                                    />
-                                </div>
-                            </div>
+                                }
+                            >
+                                <ProgramFormActions
+                                    onValidate={() => {
+                                        ensureOrgUnit()
+                                        return validateForm(form)
+                                    }}
+                                    resolveFieldLabel={
+                                        labelLookup.resolveFieldName
+                                    }
+                                    serverCheck={{
+                                        state: serverCheck.state,
+                                        unplaced: serverCheck.unplaced,
+                                        onVerify: () => {
+                                            void serverCheck.verify()
+                                        },
+                                    }}
+                                    submitLabel={i18n.t('Trigger server rules')}
+                                />
+                            </RuleFormBody>
                         </form>
                     </FormProvider>
                     <LazyRulesPanel metadata={rulesMetadata} />

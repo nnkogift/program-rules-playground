@@ -11,21 +11,16 @@ import type {
     TrackerProgramMetadata,
 } from '@nnkogift/dhis2-form-utils-metadata'
 import {
-    filterPayload,
     type RuleEventInput,
     type RuleSupplementaryDataInput,
 } from '@nnkogift/dhis2-form-utils-rules'
-import i18n from '@dhis2/d2-i18n'
 import React, { useEffect, useMemo, useState } from 'react'
 import { CompletionBanner } from './CompletionBanner'
 import {
     useCompletionMessageCollector,
     useCompletionPass,
 } from '@/modules/program-playground/hooks/useCompletionPass'
-import { GhostToggleButton } from '@/modules/program-playground/components/rules/GhostToggleButton'
 import { LazyRulesPanel } from '@/modules/program-playground/components/rules/LazyRulesPanel'
-import { RuleDisplayProvider } from '@/modules/program-playground/components/rules/RuleDisplayContext'
-import { RuleOutputColumn } from '@/modules/program-playground/components/rules/RuleOutputColumn'
 import { usePublishFormValues } from '@/modules/program-playground/hooks/usePublishFormValues'
 import { currentReport } from '@/modules/program-playground/hooks/useServerVerification'
 import { useFormServerCheck } from '@/modules/program-playground/hooks/useFormServerCheck'
@@ -40,11 +35,13 @@ import { useOrgUnitGuard } from '@/modules/program-playground/components/orgUnit
 import { EventFormFields } from './EventFormFields'
 import { validateForm } from '@/modules/program-playground/utils/validateForm'
 import { ProgramFormActions } from './ProgramFormActions'
+import { RuleFormBody } from './RuleFormBody'
+import { parseFormValues } from '@/modules/program-playground/utils/parseFormValues'
 import { SaveReviewDialog } from './SaveReviewDialog'
 
 const EVENT_FORM_SYSTEM_KEYS = ['orgUnit', 'occurredAt'] as const
 
-type ProgramEventFormProps = {
+export type ProgramEventFormProps = {
     program: EventProgramMetadata
     stageMetadata: ProgramStageMetadata
     programStageId: string
@@ -93,7 +90,6 @@ export function ProgramEventForm({
     })
     usePublishFormValues(form, onValuesChange)
     const ensureOrgUnit = useOrgUnitGuard(orgUnitId)
-    const [ghostsEnabled, setGhostsEnabled] = useState(true)
     const [verifyStatus, setVerifyStatus] = useState<EventStatus>('ACTIVE')
     const [review, setReview] = useState<{
         status: EventStatus
@@ -168,28 +164,12 @@ export function ProgramEventForm({
             form.getValues(),
             EVENT_FORM_SYSTEM_KEYS
         )
-        const parsedValues = eventFormValuesSchema.safeParse(
-            filterPayload(
-                values,
-                formStore.fieldStore.getSnapshot(),
-                formStore.optionGroups
-            )
-        )
-        if (!parsedValues.success) {
-            if (!values.orgUnit) {
-                ensureOrgUnit()
-                throw new Error(
-                    i18n.t(
-                        'Select an organisation unit before saving or verifying'
-                    )
-                )
-            }
-            throw new Error(
-                i18n.t('The form values could not be validated before saving')
-            )
-        }
+        const parsedValues = parseFormValues(eventFormValuesSchema, values, {
+            formStore,
+            ensureOrgUnit,
+        })
         const payload = buildEventPayload({
-            values: parsedValues.data,
+            values: parsedValues,
             programId: program.id,
             programStageId,
             status,
@@ -248,58 +228,43 @@ export function ProgramEventForm({
                         }}
                         className="flex min-w-0 flex-1 flex-col overflow-auto pt-4 px-7 pb-7"
                     >
-                        <GhostToggleButton
-                            enabled={ghostsEnabled}
-                            onToggle={() => {
-                                setGhostsEnabled((current) => !current)
-                            }}
-                        />
-                        <div className="flex flex-1 flex-row-reverse items-start gap-5 pt-4">
-                            <div className="sticky top-0 shrink-0">
-                                <RuleOutputColumn metadata={rulesMetadata} />
-                            </div>
-                            <div className="flex min-w-[520px] flex-1 flex-col gap-dp16">
-                                <RuleDisplayProvider
-                                    ghostsEnabled={ghostsEnabled}
-                                    labelLookup={labelLookup}
-                                >
-                                    <EventFormFields metadata={stageMetadata} />
-                                </RuleDisplayProvider>
-                                {completion.phase === 'review' ? (
-                                    <CompletionBanner
-                                        issues={completion.issues}
-                                        isSubmitting={
-                                            form.formState.isSubmitting
-                                        }
-                                        onBackToEditing={completion.cancel}
-                                        onCompleteAnyway={() => {
-                                            openReview('COMPLETED')
-                                        }}
-                                    />
-                                ) : null}
-                                <ProgramFormActions
-                                    completionPhase={completion.phase}
-                                    onValidate={() => {
-                                        ensureOrgUnit()
-                                        return validateForm(form)
-                                    }}
-                                    resolveFieldLabel={
-                                        labelLookup.resolveFieldName
-                                    }
-                                    serverCheck={{
-                                        state: serverCheck.state,
-                                        unplaced: serverCheck.unplaced,
-                                        onVerify: () => {
-                                            void serverCheck.verify()
-                                        },
-                                    }}
-                                    onSave={handleSave}
-                                    onComplete={() => {
-                                        void handleComplete()
+                        <RuleFormBody
+                            rulesMetadata={rulesMetadata}
+                            labelLookup={labelLookup}
+                            fields={
+                                <EventFormFields metadata={stageMetadata} />
+                            }
+                        >
+                            {completion.phase === 'review' ? (
+                                <CompletionBanner
+                                    issues={completion.issues}
+                                    isSubmitting={form.formState.isSubmitting}
+                                    onBackToEditing={completion.cancel}
+                                    onCompleteAnyway={() => {
+                                        openReview('COMPLETED')
                                     }}
                                 />
-                            </div>
-                        </div>
+                            ) : null}
+                            <ProgramFormActions
+                                completionPhase={completion.phase}
+                                onValidate={() => {
+                                    ensureOrgUnit()
+                                    return validateForm(form)
+                                }}
+                                resolveFieldLabel={labelLookup.resolveFieldName}
+                                serverCheck={{
+                                    state: serverCheck.state,
+                                    unplaced: serverCheck.unplaced,
+                                    onVerify: () => {
+                                        void serverCheck.verify()
+                                    },
+                                }}
+                                onSave={handleSave}
+                                onComplete={() => {
+                                    void handleComplete()
+                                }}
+                            />
+                        </RuleFormBody>
                     </form>
                     <LazyRulesPanel metadata={rulesMetadata} />
                     {review ? (

@@ -1,39 +1,19 @@
 import '@nnkogift/dhis2-form-utils-devtools/style.css'
 
-import React, { lazy, Suspense, useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useLocation, useParams } from 'react-router'
 import i18n from '@dhis2/d2-i18n'
 import { Center, CircularLoader } from '@dhis2/ui'
-import { useEventProgramMetadataQuery } from '@nnkogift/dhis2-form-utils-hooks'
 import { ProgramContextBar } from '@/modules/program-playground/components/ProgramContextBar'
-import { RouteSuspenseFallback } from '@/shared/components/RouteSuspenseFallback'
 import { buildProgramListUrl } from '@/modules/program-list/hooks/buildProgramListUrl'
-import { useAccessibleOrgUnits } from '@/modules/program-playground/hooks/useAccessibleOrgUnits'
+import { useProgramPageData } from '@/modules/program-playground/hooks/useProgramPageData'
 import { ProgramOrgUnitsProvider } from '@/modules/program-playground/components/orgUnit/ProgramOrgUnitsContext'
-import { useProgramOrgUnits } from '@/modules/program-playground/hooks/useProgramOrgUnits'
-import { getTreeRoots } from '@/modules/program-playground/utils/orgUnitTree'
-import { useCurrentUserSupplementaryData } from '@/modules/program-playground/hooks/useCurrentUserSupplementaryData'
-import { useOptionGroupsSupplementaryData } from '@/modules/program-playground/hooks/useOptionGroupsSupplementaryData'
 import { useProgramPlaygroundState } from '@/modules/program-playground/hooks/useProgramPlaygroundState'
 import { PROGRAM_TYPE, type ProgramListParams } from '@/shared/types/program'
 import { parseDhis2Error } from '@/modules/program-playground/utils/parseDhis2Error'
 import { OrgUnitsNotice } from './components/OrgUnitsNotice'
+import { ProgramFormArea } from './components/ProgramFormArea'
 import { ProgramLoadError } from './components/ProgramLoadError'
-
-const TrackerProgramShell = lazy(() =>
-    import('@/modules/program-playground/components/forms/TrackerProgramShell').then(
-        (m) => ({
-            default: m.TrackerProgramShell,
-        })
-    )
-)
-const ProgramStageFormScreen = lazy(() =>
-    import('@/modules/program-playground/components/forms/ProgramStageFormScreen').then(
-        (m) => ({
-            default: m.ProgramStageFormScreen,
-        })
-    )
-)
 
 type ProgramPageLocationState = {
     listParams?: ProgramListParams
@@ -52,32 +32,15 @@ export function ProgramPage() {
         ?.listParams
     const backUrl = listParams ? buildProgramListUrl(listParams) : '/'
     const {
-        metadata: program,
+        program,
         error,
-        loading,
-    } = useEventProgramMetadataQuery(programId ?? '')
-    const {
-        orgUnits: accessibleOrgUnits,
-        loading: orgUnitsLoading,
-        error: orgUnitsError,
-    } = useAccessibleOrgUnits()
-    const {
-        orgUnits: programOrgUnits,
-        loading: programOrgUnitsLoading,
-        error: programOrgUnitsError,
-    } = useProgramOrgUnits(programId ?? '')
-    const orgUnitRootIds = useMemo(
-        () =>
-            getTreeRoots(
-                programOrgUnits,
-                accessibleOrgUnits.map((orgUnit) => orgUnit.id)
-            ),
-        [programOrgUnits, accessibleOrgUnits]
-    )
-    const supplementaryData = useCurrentUserSupplementaryData()
-    const optionGroups = useOptionGroupsSupplementaryData(
-        program?.programRules ?? []
-    )
+        isLoading,
+        programOrgUnits,
+        orgUnitRootIds,
+        hasOrgUnitsError,
+        supplementaryData,
+        optionGroups,
+    } = useProgramPageData(programId ?? '')
 
     const {
         orgUnitId,
@@ -92,7 +55,6 @@ export function ProgramPage() {
     const reportMissingOrgUnit = useCallback(() => {
         setOrgUnitAttempted(true)
     }, [])
-    const hasOrgUnitsError = Boolean(orgUnitsError || programOrgUnitsError)
     const isTracker = program?.programType === PROGRAM_TYPE.WITH_REGISTRATION
     const programMeta = useMemo(() => {
         if (!program) {
@@ -107,7 +69,7 @@ export function ProgramPage() {
         })
     }, [program, isTracker])
 
-    if (loading || orgUnitsLoading || programOrgUnitsLoading) {
+    if (isLoading) {
         return (
             <Center>
                 <CircularLoader />
@@ -150,31 +112,15 @@ export function ProgramPage() {
                         reportMissingOrgUnit={reportMissingOrgUnit}
                     >
                         <div className="flex min-h-0 flex-1 flex-col">
-                            <Suspense fallback={<RouteSuspenseFallback />}>
-                                {isTracker ? (
-                                    <TrackerProgramShell
-                                        key={resetKey}
-                                        program={program}
-                                        programId={program.id}
-                                        orgUnitId={orgUnitId}
-                                        enrolledAt={primaryDate}
-                                        supplementaryData={supplementaryData}
-                                        optionGroups={optionGroups}
-                                    />
-                                ) : (
-                                    <ProgramStageFormScreen
-                                        key={resetKey}
-                                        program={program}
-                                        programStageId={
-                                            program.programStages?.[0]?.id
-                                        }
-                                        orgUnitId={orgUnitId}
-                                        occurredAt={primaryDate}
-                                        supplementaryData={supplementaryData}
-                                        optionGroups={optionGroups}
-                                    />
-                                )}
-                            </Suspense>
+                            <ProgramFormArea
+                                key={resetKey}
+                                program={program}
+                                isTracker={isTracker}
+                                orgUnitId={orgUnitId}
+                                primaryDate={primaryDate}
+                                supplementaryData={supplementaryData}
+                                optionGroups={optionGroups}
+                            />
                         </div>
                     </ProgramOrgUnitsProvider>
                 ) : null}

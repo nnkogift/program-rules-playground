@@ -1,10 +1,11 @@
 import i18n from '@dhis2/d2-i18n'
-import { Button, ButtonStrip, NoticeBox } from '@dhis2/ui'
-import { useRef, useState } from 'react'
+import { Button, ButtonStrip } from '@dhis2/ui'
+import { useState } from 'react'
 import { useFormState } from 'react-hook-form'
 import { ServerCheckStatus } from './ServerCheckStatus'
+import { ValidationNotice } from './ValidationNotice'
 import type { ServerVerificationState } from '@/modules/program-playground/hooks/useServerVerification'
-import { focusField } from '@/modules/program-playground/utils/focusField'
+import { useFormValidation } from '@/modules/program-playground/hooks/useFormValidation'
 import type { ServerReportEntry } from '@nnkogift/dhis2-form-utils-devtools'
 
 type ServerCheck = {
@@ -41,8 +42,6 @@ type ProgramFormActionsProps = SingleActionProps | SaveCompleteActionProps
 
 type PendingAction = 'save' | 'complete' | 'validate'
 
-type ValidationResult = 'valid' | 'invalid' | 'failed'
-
 export function ProgramFormActions({
     submitLabel,
     serverCheck,
@@ -55,32 +54,13 @@ export function ProgramFormActions({
     const { isSubmitting, errors } = useFormState()
     const isVerifying = serverCheck?.state.phase === 'loading'
     const [pendingAction, setPendingAction] = useState<PendingAction>()
-    const [validationResult, setValidationResult] = useState<ValidationResult>()
-    const [validationFailure, setValidationFailure] = useState<string>()
-    const issueSummaryRef = useRef<HTMLDivElement>(null)
+    const validation = useFormValidation(onValidate)
     const hasSplitActions = onSave !== undefined && onComplete !== undefined
     const invalidFieldIds = Object.keys(errors).filter((id) => id !== 'root')
 
-    const handleValidate = async () => {
-        if (!onValidate) {
-            return
-        }
+    const handleValidate = () => {
         setPendingAction('validate')
-        setValidationResult(undefined)
-        setValidationFailure(undefined)
-        try {
-            const valid = await onValidate()
-            setValidationResult(valid ? 'valid' : 'invalid')
-            if (!valid) {
-                // Wait for the summary to render before moving focus to it.
-                requestAnimationFrame(() => issueSummaryRef.current?.focus())
-            }
-        } catch (error) {
-            setValidationFailure(
-                error instanceof Error ? error.message : String(error)
-            )
-            setValidationResult('failed')
-        }
+        void validation.validate()
     }
 
     return (
@@ -92,45 +72,13 @@ export function ProgramFormActions({
                     resolveFieldLabel={resolveFieldLabel}
                 />
             ) : null}
-            {validationResult === 'valid' ? (
-                <div role="status">
-                    <NoticeBox title={i18n.t('Form is valid')}>
-                        {i18n.t('No validation issues were found.')}
-                    </NoticeBox>
-                </div>
-            ) : null}
-            {validationResult === 'invalid' ? (
-                <div ref={issueSummaryRef} role="alert" tabIndex={-1}>
-                    <NoticeBox error title={i18n.t('Form has issues')}>
-                        <ul className="m-0 pl-5">
-                            {invalidFieldIds.map((fieldId) => (
-                                <li key={fieldId}>
-                                    <button
-                                        type="button"
-                                        className="cursor-pointer border-0 bg-transparent p-0 text-left text-inherit underline"
-                                        onClick={() => {
-                                            focusField(fieldId)
-                                        }}
-                                    >
-                                        {resolveFieldLabel?.(fieldId) ??
-                                            fieldId}
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    </NoticeBox>
-                </div>
-            ) : null}
-            {validationResult === 'failed' ? (
-                <div role="alert">
-                    <NoticeBox
-                        error
-                        title={i18n.t('Could not validate the form')}
-                    >
-                        {validationFailure}
-                    </NoticeBox>
-                </div>
-            ) : null}
+            <ValidationNotice
+                result={validation.result}
+                failure={validation.failure}
+                invalidFieldIds={invalidFieldIds}
+                issueSummaryRef={validation.issueSummaryRef}
+                resolveFieldLabel={resolveFieldLabel}
+            />
             <ButtonStrip end>
                 {onValidate && (
                     <Button
@@ -139,9 +87,7 @@ export function ProgramFormActions({
                         disabled={
                             isSubmitting || completionPhase === 'evaluating'
                         }
-                        onClick={() => {
-                            void handleValidate()
-                        }}
+                        onClick={handleValidate}
                     >
                         {i18n.t('Validate form')}
                     </Button>

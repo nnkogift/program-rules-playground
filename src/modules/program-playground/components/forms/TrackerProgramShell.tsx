@@ -6,6 +6,7 @@ import type {
 } from '@nnkogift/dhis2-form-utils-metadata'
 import type { RuleSupplementaryDataInput } from '@nnkogift/dhis2-form-utils-rules'
 import { EnrollmentRail } from '../EnrollmentRail'
+import { listRenderableStageSlots } from '../../utils/listRenderableStageSlots'
 import { slotKey } from '../../utils/trackerSlot'
 import {
     TrackerFormsStoreProvider,
@@ -22,8 +23,6 @@ type TrackerProgramShellProps = {
     supplementaryData?: RuleSupplementaryDataInput
     optionGroups?: OptionGroupCodeMap
 }
-
-type RenderableStageSlot = { stageId: string; eventLocalId: string }
 
 export function TrackerProgramShell(props: TrackerProgramShellProps) {
     return (
@@ -61,22 +60,11 @@ function TrackerProgramShellContent({
     // Every stage/event combination renders as soon as it exists and stays mounted
     // (visibility toggled via CSS) rather than being destroyed on navigation — otherwise
     // switching rail rows would discard whatever the user had already typed into an event.
-    const renderableStageSlots = useMemo<RenderableStageSlot[]>(() => {
-        const slots: RenderableStageSlot[] = []
-        for (const stage of program.programStages ?? []) {
-            if (!stage.id) {
-                continue
-            }
-            if (stage.repeatable) {
-                for (const eventLocalId of eventDraftsByStage[stage.id] ?? []) {
-                    slots.push({ stageId: stage.id, eventLocalId })
-                }
-            } else {
-                slots.push({ stageId: stage.id, eventLocalId: 'primary' })
-            }
-        }
-        return slots
-    }, [program.programStages, eventDraftsByStage])
+    const renderableStageSlots = useMemo(
+        () =>
+            listRenderableStageSlots(program.programStages, eventDraftsByStage),
+        [program.programStages, eventDraftsByStage]
+    )
 
     const enrollment = useMemo(
         () =>

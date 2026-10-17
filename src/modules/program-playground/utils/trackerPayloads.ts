@@ -4,6 +4,9 @@ import { z } from 'zod'
 // Form widgets hold typed values (numbers, booleans, nulls, and NaN for an
 // emptied numeric input), not only strings. They are stringified when the
 // payload is built, and empty ones are dropped there.
+const ORG_UNIT_REQUIRED_MESSAGE =
+    'Select an organisation unit before saving or verifying'
+
 const formValueSchema = z.union([
     z.string(),
     z.number(),
@@ -25,7 +28,7 @@ export const trackerRegistrationValuesSchema = z
     .record(z.string(), formValueSchema)
     .and(
         z.object({
-            orgUnit: z.string(),
+            orgUnit: z.string().min(1, ORG_UNIT_REQUIRED_MESSAGE),
             enrolledAt: z.string(),
             occurredAt: z.string().optional(),
         })
@@ -33,7 +36,7 @@ export const trackerRegistrationValuesSchema = z
 
 export const eventFormValuesSchema = z.record(z.string(), formValueSchema).and(
     z.object({
-        orgUnit: z.string(),
+        orgUnit: z.string().min(1, ORG_UNIT_REQUIRED_MESSAGE),
         occurredAt: z.string(),
     })
 )

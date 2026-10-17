@@ -194,6 +194,21 @@ describe('trackerPayloads', () => {
             ).toBe(false)
         })
 
+        it('rejects an empty orgUnit in events and registrations', () => {
+            expect(
+                eventFormValuesSchema.safeParse({
+                    orgUnit: '',
+                    occurredAt: '2026-07-02',
+                }).success
+            ).toBe(false)
+            expect(
+                trackerRegistrationValuesSchema.safeParse({
+                    orgUnit: '',
+                    enrolledAt: '2026-07-02',
+                }).success
+            ).toBe(false)
+        })
+
         it('accepts numeric values in a registration form', () => {
             expect(
                 trackerRegistrationValuesSchema.safeParse({

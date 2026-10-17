@@ -9,6 +9,8 @@ import {
 import { memo, useEffect, useId, useRef } from 'react'
 import { useWatch } from 'react-hook-form'
 import { ProgramRuleActionType } from '@nnkogift/dhis2-form-utils-metadata'
+import { OrgUnitSelectorField } from '@/modules/program-playground/components/orgUnit/OrgUnitSelectorField'
+import { useProgramOrgUnitsContext } from '@/modules/program-playground/components/orgUnit/ProgramOrgUnitsContext'
 import { FieldEffectBadge } from './FieldEffectBadge'
 import { HiddenFieldPlaceholder } from './HiddenFieldPlaceholder'
 import { useRuleDisplay } from './RuleDisplayContext'
@@ -33,6 +35,7 @@ export const RuleAwareField = memo(function RuleAwareField({
     const status = useWatch({ name: 'status' })
     const { ghostsEnabled, labelLookup } = useRuleDisplay()
     const labelId = useId()
+    const programOrgUnits = useProgramOrgUnitsContext()
     const widgetContainerRef = useRef<HTMLDivElement>(null)
 
     // The widget below has its own `fieldConfig.label` blanked (see widgetControl) so it
@@ -112,7 +115,22 @@ export const RuleAwareField = memo(function RuleAwareField({
                 />
             ) : (
                 <div ref={widgetContainerRef}>
-                    <D2FieldWidget control={widgetControl} />
+                    {control.widgetKind === 'orgUnit' && programOrgUnits ? (
+                        <OrgUnitSelectorField
+                            value={String(control.field.value ?? '')}
+                            onChange={control.field.onChange}
+                            onBlur={control.field.onBlur}
+                            orgUnits={programOrgUnits.orgUnits}
+                            rootIds={programOrgUnits.rootIds}
+                            disabled={control.isDisabled}
+                            error={control.hasError}
+                            validationText={
+                                control.errorMessage ?? control.warningMessage
+                            }
+                        />
+                    ) : (
+                        <D2FieldWidget control={widgetControl} />
+                    )}
                 </div>
             )}
             {onCompleteMessage ? (

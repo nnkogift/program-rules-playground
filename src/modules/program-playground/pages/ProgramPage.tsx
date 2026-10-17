@@ -1,6 +1,6 @@
 import '@nnkogift/dhis2-form-utils-devtools/style.css'
 
-import React, { lazy, Suspense, useMemo } from 'react'
+import React, { lazy, Suspense, useCallback, useMemo, useState } from 'react'
 import { useLocation, useParams } from 'react-router'
 import i18n from '@dhis2/d2-i18n'
 import { Center, CircularLoader } from '@dhis2/ui'
@@ -9,6 +9,9 @@ import { ProgramContextBar } from '@/modules/program-playground/components/Progr
 import { RouteSuspenseFallback } from '@/shared/components/RouteSuspenseFallback'
 import { buildProgramListUrl } from '@/modules/program-list/hooks/buildProgramListUrl'
 import { useAccessibleOrgUnits } from '@/modules/program-playground/hooks/useAccessibleOrgUnits'
+import { ProgramOrgUnitsProvider } from '@/modules/program-playground/components/orgUnit/ProgramOrgUnitsContext'
+import { useProgramOrgUnits } from '@/modules/program-playground/hooks/useProgramOrgUnits'
+import { getTreeRoots } from '@/modules/program-playground/utils/orgUnitTree'
 import { useCurrentUserSupplementaryData } from '@/modules/program-playground/hooks/useCurrentUserSupplementaryData'
 import { useOptionGroupsSupplementaryData } from '@/modules/program-playground/hooks/useOptionGroupsSupplementaryData'
 import { useProgramPlaygroundState } from '@/modules/program-playground/hooks/useProgramPlaygroundState'
@@ -54,10 +57,23 @@ export function ProgramPage() {
         loading,
     } = useEventProgramMetadataQuery(programId ?? '')
     const {
-        orgUnits,
+        orgUnits: accessibleOrgUnits,
         loading: orgUnitsLoading,
         error: orgUnitsError,
     } = useAccessibleOrgUnits()
+    const {
+        orgUnits: programOrgUnits,
+        loading: programOrgUnitsLoading,
+        error: programOrgUnitsError,
+    } = useProgramOrgUnits(programId ?? '')
+    const orgUnitRootIds = useMemo(
+        () =>
+            getTreeRoots(
+                programOrgUnits,
+                accessibleOrgUnits.map((orgUnit) => orgUnit.id)
+            ),
+        [programOrgUnits, accessibleOrgUnits]
+    )
     const supplementaryData = useCurrentUserSupplementaryData()
     const optionGroups = useOptionGroupsSupplementaryData(
         program?.programRules ?? []
@@ -72,6 +88,11 @@ export function ProgramPage() {
         resetPlayground,
     } = useProgramPlaygroundState()
 
+    const [orgUnitAttempted, setOrgUnitAttempted] = useState(false)
+    const reportMissingOrgUnit = useCallback(() => {
+        setOrgUnitAttempted(true)
+    }, [])
+    const hasOrgUnitsError = Boolean(orgUnitsError || programOrgUnitsError)
     const isTracker = program?.programType === PROGRAM_TYPE.WITH_REGISTRATION
     const programMeta = useMemo(() => {
         if (!program) {
@@ -86,7 +107,7 @@ export function ProgramPage() {
         })
     }, [program, isTracker])
 
-    if (loading || orgUnitsLoading) {
+    if (loading || orgUnitsLoading || programOrgUnitsLoading) {
         return (
             <Center>
                 <CircularLoader />
@@ -105,8 +126,10 @@ export function ProgramPage() {
                 backUrl={backUrl}
                 programName={program.displayName}
                 programMeta={programMeta}
-                orgUnits={orgUnits}
+                orgUnits={programOrgUnits}
+                orgUnitRootIds={orgUnitRootIds}
                 orgUnitId={orgUnitId}
+                showOrgUnitError={orgUnitAttempted && !orgUnitId}
                 onOrgUnitChange={setOrgUnitId}
                 primaryDateLabel={
                     isTracker ? i18n.t('Enrollment date') : i18n.t('Event date')
@@ -117,37 +140,43 @@ export function ProgramPage() {
             />
             <div className="flex min-h-0 flex-1 flex-col">
                 <OrgUnitsNotice
-                    hasError={Boolean(orgUnitsError)}
-                    isEmpty={!orgUnitsError && orgUnits.length === 0}
+                    hasError={hasOrgUnitsError}
+                    isEmpty={!hasOrgUnitsError && programOrgUnits.length === 0}
                 />
-                {!orgUnitsError && orgUnits.length > 0 ? (
-                    <div className="flex min-h-0 flex-1 flex-col">
-                        <Suspense fallback={<RouteSuspenseFallback />}>
-                            {isTracker ? (
-                                <TrackerProgramShell
-                                    key={resetKey}
-                                    program={program}
-                                    programId={program.id}
-                                    orgUnitId={orgUnitId}
-                                    enrolledAt={primaryDate}
-                                    supplementaryData={supplementaryData}
-                                    optionGroups={optionGroups}
-                                />
-                            ) : (
-                                <ProgramStageFormScreen
-                                    key={resetKey}
-                                    program={program}
-                                    programStageId={
-                                        program.programStages?.[0]?.id
-                                    }
-                                    orgUnitId={orgUnitId}
-                                    occurredAt={primaryDate}
-                                    supplementaryData={supplementaryData}
-                                    optionGroups={optionGroups}
-                                />
-                            )}
-                        </Suspense>
-                    </div>
+                {!hasOrgUnitsError && programOrgUnits.length > 0 ? (
+                    <ProgramOrgUnitsProvider
+                        orgUnits={programOrgUnits}
+                        rootIds={orgUnitRootIds}
+                        reportMissingOrgUnit={reportMissingOrgUnit}
+                    >
+                        <div className="flex min-h-0 flex-1 flex-col">
+                            <Suspense fallback={<RouteSuspenseFallback />}>
+                                {isTracker ? (
+                                    <TrackerProgramShell
+                                        key={resetKey}
+                                        program={program}
+                                        programId={program.id}
+                                        orgUnitId={orgUnitId}
+                                        enrolledAt={primaryDate}
+                                        supplementaryData={supplementaryData}
+                                        optionGroups={optionGroups}
+                                    />
+                                ) : (
+                                    <ProgramStageFormScreen
+                                        key={resetKey}
+                                        program={program}
+                                        programStageId={
+                                            program.programStages?.[0]?.id
+                                        }
+                                        orgUnitId={orgUnitId}
+                                        occurredAt={primaryDate}
+                                        supplementaryData={supplementaryData}
+                                        optionGroups={optionGroups}
+                                    />
+                                )}
+                            </Suspense>
+                        </div>
+                    </ProgramOrgUnitsProvider>
                 ) : null}
             </div>
         </div>

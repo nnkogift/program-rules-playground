@@ -5,6 +5,7 @@ import { useEventProgramMetadataQuery } from '@nnkogift/dhis2-form-utils-hooks'
 import { ProgramStageFormScreen } from '@/modules/program-playground/components/forms/ProgramStageFormScreen'
 import { TrackerProgramShell } from '@/modules/program-playground/components/forms/TrackerProgramShell'
 import { useAccessibleOrgUnits } from '@/modules/program-playground/hooks/useAccessibleOrgUnits'
+import { useProgramOrgUnits } from '@/modules/program-playground/hooks/useProgramOrgUnits'
 import { useCurrentUserSupplementaryData } from '@/modules/program-playground/hooks/useCurrentUserSupplementaryData'
 import { useOptionGroupsSupplementaryData } from '@/modules/program-playground/hooks/useOptionGroupsSupplementaryData'
 import { ProgramPage } from './ProgramPage'
@@ -13,6 +14,7 @@ jest.mock('@nnkogift/dhis2-form-utils-hooks', () => ({
     useEventProgramMetadataQuery: jest.fn(),
 }))
 jest.mock('@/modules/program-playground/hooks/useAccessibleOrgUnits')
+jest.mock('@/modules/program-playground/hooks/useProgramOrgUnits')
 jest.mock('@/modules/program-playground/hooks/useCurrentUserSupplementaryData')
 jest.mock('@/modules/program-playground/hooks/useOptionGroupsSupplementaryData')
 jest.mock(
@@ -32,6 +34,7 @@ const mockedUseEventProgramMetadataQuery = jest.mocked(
     useEventProgramMetadataQuery
 )
 const mockedUseAccessibleOrgUnits = jest.mocked(useAccessibleOrgUnits)
+const mockedUseProgramOrgUnits = jest.mocked(useProgramOrgUnits)
 const mockedUseCurrentUserSupplementaryData = jest.mocked(
     useCurrentUserSupplementaryData
 )
@@ -65,6 +68,17 @@ describe('ProgramPage', () => {
             orgUnits: [{ id: 'OrgUnit12345', displayName: 'Ngelehun CHC' }],
             refetch: jest.fn(),
             engine: {} as never,
+        })
+        mockedUseProgramOrgUnits.mockReturnValue({
+            orgUnits: [
+                {
+                    id: 'OrgUnit12345',
+                    displayName: 'Ngelehun CHC',
+                    path: '/OrgUnit12345',
+                },
+            ],
+            loading: false,
+            error: undefined,
         })
         mockedUseCurrentUserSupplementaryData.mockReturnValue(
             SENTINEL_SUPPLEMENTARY_DATA
@@ -164,21 +178,14 @@ describe('ProgramPage', () => {
             error: undefined,
             loading: false,
         })
-        mockedUseAccessibleOrgUnits.mockReturnValue({
-            data: undefined,
-            error: undefined,
-            loading: false,
-            fetching: false,
-            called: true,
+        mockedUseProgramOrgUnits.mockReturnValue({
             orgUnits: [],
-            refetch: jest.fn(),
-            engine: {} as never,
+            loading: false,
+            error: undefined,
         })
 
         const view = renderPage()
 
-        expect(
-            view.getByText(/does not have any accessible organisation units/i)
-        ).toBeTruthy()
+        expect(view.getByText(/no organisation units assigned/i)).toBeTruthy()
     })
 })

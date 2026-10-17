@@ -1,22 +1,18 @@
 import React from 'react'
 import { Link } from 'react-router'
 import i18n from '@dhis2/d2-i18n'
-import {
-    Button,
-    IconArrowLeft16,
-    IconSync16,
-    InputField,
-    SingleSelectField,
-    SingleSelectOption,
-} from '@dhis2/ui'
-import type { OrgUnit } from '@/shared/types/program'
+import { Button, IconArrowLeft16, IconSync16, InputField } from '@dhis2/ui'
+import { OrgUnitSelectorField } from '@/modules/program-playground/components/orgUnit/OrgUnitSelectorField'
+import type { ProgramOrgUnit } from '@/modules/program-playground/schemas/programOrgUnits.schema'
 
 type ProgramContextBarProps = {
     backUrl: string
     programName: string
     programMeta: string
-    orgUnits: OrgUnit[]
+    orgUnits: ProgramOrgUnit[]
+    orgUnitRootIds: string[]
     orgUnitId: string
+    showOrgUnitError: boolean
     onOrgUnitChange: (orgUnitId: string) => void
     primaryDateLabel: string
     primaryDateValue: string
@@ -29,7 +25,9 @@ export function ProgramContextBar({
     programName,
     programMeta,
     orgUnits,
+    orgUnitRootIds,
     orgUnitId,
+    showOrgUnitError,
     onOrgUnitChange,
     primaryDateLabel,
     primaryDateValue,
@@ -55,23 +53,22 @@ export function ProgramContextBar({
                 </span>
             </div>
             <div className="ml-auto flex shrink-0 items-end gap-dp12">
-                <div className="w-[196px]">
-                    <SingleSelectField
+                <div className="w-[300px]">
+                    <OrgUnitSelectorField
                         dense
+                        required
                         label={i18n.t('Organisation unit')}
-                        selected={orgUnitId || undefined}
-                        onChange={({ selected }) => {
-                            onOrgUnitChange(selected ?? '')
-                        }}
-                    >
-                        {orgUnits.map((orgUnit) => (
-                            <SingleSelectOption
-                                key={orgUnit.id}
-                                label={orgUnit.displayName}
-                                value={orgUnit.id}
-                            />
-                        ))}
-                    </SingleSelectField>
+                        value={orgUnitId}
+                        orgUnits={orgUnits}
+                        rootIds={orgUnitRootIds}
+                        error={showOrgUnitError}
+                        validationText={
+                            showOrgUnitError
+                                ? i18n.t('Required to verify or save')
+                                : undefined
+                        }
+                        onChange={onOrgUnitChange}
+                    />
                 </div>
                 <div className="w-[130px]">
                     <InputField

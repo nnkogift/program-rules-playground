@@ -35,6 +35,7 @@ import { FormDateField } from './FormDateField'
 import { SaveReviewDialog } from './SaveReviewDialog'
 import { validateForm } from '@/modules/program-playground/utils/validateForm'
 import { ProgramFormActions } from './ProgramFormActions'
+import { useOrgUnitGuard } from '@/modules/program-playground/components/orgUnit/ProgramOrgUnitsContext'
 import { RegistrationFormFields } from './RegistrationFormFields'
 
 const REGISTRATION_FORM_SYSTEM_KEYS = [
@@ -93,6 +94,7 @@ export function ProgramRegistrationForm({
     })
     usePublishFormValues(form, onValuesChange)
     const [ghostsEnabled, setGhostsEnabled] = useState(true)
+    const ensureOrgUnit = useOrgUnitGuard(orgUnitId)
     const [review, setReview] = useState<{ values: Record<string, unknown> }>()
     const rulesMetadata = useMemo(
         () => ({ formKind: 'tracker' as const, metadata, programStages }),
@@ -148,6 +150,14 @@ export function ProgramRegistrationForm({
             )
         )
         if (!parsedValues.success) {
+            if (!values.orgUnit) {
+                ensureOrgUnit()
+                throw new Error(
+                    i18n.t(
+                        'Select an organisation unit before saving or verifying'
+                    )
+                )
+            }
             throw new Error(
                 i18n.t('The form values could not be validated before saving')
             )
@@ -162,6 +172,7 @@ export function ProgramRegistrationForm({
 
     // Opens the read-only summary of the server-side effects.
     const handleReview = () => {
+        ensureOrgUnit()
         setReview({ values: form.getValues() })
     }
 
@@ -220,7 +231,10 @@ export function ProgramRegistrationForm({
                                         />
                                     </RuleDisplayProvider>
                                     <ProgramFormActions
-                                        onValidate={() => validateForm(form)}
+                                        onValidate={() => {
+                                            ensureOrgUnit()
+                                            return validateForm(form)
+                                        }}
                                         resolveFieldLabel={
                                             labelLookup.resolveFieldName
                                         }

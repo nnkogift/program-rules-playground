@@ -15,7 +15,7 @@ export function OrgUnitsNotice({ hasError, isEmpty }: OrgUnitsNoticeProps) {
                     title={i18n.t('Could not load organisation units')}
                 >
                     {i18n.t(
-                        'The current user organisation units could not be loaded for data entry.'
+                        'The organisation units for this program could not be loaded for data entry.'
                     )}
                 </NoticeBox>
             </div>
@@ -27,7 +27,7 @@ export function OrgUnitsNotice({ hasError, isEmpty }: OrgUnitsNoticeProps) {
             <div className="p-dp16">
                 <NoticeBox title={i18n.t('No organisation units available')}>
                     {i18n.t(
-                        'The current user does not have any accessible organisation units for this playground.'
+                        'This program has no organisation units assigned, or none are accessible to the current user.'
                     )}
                 </NoticeBox>
             </div>

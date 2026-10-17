@@ -1,5 +1,11 @@
 # program-rules-playground
 
+## 0.1.0-alpha.11
+
+### Patch Changes
+
+- 29d0d0a: fix: place event form fields inside their program stage sections by bumping `@nnkogift/dhis2-form-utils-*` to `0.1.0-alpha.13`, and call `useMemo` before the early return in `EventFormFields`
+
 ## 0.1.0-alpha.10
 
 ### Minor Changes

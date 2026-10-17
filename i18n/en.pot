@@ -122,6 +122,12 @@ msgstr "Trigger server rules"
 msgid "Saved"
 msgstr "Saved"
 
+msgid "Form has issues"
+msgstr "Form has issues"
+
+msgid "Could not validate the form"
+msgstr "Could not validate the form"
+
 msgid "Form is valid"
 msgstr "Form is valid"
 

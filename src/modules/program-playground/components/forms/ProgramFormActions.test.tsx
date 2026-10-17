@@ -93,12 +93,12 @@ describe('ProgramFormActions', () => {
         expect(onSave).not.toHaveBeenCalled()
     })
 
-    it('stays quiet when validation fails, leaving errors on the fields', async () => {
+    it('announces the valid result as a status', async () => {
         render(
             <Wrapper>
                 <ProgramFormActions
                     submitLabel="Register"
-                    onValidate={jest.fn().mockResolvedValue(false)}
+                    onValidate={jest.fn().mockResolvedValue(true)}
                     errorTitle="Error"
                 />
             </Wrapper>
@@ -106,11 +106,50 @@ describe('ProgramFormActions', () => {
 
         fireEvent.click(screen.getByRole('button', { name: 'Validate form' }))
 
-        await waitFor(() => {
-            expect(
-                screen.getByRole('button', { name: 'Validate form' })
-            ).toBeTruthy()
-        })
+        expect(await screen.findByRole('status')).toBeTruthy()
+    })
+
+    it('raises a focused alert listing the invalid fields', async () => {
+        function InvalidWrapper({ children }: { children: ReactNode }) {
+            const form = useForm({ errors: { abc: { type: 'required' } } })
+            return <FormProvider {...form}>{children}</FormProvider>
+        }
+        render(
+            <InvalidWrapper>
+                <ProgramFormActions
+                    submitLabel="Register"
+                    onValidate={jest.fn().mockResolvedValue(false)}
+                    resolveFieldLabel={() => 'First name'}
+                    errorTitle="Error"
+                />
+            </InvalidWrapper>
+        )
+
+        fireEvent.click(screen.getByRole('button', { name: 'Validate form' }))
+
+        const alert = await screen.findByRole('alert')
+        expect(alert.textContent).toContain('Form has issues')
+        expect(alert.textContent).toContain('First name')
         expect(screen.queryByText('Form is valid')).toBeNull()
+        await waitFor(() => {
+            expect(document.activeElement).toBe(alert)
+        })
+    })
+
+    it('shows an alert instead of swallowing a validation failure', async () => {
+        render(
+            <Wrapper>
+                <ProgramFormActions
+                    submitLabel="Register"
+                    onValidate={jest.fn().mockRejectedValue(new Error('boom'))}
+                    errorTitle="Error"
+                />
+            </Wrapper>
+        )
+
+        fireEvent.click(screen.getByRole('button', { name: 'Validate form' }))
+
+        const alert = await screen.findByRole('alert')
+        expect(alert.textContent).toContain('boom')
     })
 })

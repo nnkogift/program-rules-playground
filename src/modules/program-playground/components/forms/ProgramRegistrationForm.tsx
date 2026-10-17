@@ -33,6 +33,7 @@ import {
 } from '@/modules/program-playground/utils/trackerPayloads'
 import { FormDateField } from './FormDateField'
 import { SaveReviewDialog } from './SaveReviewDialog'
+import { validateForm } from '@/modules/program-playground/utils/validateForm'
 import { ProgramFormActions } from './ProgramFormActions'
 import { RegistrationFormFields } from './RegistrationFormFields'
 
@@ -184,15 +185,6 @@ export function ProgramRegistrationForm({
         }
     })
 
-    // Runs the form's own validation so field errors are highlighted, nothing is posted.
-    const validate = async () => {
-        let valid = false
-        await form.handleSubmit(() => {
-            valid = true
-        })()
-        return valid
-    }
-
     // The importer runs server-side rule actions on registration too, so the
     // submit is reviewed before anything is posted.
     const handleReview = () => {
@@ -251,7 +243,10 @@ export function ProgramRegistrationForm({
                                         />
                                     </RuleDisplayProvider>
                                     <ProgramFormActions
-                                        onValidate={validate}
+                                        onValidate={() => validateForm(form)}
+                                        resolveFieldLabel={
+                                            labelLookup.resolveFieldName
+                                        }
                                         submitLabel={i18n.t(
                                             'Trigger server rules'
                                         )}

@@ -15,7 +15,7 @@ import {
     type RuleSupplementaryDataInput,
 } from '@nnkogift/dhis2-form-utils-rules'
 import React, { useMemo, useState } from 'react'
-import { FormProvider } from 'react-hook-form'
+
 import { LazyRulesPanel } from '@/modules/program-playground/components/rules/LazyRulesPanel'
 import { usePublishFormValues } from '@/modules/program-playground/hooks/usePublishFormValues'
 import { createTodayValue } from '@/modules/program-playground/utils/date.utils'
@@ -156,53 +156,47 @@ export function ProgramRegistrationForm({
         >
             <RuleDevtoolsScope formStore={formStore}>
                 <div className="flex h-full w-full flex-1 min-h-0">
-                    <FormProvider {...form}>
-                        <form
-                            onSubmit={(event) => {
-                                event.preventDefault()
-                                handleReview()
-                            }}
-                            className="flex min-w-0 flex-1 flex-col overflow-auto pt-4 px-7 pb-7"
-                        >
-                            {metadata.displayIncidentDate ? (
-                                <FormDateField
-                                    name="occurredAt"
-                                    label={
-                                        metadata.displayIncidentDateLabel ??
-                                        i18n.t('Incident date')
-                                    }
-                                    disabled={form.formState.isSubmitting}
-                                />
-                            ) : null}
-                            <RuleFormBody
-                                rulesMetadata={rulesMetadata}
-                                labelLookup={labelLookup}
-                                fields={
-                                    <RegistrationFormFields
-                                        metadata={metadata}
-                                    />
+                    <form
+                        onSubmit={(event) => {
+                            event.preventDefault()
+                            handleReview()
+                        }}
+                        className="flex min-w-0 flex-1 flex-col overflow-auto pt-4 px-7 pb-7"
+                    >
+                        {metadata.displayIncidentDate ? (
+                            <FormDateField
+                                name="occurredAt"
+                                label={
+                                    metadata.displayIncidentDateLabel ??
+                                    i18n.t('Incident date')
                                 }
-                            >
-                                <ProgramFormActions
-                                    onValidate={() => {
-                                        ensureOrgUnit()
-                                        return validateForm(form)
-                                    }}
-                                    resolveFieldLabel={
-                                        labelLookup.resolveFieldName
-                                    }
-                                    serverCheck={{
-                                        state: serverCheck.state,
-                                        unplaced: serverCheck.unplaced,
-                                        onVerify: () => {
-                                            void serverCheck.verify()
-                                        },
-                                    }}
-                                    submitLabel={i18n.t('Trigger server rules')}
-                                />
-                            </RuleFormBody>
-                        </form>
-                    </FormProvider>
+                                disabled={form.formState.isSubmitting}
+                            />
+                        ) : null}
+                        <RuleFormBody
+                            rulesMetadata={rulesMetadata}
+                            labelLookup={labelLookup}
+                            fields={
+                                <RegistrationFormFields metadata={metadata} />
+                            }
+                        >
+                            <ProgramFormActions
+                                onValidate={() => {
+                                    ensureOrgUnit()
+                                    return validateForm(form)
+                                }}
+                                resolveFieldLabel={labelLookup.resolveFieldName}
+                                serverCheck={{
+                                    state: serverCheck.state,
+                                    unplaced: serverCheck.unplaced,
+                                    onVerify: () => {
+                                        void serverCheck.verify()
+                                    },
+                                }}
+                                submitLabel={i18n.t('Trigger server rules')}
+                            />
+                        </RuleFormBody>
+                    </form>
                     <LazyRulesPanel metadata={rulesMetadata} />
                     {review ? (
                         <SaveReviewDialog

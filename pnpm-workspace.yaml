@@ -1,30 +1,30 @@
 # These hoists are needed for @dhis2/app-shell since it uses directly some libraries that were hoisted by yarn 1
 # This is a better alternative than pnpm's shamefullyHoist https://pnpm.io/settings#shamefullyhoist until we update the way that @dhis2/app-shell works
 publicHoistPattern:
-  - '@dhis2/ui'
-  - '@dhis2/ui-icons'
-  - 'typeface-roboto'
-  - '@dhis2/app-adapter'
-  - 'prop-types'
-  - '@dhis2/d2-i18n'
-  - 'post-robot'
-  - 'styled-jsx'
-  - '@dhis2/app-adapter'
-  - '@dhis2/pwa'
+    - '@dhis2/ui'
+    - '@dhis2/ui-icons'
+    - 'typeface-roboto'
+    - '@dhis2/app-adapter'
+    - 'prop-types'
+    - '@dhis2/d2-i18n'
+    - 'post-robot'
+    - 'styled-jsx'
+    - '@dhis2/app-adapter'
+    - '@dhis2/pwa'
 
 onlyBuiltDependencies:
-  - '@dhis2/cli-helpers-engine'
-  - core-js-pure
-  - esbuild
+    - '@dhis2/cli-helpers-engine'
+    - core-js-pure
+    - esbuild
 
 allowBuilds:
-  '@dhis2/cli-helpers-engine': false
-  core-js-pure: false
-  esbuild: false
+    '@dhis2/cli-helpers-engine': false
+    core-js-pure: false
+    esbuild: false
 
 minimumReleaseAgeExclude:
-  - '@nnkogift/dhis2-form-utils-devtools@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
-  - '@nnkogift/dhis2-form-utils-dhis2-ui@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
-  - '@nnkogift/dhis2-form-utils-hooks@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
-  - '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
-  - '@nnkogift/dhis2-form-utils-rules@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
+    - '@nnkogift/dhis2-form-utils-devtools@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
+    - '@nnkogift/dhis2-form-utils-dhis2-ui@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
+    - '@nnkogift/dhis2-form-utils-hooks@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
+    - '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
+    - '@nnkogift/dhis2-form-utils-rules@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'

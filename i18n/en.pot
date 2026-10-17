@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-17T17:13:35.066Z\n"
-"PO-Revision-Date: 2026-10-17T17:13:35.066Z\n"
+"POT-Creation-Date: 2026-10-17T19:01:17.843Z\n"
+"PO-Revision-Date: 2026-10-17T19:01:17.844Z\n"
 
 msgid "All"
 msgstr "All"
@@ -101,24 +101,6 @@ msgstr "a rule"
 msgid "Section"
 msgstr "Section"
 
-msgid "Select an organisation unit before saving or verifying"
-msgstr "Select an organisation unit before saving or verifying"
-
-msgid "The form values could not be validated before saving"
-msgstr "The form values could not be validated before saving"
-
-msgid "Form is valid"
-msgstr "Form is valid"
-
-msgid "No validation issues were found."
-msgstr "No validation issues were found."
-
-msgid "Form has issues"
-msgstr "Form has issues"
-
-msgid "Could not validate the form"
-msgstr "Could not validate the form"
-
 msgid "Validate form"
 msgstr "Validate form"
 
@@ -177,6 +159,18 @@ msgstr "Server check found issues"
 
 msgid "The affected fields are highlighted in the form."
 msgstr "The affected fields are highlighted in the form."
+
+msgid "Form is valid"
+msgstr "Form is valid"
+
+msgid "No validation issues were found."
+msgstr "No validation issues were found."
+
+msgid "Form has issues"
+msgstr "Form has issues"
+
+msgid "Could not validate the form"
+msgstr "Could not validate the form"
 
 msgid "Select organisation unit"
 msgstr "Select organisation unit"
@@ -265,14 +259,14 @@ msgstr "No indicator rules are firing in this form."
 msgid "Loading rules panel"
 msgstr "Loading rules panel"
 
-msgid "Event program"
-msgstr "Event program"
-
 msgid "Enrollment date"
 msgstr "Enrollment date"
 
 msgid "Event date"
 msgstr "Event date"
+
+msgid "Event program"
+msgstr "Event program"
 
 msgid "Could not load organisation units"
 msgstr "Could not load organisation units"
@@ -301,6 +295,12 @@ msgstr "Could not load this program. Try again later."
 
 msgid "An unexpected error occurred"
 msgstr "An unexpected error occurred"
+
+msgid "Select an organisation unit before saving or verifying"
+msgstr "Select an organisation unit before saving or verifying"
+
+msgid "The form values could not be validated before saving"
+msgstr "The form values could not be validated before saving"
 
 msgctxt "Application title"
 msgid "__MANIFEST_APP_TITLE"

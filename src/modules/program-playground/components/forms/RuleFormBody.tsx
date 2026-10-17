@@ -37,7 +37,7 @@ export function RuleFormBody({
                 <div className="sticky top-0 shrink-0">
                     <RuleOutputColumn metadata={rulesMetadata} />
                 </div>
-                <div className="flex min-w-[520px] flex-1 flex-col gap-dp16">
+                <div className="flex min-w-130 flex-1 flex-col gap-dp16">
                     <RuleDisplayProvider
                         ghostsEnabled={ghostsEnabled}
                         labelLookup={labelLookup}

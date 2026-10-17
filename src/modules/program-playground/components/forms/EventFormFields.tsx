@@ -13,17 +13,18 @@ type EventFormFieldsProps = {
     metadata: ProgramStageMetadata
 }
 
+function getDataElementId(field: FieldControlInput | undefined) {
+    if (field?.kind !== 'dataElement') {
+        return undefined
+    }
+    return field.config.dataElement?.id
+}
+
 function renderDataElementField(field: FieldControlInput | undefined) {
-    if (!field) {
+    const fieldId = getDataElementId(field)
+    if (!field || !fieldId) {
         return null
     }
-
-    const fieldId =
-        field.kind === 'dataElement' ? field.config.dataElement?.id : undefined
-    if (!fieldId) {
-        return null
-    }
-
     return <RuleAwareField key={fieldId} field={field} />
 }
 

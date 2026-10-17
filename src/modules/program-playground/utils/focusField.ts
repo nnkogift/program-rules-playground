@@ -14,3 +14,10 @@ export function focusField(fieldId: string): boolean {
     })
     return true
 }
+
+/** Whether a field with this id is currently rendered. */
+export function isFieldRendered(fieldId: string): boolean {
+    return Array.from(
+        document.querySelectorAll<HTMLElement>('[data-field-id]')
+    ).some((element) => element.dataset.fieldId === fieldId)
+}

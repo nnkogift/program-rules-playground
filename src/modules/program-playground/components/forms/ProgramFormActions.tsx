@@ -2,14 +2,23 @@ import i18n from '@dhis2/d2-i18n'
 import { Button, ButtonStrip, NoticeBox } from '@dhis2/ui'
 import { useRef, useState } from 'react'
 import { useFormState } from 'react-hook-form'
+import { ServerCheckStatus } from './ServerCheckStatus'
+import type { ServerVerificationState } from '@/modules/program-playground/hooks/useServerVerification'
 import { focusField } from '@/modules/program-playground/utils/focusField'
+import type { ServerReportEntry } from '@nnkogift/dhis2-form-utils-devtools'
+
+type ServerCheck = {
+    state: ServerVerificationState
+    /** Rule messages that could not be shown on a field. */
+    unplaced: ServerReportEntry[]
+    onVerify: () => void
+}
 
 type ProgramFormActionsBaseProps = {
-    errorTitle: string
-    successMessage?: string
-    successTitle?: string
     /** Complete is mid-pass (loading) or awaiting the banner's decision (disabled). */
     completionPhase?: 'idle' | 'evaluating' | 'review'
+    /** Dry-runs the form against the server; its outcome shows above the buttons. */
+    serverCheck?: ServerCheck
     /** Runs the form's validation only, resolving to whether it passed. */
     onValidate?: () => Promise<boolean>
     /** Names an invalid field in the issue summary; falls back to the field id. */
@@ -36,9 +45,7 @@ type ValidationResult = 'valid' | 'invalid' | 'failed'
 
 export function ProgramFormActions({
     submitLabel,
-    errorTitle,
-    successMessage,
-    successTitle = i18n.t('Saved'),
+    serverCheck,
     onSave,
     onComplete,
     completionPhase = 'idle',
@@ -46,6 +53,7 @@ export function ProgramFormActions({
     resolveFieldLabel,
 }: ProgramFormActionsProps) {
     const { isSubmitting, errors } = useFormState()
+    const isVerifying = serverCheck?.state.phase === 'loading'
     const [pendingAction, setPendingAction] = useState<PendingAction>()
     const [validationResult, setValidationResult] = useState<ValidationResult>()
     const [validationFailure, setValidationFailure] = useState<string>()
@@ -77,15 +85,14 @@ export function ProgramFormActions({
 
     return (
         <>
-            {errors.root?.message ? (
-                <NoticeBox error title={errorTitle}>
-                    {errors.root.message}
-                </NoticeBox>
+            {serverCheck ? (
+                <ServerCheckStatus
+                    state={serverCheck.state}
+                    unplaced={serverCheck.unplaced}
+                    resolveFieldLabel={resolveFieldLabel}
+                />
             ) : null}
-            {successMessage ? (
-                <NoticeBox title={successTitle}>{successMessage}</NoticeBox>
-            ) : null}
-            {validationResult === 'valid' && !errors.root?.message ? (
+            {validationResult === 'valid' ? (
                 <div role="status">
                     <NoticeBox title={i18n.t('Form is valid')}>
                         {i18n.t('No validation issues were found.')}
@@ -137,6 +144,20 @@ export function ProgramFormActions({
                         }}
                     >
                         {i18n.t('Validate form')}
+                    </Button>
+                )}
+                {serverCheck && (
+                    <Button
+                        type="button"
+                        loading={isVerifying}
+                        disabled={
+                            isSubmitting ||
+                            isVerifying ||
+                            completionPhase === 'evaluating'
+                        }
+                        onClick={serverCheck.onVerify}
+                    >
+                        {i18n.t('Verify with server')}
                     </Button>
                 )}
                 {hasSplitActions && (

@@ -1,4 +1,3 @@
-import { useDataEngine } from '@dhis2/app-runtime'
 import { createLabelLookup } from '@nnkogift/dhis2-form-utils-devtools'
 import { RuleDevtoolsScope } from '@nnkogift/dhis2-form-utils-devtools/scope'
 import {
@@ -28,7 +27,8 @@ import { LazyRulesPanel } from '@/modules/program-playground/components/rules/La
 import { RuleDisplayProvider } from '@/modules/program-playground/components/rules/RuleDisplayContext'
 import { RuleOutputColumn } from '@/modules/program-playground/components/rules/RuleOutputColumn'
 import { usePublishFormValues } from '@/modules/program-playground/hooks/usePublishFormValues'
-import { formatDhis2Error } from '@/modules/program-playground/utils/formatDhis2Error'
+import { currentReport } from '@/modules/program-playground/hooks/useServerVerification'
+import { useFormServerCheck } from '@/modules/program-playground/hooks/useFormServerCheck'
 import {
     buildEventPayload,
     eventFormValuesSchema,
@@ -71,8 +71,6 @@ export function ProgramEventForm({
     optionGroups,
     onValuesChange,
 }: ProgramEventFormProps) {
-    const dataEngine = useDataEngine()
-
     const completionCollector = useCompletionMessageCollector()
     const { form, formStore } = useEventForm<EventFormValues>({
         options: {
@@ -93,11 +91,8 @@ export function ProgramEventForm({
         },
     })
     usePublishFormValues(form, onValuesChange)
-    const [success, setSuccess] = useState<{
-        status: EventStatus
-        message: string
-    }>()
     const [ghostsEnabled, setGhostsEnabled] = useState(true)
+    const [verifyStatus, setVerifyStatus] = useState<EventStatus>('ACTIVE')
     const [review, setReview] = useState<{
         status: EventStatus
         values: Record<string, unknown>
@@ -154,7 +149,7 @@ export function ProgramEventForm({
         form.setValue('occurredAt', occurredAt, { shouldValidate: false })
     }, [form, occurredAt])
 
-    // Shared by Confirm and Verify so the dry run posts exactly what the save does.
+    // The dry run posts exactly what a save would.
     const buildEventSubmission = (
         status: EventStatus,
         resolvedValues: EventFormValues
@@ -192,61 +187,30 @@ export function ProgramEventForm({
         return { values, payload }
     }
 
-    const submit = (status: EventStatus) =>
-        form.handleSubmit(async (resolvedValues) => {
-            form.clearErrors('root')
-            setSuccess(undefined)
-
-            try {
-                const { values, payload } = buildEventSubmission(
-                    status,
-                    resolvedValues
-                )
-
-                await dataEngine.mutate({
-                    resource: 'tracker',
-                    type: 'create',
-                    data: payload,
-                })
-
-                form.reset(values)
-                completion.finish()
-                setSuccess({
-                    status,
-                    message:
-                        status === 'COMPLETED'
-                            ? i18n.t('Server rules ran on the completed event')
-                            : i18n.t('Server rules ran on the event'),
-                })
-            } catch (error) {
-                form.setError('root', {
-                    message: formatDhis2Error(error),
-                })
-            }
-        })
-
-    // The importer runs server-side rule actions for both statuses, so every
-    // submit is reviewed before anything is posted.
+    // Opens the read-only summary of the server-side effects for this status.
     const openReview = (status: EventStatus) => {
+        setVerifyStatus(status)
         setReview({
             status,
             values: { ...enrollment?.values, ...form.getValues() },
         })
     }
 
+    // Verify dry-runs whichever status the summary was last opened for, so
+    // on-complete rules are checked once the user has gone down that path.
+    const serverCheck = useFormServerCheck({
+        form,
+        status: verifyStatus,
+        actionTypesByRule,
+        buildPayload: () =>
+            buildEventSubmission(verifyStatus, form.getValues()).payload,
+    })
+
     const handleCancelReview = () => {
         if (review?.status === 'COMPLETED') {
             completion.cancel()
         }
         setReview(undefined)
-    }
-
-    const handleConfirmReview = () => {
-        if (!review) {
-            return
-        }
-        setReview(undefined)
-        void submit(review.status)()
     }
 
     const handleComplete = async () => {
@@ -308,17 +272,17 @@ export function ProgramEventForm({
                                     resolveFieldLabel={
                                         labelLookup.resolveFieldName
                                     }
+                                    serverCheck={{
+                                        state: serverCheck.state,
+                                        unplaced: serverCheck.unplaced,
+                                        onVerify: () => {
+                                            void serverCheck.verify()
+                                        },
+                                    }}
                                     onSave={handleSave}
                                     onComplete={() => {
                                         void handleComplete()
                                     }}
-                                    errorTitle={i18n.t(
-                                        'Could not trigger server rules'
-                                    )}
-                                    successMessage={success?.message}
-                                    successTitle={i18n.t(
-                                        'Server rules triggered'
-                                    )}
                                 />
                             </div>
                         </div>
@@ -327,24 +291,13 @@ export function ProgramEventForm({
                     {review ? (
                         <SaveReviewDialog
                             formStore={formStore}
-                            status={review.status}
-                            confirmLabel={
-                                review.status === 'COMPLETED'
-                                    ? i18n.t('Trigger on-complete rules')
-                                    : i18n.t('Trigger server rules')
-                            }
                             programId={program.id}
                             values={review.values}
                             labelLookup={labelLookup}
-                            buildPayload={() =>
-                                buildEventSubmission(
-                                    review.status,
-                                    form.getValues()
-                                ).payload
+                            serverReport={
+                                currentReport(serverCheck.state)?.verification
                             }
-                            actionTypesByRule={actionTypesByRule}
-                            onCancel={handleCancelReview}
-                            onConfirm={handleConfirmReview}
+                            onClose={handleCancelReview}
                         />
                     ) : null}
                 </div>

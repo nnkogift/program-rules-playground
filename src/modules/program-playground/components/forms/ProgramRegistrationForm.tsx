@@ -1,4 +1,3 @@
-import { useDataEngine } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import {
     createLabelLookup,
@@ -24,7 +23,8 @@ import { RuleDisplayProvider } from '@/modules/program-playground/components/rul
 import { RuleOutputColumn } from '@/modules/program-playground/components/rules/RuleOutputColumn'
 import { usePublishFormValues } from '@/modules/program-playground/hooks/usePublishFormValues'
 import { createTodayValue } from '@/modules/program-playground/utils/date.utils'
-import { formatDhis2Error } from '@/modules/program-playground/utils/formatDhis2Error'
+import { currentReport } from '@/modules/program-playground/hooks/useServerVerification'
+import { useFormServerCheck } from '@/modules/program-playground/hooks/useFormServerCheck'
 import {
     buildTrackerRegistrationPayload,
     trackerRegistrationValuesSchema,
@@ -66,7 +66,6 @@ export function ProgramRegistrationForm({
     optionGroups,
     onValuesChange,
 }: ProgramRegistrationFormProps) {
-    const dataEngine = useDataEngine()
     const defaultValues = useMemo(
         () => ({
             orgUnit: orgUnitId,
@@ -93,7 +92,6 @@ export function ProgramRegistrationForm({
         },
     })
     usePublishFormValues(form, onValuesChange)
-    const [successMessage, setSuccessMessage] = useState<string>()
     const [ghostsEnabled, setGhostsEnabled] = useState(true)
     const [review, setReview] = useState<{ values: Record<string, unknown> }>()
     const rulesMetadata = useMemo(
@@ -128,7 +126,7 @@ export function ProgramRegistrationForm({
         form.setValue('enrolledAt', enrolledAt, { shouldValidate: false })
     }, [form, enrolledAt])
 
-    // Shared by Confirm and Verify so the dry run posts exactly what Confirm does.
+    // The dry run posts exactly what a save would.
     const buildRegistrationSubmission = (
         resolvedValues: TrackerRegistrationValues
     ) => {
@@ -162,39 +160,18 @@ export function ProgramRegistrationForm({
         return { values, payload }
     }
 
-    const submit = form.handleSubmit(async (resolvedValues) => {
-        form.clearErrors('root')
-        setSuccessMessage(undefined)
-
-        try {
-            const { values, payload } =
-                buildRegistrationSubmission(resolvedValues)
-
-            await dataEngine.mutate({
-                resource: 'tracker',
-                type: 'create',
-                data: payload,
-            })
-
-            form.reset(values)
-            setSuccessMessage(i18n.t('Server rules ran on the registration'))
-        } catch (error) {
-            form.setError('root', {
-                message: formatDhis2Error(error),
-            })
-        }
-    })
-
-    // The importer runs server-side rule actions on registration too, so the
-    // submit is reviewed before anything is posted.
+    // Opens the read-only summary of the server-side effects.
     const handleReview = () => {
         setReview({ values: form.getValues() })
     }
 
-    const handleConfirmReview = () => {
-        setReview(undefined)
-        void submit()
-    }
+    const serverCheck = useFormServerCheck({
+        form,
+        status: 'ACTIVE',
+        actionTypesByRule,
+        buildPayload: () =>
+            buildRegistrationSubmission(form.getValues()).payload,
+    })
 
     return (
         <FormStateProvider<TrackerRegistrationValues>
@@ -247,15 +224,15 @@ export function ProgramRegistrationForm({
                                         resolveFieldLabel={
                                             labelLookup.resolveFieldName
                                         }
+                                        serverCheck={{
+                                            state: serverCheck.state,
+                                            unplaced: serverCheck.unplaced,
+                                            onVerify: () => {
+                                                void serverCheck.verify()
+                                            },
+                                        }}
                                         submitLabel={i18n.t(
                                             'Trigger server rules'
-                                        )}
-                                        errorTitle={i18n.t(
-                                            'Could not trigger server rules'
-                                        )}
-                                        successMessage={successMessage}
-                                        successTitle={i18n.t(
-                                            'Server rules triggered'
                                         )}
                                     />
                                 </div>
@@ -266,20 +243,15 @@ export function ProgramRegistrationForm({
                     {review ? (
                         <SaveReviewDialog
                             formStore={formStore}
-                            status="ACTIVE"
-                            confirmLabel={i18n.t('Trigger server rules')}
                             programId={programId}
                             values={review.values}
                             labelLookup={labelLookup}
-                            buildPayload={() =>
-                                buildRegistrationSubmission(form.getValues())
-                                    .payload
+                            serverReport={
+                                currentReport(serverCheck.state)?.verification
                             }
-                            actionTypesByRule={actionTypesByRule}
-                            onCancel={() => {
+                            onClose={() => {
                                 setReview(undefined)
                             }}
-                            onConfirm={handleConfirmReview}
                         />
                     ) : null}
                 </div>

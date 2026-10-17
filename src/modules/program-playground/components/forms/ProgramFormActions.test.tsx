@@ -12,7 +12,7 @@ describe('ProgramFormActions', () => {
     it('renders a single submit button by default', () => {
         render(
             <Wrapper>
-                <ProgramFormActions submitLabel="Register" errorTitle="Error" />
+                <ProgramFormActions submitLabel="Register" />
             </Wrapper>
         )
 
@@ -34,11 +34,7 @@ describe('ProgramFormActions', () => {
         const onComplete = jest.fn()
         render(
             <Wrapper>
-                <ProgramFormActions
-                    onSave={onSave}
-                    onComplete={onComplete}
-                    errorTitle="Error"
-                />
+                <ProgramFormActions onSave={onSave} onComplete={onComplete} />
             </Wrapper>
         )
 
@@ -54,20 +50,68 @@ describe('ProgramFormActions', () => {
         expect(onComplete).toHaveBeenCalledTimes(1)
     })
 
-    it('shows the success notice', () => {
-        render(
+    it('verifies with the server from the form and keeps the button label', () => {
+        const onVerify = jest.fn()
+        const { rerender } = render(
             <Wrapper>
                 <ProgramFormActions
-                    onSave={jest.fn()}
-                    onComplete={jest.fn()}
-                    errorTitle="Error"
-                    successTitle="Event completed"
-                    successMessage="Event completed successfully"
+                    submitLabel="Register"
+                    serverCheck={{
+                        state: { phase: 'idle' },
+                        unplaced: [],
+                        onVerify,
+                    }}
                 />
             </Wrapper>
         )
 
-        expect(screen.getByText('Event completed successfully')).toBeTruthy()
+        fireEvent.click(
+            screen.getByRole('button', { name: 'Verify with server' })
+        )
+        expect(onVerify).toHaveBeenCalledTimes(1)
+
+        rerender(
+            <Wrapper>
+                <ProgramFormActions
+                    submitLabel="Register"
+                    serverCheck={{
+                        state: {
+                            phase: 'done',
+                            report: {
+                                verification: { entries: [] },
+                                otherErrors: [],
+                            },
+                        },
+                        unplaced: [],
+                        onVerify,
+                    }}
+                />
+            </Wrapper>
+        )
+
+        expect(
+            screen.getByRole('button', { name: 'Verify with server' })
+        ).toBeTruthy()
+        expect(
+            screen.getByText('Server found no rule errors or warnings.')
+        ).toBeTruthy()
+    })
+
+    it('shows a failed server check in a notice', () => {
+        render(
+            <Wrapper>
+                <ProgramFormActions
+                    submitLabel="Register"
+                    serverCheck={{
+                        state: { phase: 'error', message: 'Network down' },
+                        unplaced: [],
+                        onVerify: jest.fn(),
+                    }}
+                />
+            </Wrapper>
+        )
+
+        expect(screen.getByRole('alert').textContent).toContain('Network down')
     })
 
     it('validates without saving and confirms when the form is valid', async () => {
@@ -79,7 +123,6 @@ describe('ProgramFormActions', () => {
                     onSave={onSave}
                     onComplete={jest.fn()}
                     onValidate={onValidate}
-                    errorTitle="Error"
                 />
             </Wrapper>
         )
@@ -99,7 +142,6 @@ describe('ProgramFormActions', () => {
                 <ProgramFormActions
                     submitLabel="Register"
                     onValidate={jest.fn().mockResolvedValue(true)}
-                    errorTitle="Error"
                 />
             </Wrapper>
         )
@@ -120,7 +162,6 @@ describe('ProgramFormActions', () => {
                     submitLabel="Register"
                     onValidate={jest.fn().mockResolvedValue(false)}
                     resolveFieldLabel={() => 'First name'}
-                    errorTitle="Error"
                 />
             </InvalidWrapper>
         )
@@ -142,7 +183,6 @@ describe('ProgramFormActions', () => {
                 <ProgramFormActions
                     submitLabel="Register"
                     onValidate={jest.fn().mockRejectedValue(new Error('boom'))}
-                    errorTitle="Error"
                 />
             </Wrapper>
         )

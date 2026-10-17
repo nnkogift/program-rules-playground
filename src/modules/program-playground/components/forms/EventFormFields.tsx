@@ -60,16 +60,6 @@ export function EventFormFields({ metadata }: EventFormFieldsProps) {
 
     const programStageSections = metadata.programStageSections ?? []
 
-    if (programStageSections.length === 0) {
-        return (
-            <>
-                {Array.from(fieldsByDataElementId.values()).map(
-                    renderDataElementField
-                )}
-            </>
-        )
-    }
-
     const layout = useMemo(() => {
         return resolveFormSectionLayout({
             sections: programStageSections,
@@ -83,6 +73,16 @@ export function EventFormFields({ metadata }: EventFormFieldsProps) {
                 programStageDataElement.dataElement?.id,
         })
     }, [programStageSections, programStageDataElements])
+
+    if (programStageSections.length === 0) {
+        return (
+            <>
+                {Array.from(fieldsByDataElementId.values()).map(
+                    renderDataElementField
+                )}
+            </>
+        )
+    }
 
     return (
         <>

@@ -9,6 +9,7 @@
         "build": "d2-app-scripts build",
         "dev": "d2-app-scripts start --proxy https://dhis.rufaa.co.tz",
         "test": "d2-app-scripts test",
+        "test:coverage": "d2-app-scripts test --coverage --coverageReporters=json --coverageDirectory=coverage",
         "deploy": "d2-app-scripts deploy",
         "lint": "eslint && prettier -c .",
         "typecheck": "tsc --noEmit",

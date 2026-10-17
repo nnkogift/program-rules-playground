@@ -62,7 +62,12 @@ jobs:
                   node-version: 24
                   cache: pnpm
             - run: pnpm install --frozen-lockfile
+            # Real Istanbul coverage so fallow scores CRAP from measured
+            # coverage instead of its static estimate.
+            - run: pnpm test:coverage
             - uses: fallow-rs/fallow@v3
+              env:
+                  FALLOW_COVERAGE: coverage/coverage-final.json
               with:
                   command: audit
 

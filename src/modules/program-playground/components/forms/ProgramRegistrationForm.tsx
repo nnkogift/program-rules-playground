@@ -14,7 +14,7 @@ import {
     type RuleEventInput,
     type RuleSupplementaryDataInput,
 } from '@nnkogift/dhis2-form-utils-rules'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { FormProvider } from 'react-hook-form'
 import { LazyRulesPanel } from '@/modules/program-playground/components/rules/LazyRulesPanel'
 import { usePublishFormValues } from '@/modules/program-playground/hooks/usePublishFormValues'
@@ -29,6 +29,9 @@ import {
 } from '@/modules/program-playground/utils/trackerPayloads'
 import { FormDateField } from './FormDateField'
 import { SaveReviewDialog } from './SaveReviewDialog'
+import { buildActionTypesByRule } from '@/modules/program-playground/utils/buildActionTypesByRule'
+import { omitUndefined } from '@/modules/program-playground/utils/omitUndefined'
+import { useSyncFormValue } from '@/modules/program-playground/hooks/useSyncFormValue'
 import { validateForm } from '@/modules/program-playground/utils/validateForm'
 import { ProgramFormActions } from './ProgramFormActions'
 import { RuleFormBody } from './RuleFormBody'
@@ -102,40 +105,20 @@ export function ProgramRegistrationForm({
         [rulesMetadata]
     )
 
-    const actionTypesByRule = useMemo(() => {
-        const byRule = new Map<string, string[]>()
-        for (const rule of metadata.programRules) {
-            if (rule.id) {
-                byRule.set(
-                    rule.id,
-                    rule.programRuleActions.map(
-                        (action) => action.programRuleActionType
-                    )
-                )
-            }
-        }
-        return byRule
-    }, [metadata.programRules])
+    const actionTypesByRule = useMemo(
+        () => buildActionTypesByRule(metadata.programRules),
+        [metadata.programRules]
+    )
 
-    useEffect(() => {
-        form.setValue('orgUnit', orgUnitId, { shouldValidate: false })
-    }, [form, orgUnitId])
-
-    useEffect(() => {
-        form.setValue('enrolledAt', enrolledAt, { shouldValidate: false })
-    }, [form, enrolledAt])
+    useSyncFormValue(form, 'orgUnit', orgUnitId)
+    useSyncFormValue(form, 'enrolledAt', enrolledAt)
 
     // The dry run posts exactly what a save would.
     const buildRegistrationSubmission = (
         resolvedValues: TrackerRegistrationValues
     ) => {
-        const definedValues = Object.fromEntries(
-            Object.entries(resolvedValues).filter(
-                ([, value]) => value !== undefined
-            )
-        ) as TrackerRegistrationValues
         const values = withSystemFieldValues(
-            definedValues,
+            omitUndefined(resolvedValues),
             form.getValues(),
             REGISTRATION_FORM_SYSTEM_KEYS
         )

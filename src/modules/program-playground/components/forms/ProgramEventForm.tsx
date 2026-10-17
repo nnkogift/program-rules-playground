@@ -14,7 +14,7 @@ import {
     type RuleEventInput,
     type RuleSupplementaryDataInput,
 } from '@nnkogift/dhis2-form-utils-rules'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { CompletionBanner } from './CompletionBanner'
 import {
     useCompletionMessageCollector,
@@ -33,6 +33,11 @@ import {
 } from '@/modules/program-playground/utils/trackerPayloads'
 import { useOrgUnitGuard } from '@/modules/program-playground/components/orgUnit/ProgramOrgUnitsContext'
 import { EventFormFields } from './EventFormFields'
+import { buildActionTypesByRule } from '@/modules/program-playground/utils/buildActionTypesByRule'
+import { listMandatoryFieldIds } from '@/modules/program-playground/utils/listMandatoryFieldIds'
+import { omitUndefined } from '@/modules/program-playground/utils/omitUndefined'
+import { useEventReviewFlow } from '@/modules/program-playground/hooks/useEventReviewFlow'
+import { useSyncFormValue } from '@/modules/program-playground/hooks/useSyncFormValue'
 import { validateForm } from '@/modules/program-playground/utils/validateForm'
 import { ProgramFormActions } from './ProgramFormActions'
 import { RuleFormBody } from './RuleFormBody'
@@ -90,11 +95,6 @@ export function ProgramEventForm({
     })
     usePublishFormValues(form, onValuesChange)
     const ensureOrgUnit = useOrgUnitGuard(orgUnitId)
-    const [verifyStatus, setVerifyStatus] = useState<EventStatus>('ACTIVE')
-    const [review, setReview] = useState<{
-        status: EventStatus
-        values: Record<string, unknown>
-    }>()
     const rulesMetadata = useMemo(
         () => ({
             formKind: 'event' as const,
@@ -108,27 +108,12 @@ export function ProgramEventForm({
         [rulesMetadata]
     )
 
-    const actionTypesByRule = useMemo(() => {
-        const byRule = new Map<string, string[]>()
-        for (const rule of program.programRules) {
-            if (rule.id) {
-                byRule.set(
-                    rule.id,
-                    (rule.programRuleActions ?? []).map(
-                        (action) => action.programRuleActionType
-                    )
-                )
-            }
-        }
-        return byRule
-    }, [program.programRules])
-
+    const actionTypesByRule = useMemo(
+        () => buildActionTypesByRule(program.programRules),
+        [program.programRules]
+    )
     const mandatoryFieldIds = useMemo(
-        () =>
-            (stageMetadata.programStageDataElements ?? [])
-                .filter((element) => element.compulsory)
-                .map((element) => element.dataElement?.id)
-                .filter((id): id is string => Boolean(id)),
+        () => listMandatoryFieldIds(stageMetadata),
         [stageMetadata]
     )
     const completion = useCompletionPass({
@@ -139,28 +124,30 @@ export function ProgramEventForm({
         resolveFieldName: labelLookup.resolveFieldName,
     })
 
-    useEffect(() => {
-        form.setValue('orgUnit', orgUnitId, { shouldValidate: false })
-    }, [form, orgUnitId])
+    useSyncFormValue(form, 'orgUnit', orgUnitId)
+    useSyncFormValue(form, 'occurredAt', occurredAt)
 
-    useEffect(() => {
-        form.setValue('occurredAt', occurredAt, { shouldValidate: false })
-    }, [form, occurredAt])
+    const {
+        review,
+        verifyStatus,
+        openReview,
+        handleCancelReview,
+        handleComplete,
+        handleSave,
+    } = useEventReviewFlow({
+        completion,
+        ensureOrgUnit,
+        getValues: form.getValues,
+        enrollment,
+    })
 
     // The dry run posts exactly what a save would.
     const buildEventSubmission = (
         status: EventStatus,
         resolvedValues: EventFormValues
     ) => {
-        // `getValues()` carries untouched fields as `undefined`, which the
-        // schema rejects; the resolver output the save path gets omits them.
-        const definedValues = Object.fromEntries(
-            Object.entries(resolvedValues).filter(
-                ([, value]) => value !== undefined
-            )
-        ) as EventFormValues
         const values = withSystemFieldValues(
-            definedValues,
+            omitUndefined(resolvedValues),
             form.getValues(),
             EVENT_FORM_SYSTEM_KEYS
         )
@@ -177,16 +164,6 @@ export function ProgramEventForm({
         return { values, payload }
     }
 
-    // Opens the read-only summary of the server-side effects for this status.
-    const openReview = (status: EventStatus) => {
-        ensureOrgUnit()
-        setVerifyStatus(status)
-        setReview({
-            status,
-            values: { ...enrollment?.values, ...form.getValues() },
-        })
-    }
-
     // Verify dry-runs whichever status the summary was last opened for, so
     // on-complete rules are checked once the user has gone down that path.
     const serverCheck = useFormServerCheck({
@@ -196,26 +173,6 @@ export function ProgramEventForm({
         buildPayload: () =>
             buildEventSubmission(verifyStatus, form.getValues()).payload,
     })
-
-    const handleCancelReview = () => {
-        if (review?.status === 'COMPLETED') {
-            completion.cancel()
-        }
-        setReview(undefined)
-    }
-
-    const handleComplete = async () => {
-        if ((await completion.start()) === 'proceed') {
-            openReview('COMPLETED')
-        }
-    }
-
-    const handleSave = () => {
-        if (completion.phase !== 'idle') {
-            completion.cancel()
-        }
-        openReview('ACTIVE')
-    }
 
     return (
         <FormStateProvider<EventFormValues> formStore={formStore} form={form}>

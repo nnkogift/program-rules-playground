@@ -1,5 +1,27 @@
 # program-rules-playground
 
+## 0.1.0-alpha.10
+
+### Minor Changes
+
+- 43adccd: Fields made mandatory by a program rule are now marked with an asterisk in their label.
+- 43adccd: Select the organisation unit from a modal tree limited to the program's assigned org units (searchable, with unassigned ancestors shown but not selectable). The same selector is used for org unit fields inside forms. Validate form, Verify with server and Save now require an org unit and flag the selector when it is missing.
+- 9e06c23: Splits the event form submit into **Save** (posts `ACTIVE`) and **Complete** (posts `COMPLETED` with `completedAt`). The registration form keeps a single action, and `status` is never sent as a data value.
+- 5e305d7: The registration form now opens the server effects summary (with **Verify with server**) before posting, like the event form. The actions are renamed to **Trigger server rules** (registration and event Save) and **Trigger on-complete rules** (event Complete).
+- ef81793: Registration and event forms have a Validate form button that runs form validation and highlights field issues without posting anything.
+- ab30794: Adds **Verify with server** to the save review dialog. It posts the exact event payload with `importMode=VALIDATE&async=false` (nothing is saved), attributes the server's rule errors and warnings to their rules, flags rules only the server fired as "Server only", and lists other import errors separately.
+
+### Patch Changes
+
+- 43adccd: Updates the `@nnkogift/dhis2-form-utils-*` packages to `0.1.0-alpha.12`.
+- dd70716: Fixes saving events and registrations that could not be submitted: numeric and boolean values are now accepted, and `orgUnit` and the date fields (which the form resolver strips) are restored before validation and kept after the post-save reset.
+- 8a21612: Redesigns the footer of the server review dialog. Status, import errors and the dry-run note are one compact block beside the actions, the duplicate Cancel is gone (Close does the same), and a failed verification raises an alert instead of a notice box in the footer.
+- 6745953: The review dialog actions no longer wrap onto two lines, and a failed retry keeps the last good server check on screen instead of clearing it.
+- ad11892: Polishes the server review dialog: verification results are announced to screen readers, a status line says when the server check finished (including a clean run), the button becomes **Verify again**, Cancel moves before Verify, and other import errors show their code as a tag without the importer's backticks. Result messages now say server rules were triggered instead of saved.
+- 311d020: Adds a `typecheck` script and CI job, fixes a strict-mode type error for programs without a `code`, and refreshes the agent guidance (`AGENTS.md` is now the single source, imported by `CLAUDE.md`).
+- 6b76324: Validate form now reports invalid results too: a focused alert lists the fields with issues (each links to its field) and a failed validation is shown instead of being swallowed. Shared by the registration and event forms.
+- ed8e985: Verify with server now sits beside Validate form instead of in the server summary modal. Rule errors from the dry run appear on the fields they target, and anything else shows in a notice. The summary modal is read-only, and its Trigger server rules button, which posted the payload, is removed.
+
 ## 0.1.0-alpha.9
 
 ### Patch Changes

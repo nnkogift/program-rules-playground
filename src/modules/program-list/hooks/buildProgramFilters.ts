@@ -4,9 +4,7 @@ import {
     type ProgramTypeFilter,
 } from '@/shared/types/program'
 
-export function programTypeFilterToApi(
-    type?: ProgramTypeFilter
-): string | undefined {
+function programTypeFilterToApi(type?: ProgramTypeFilter): string | undefined {
     if (type === PROGRAM_TYPE_FILTER.REGISTRATION) {
         return PROGRAM_TYPE.WITH_REGISTRATION
     }

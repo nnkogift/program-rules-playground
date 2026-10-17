@@ -4,7 +4,7 @@ import type {
 } from '@nnkogift/dhis2-form-utils-devtools'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
 
-export const SERVER_ERROR_TYPE = 'server'
+const SERVER_ERROR_TYPE = 'server'
 
 type ApplyServerReportOptions = {
     /** Whether a field with this id is on screen, so an error there can be seen. */

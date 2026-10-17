@@ -15,7 +15,7 @@ import {
 // changes nothing never tells us it ran. Fall back to a timer for that case.
 const EVALUATION_FALLBACK_MS = 150
 
-export const COMPLETION_PHASE = {
+const COMPLETION_PHASE = {
     IDLE: 'idle',
     EVALUATING: 'evaluating',
     REVIEW: 'review',
@@ -23,7 +23,7 @@ export const COMPLETION_PHASE = {
 
 type CompletionPhase = (typeof COMPLETION_PHASE)[keyof typeof COMPLETION_PHASE]
 
-export type CompletionOutcome = 'proceed' | 'review'
+type CompletionOutcome = 'proceed' | 'review'
 
 /**
  * WARNINGONCOMPLETE / ERRORONCOMPLETE effects with no data element or

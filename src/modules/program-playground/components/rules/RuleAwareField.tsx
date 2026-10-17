@@ -6,11 +6,14 @@ import {
     useFieldRuleEffect,
     useFieldState,
 } from '@nnkogift/dhis2-form-utils-hooks'
-import { memo, useEffect, useId, useRef } from 'react'
+import { memo, useId } from 'react'
 import { useWatch } from 'react-hook-form'
 import { ProgramRuleActionType } from '@nnkogift/dhis2-form-utils-metadata'
 import { OrgUnitSelectorField } from '@/modules/program-playground/components/orgUnit/OrgUnitSelectorField'
+import { useWidgetAriaLabel } from '@/modules/program-playground/hooks/useWidgetAriaLabel'
+import { resolveOnCompleteMessage } from '@/modules/program-playground/utils/resolveOnCompleteMessage'
 import { useProgramOrgUnitsContext } from '@/modules/program-playground/components/orgUnit/ProgramOrgUnitsContext'
+import type { OnCompleteMessage } from '@/modules/program-playground/utils/resolveOnCompleteMessage'
 import { FieldEffectBadge } from './FieldEffectBadge'
 import { HiddenFieldPlaceholder } from './HiddenFieldPlaceholder'
 import { useRuleDisplay } from './RuleDisplayContext'
@@ -18,13 +21,6 @@ import { useRuleDisplay } from './RuleDisplayContext'
 type RuleAwareFieldProps = {
     field: FieldControlInput
 }
-
-// Matches the interactive element every D2*Field widget ultimately renders:
-// InputField/TextAreaField-based widgets render <input>/<textarea>, the custom
-// SingleSelectField renders this data-test'd div. A <fieldset> (the radio-group
-// render hint) is excluded — its own <legend> already names the group natively.
-const WIDGET_TARGET_SELECTOR =
-    'input, textarea, [data-test="dhis2-uicore-select-input"]'
 
 export const RuleAwareField = memo(function RuleAwareField({
     field,
@@ -36,23 +32,7 @@ export const RuleAwareField = memo(function RuleAwareField({
     const { ghostsEnabled, labelLookup } = useRuleDisplay()
     const labelId = useId()
     const programOrgUnits = useProgramOrgUnitsContext()
-    const widgetContainerRef = useRef<HTMLDivElement>(null)
-
-    // The widget below has its own `fieldConfig.label` blanked (see widgetControl) so it
-    // doesn't render a second, visually duplicate label — this row is the only visible
-    // label. @dhis2/ui's field components don't accept an aria-label/aria-labelledby prop,
-    // so once the label is blanked they render no accessible name at all for the
-    // underlying input. Restore it by wiring aria-labelledby to this span directly on
-    // whichever interactive element the widget actually rendered.
-    useEffect(() => {
-        const container = widgetContainerRef.current
-        if (!container || container.querySelector('fieldset')) {
-            return
-        }
-        container
-            .querySelector<HTMLElement>(WIDGET_TARGET_SELECTOR)
-            ?.setAttribute('aria-labelledby', labelId)
-    })
+    const widgetContainerRef = useWidgetAriaLabel(labelId)
 
     if (control.isHidden && !ghostsEnabled) {
         return null
@@ -65,13 +45,7 @@ export const RuleAwareField = memo(function RuleAwareField({
     const effectIsOnComplete =
         ruleEffect?.ruleActionType === ProgramRuleActionType.ERRORONCOMPLETE ||
         ruleEffect?.ruleActionType === ProgramRuleActionType.WARNINGONCOMPLETE
-    const onCompleteError =
-        status === 'COMPLETED' ? fieldState?.errorOnComplete : null
-    const onCompleteWarning =
-        status === 'COMPLETED' && !onCompleteError
-            ? fieldState?.warningOnComplete
-            : null
-    const onCompleteMessage = onCompleteError ?? onCompleteWarning
+    const onComplete = resolveOnCompleteMessage(status, fieldState)
     const widgetControl = {
         ...control,
         fieldConfig: { ...control.fieldConfig, label: '' },
@@ -97,11 +71,11 @@ export const RuleAwareField = memo(function RuleAwareField({
                         ruleName={ruleName}
                     />
                 ) : null}
-                {onCompleteMessage && !effectIsOnComplete ? (
+                {onComplete && !effectIsOnComplete ? (
                     <FieldEffectBadge
                         onComplete
                         actionType={
-                            onCompleteError
+                            onComplete.kind === 'error'
                                 ? ProgramRuleActionType.ERRORONCOMPLETE
                                 : ProgramRuleActionType.WARNINGONCOMPLETE
                         }
@@ -115,35 +89,78 @@ export const RuleAwareField = memo(function RuleAwareField({
                 />
             ) : (
                 <div ref={widgetContainerRef}>
-                    {control.widgetKind === 'orgUnit' && programOrgUnits ? (
-                        <OrgUnitSelectorField
-                            value={String(control.field.value ?? '')}
-                            onChange={control.field.onChange}
-                            onBlur={control.field.onBlur}
-                            orgUnits={programOrgUnits.orgUnits}
-                            rootIds={programOrgUnits.rootIds}
-                            disabled={control.isDisabled}
-                            error={control.hasError}
-                            validationText={
-                                control.errorMessage ?? control.warningMessage
-                            }
-                        />
-                    ) : (
-                        <D2FieldWidget control={widgetControl} />
-                    )}
+                    <FieldWidget
+                        control={control}
+                        widgetControl={widgetControl}
+                        programOrgUnits={programOrgUnits}
+                    />
                 </div>
             )}
-            {onCompleteMessage ? (
-                <p
-                    className={`m-0 border-l-2 border-dashed pl-2 text-xs leading-4 ${onCompleteError ? 'border-dhis2-red-600 text-dhis2-red-800' : 'border-dhis2-yellow-600 text-dhis2-grey-900'}`}
-                >
-                    <span className="font-semibold">
-                        {i18n.t('On complete')}
-                        {': '}
-                    </span>
-                    {onCompleteMessage}
-                </p>
-            ) : null}
+            {onComplete ? <OnCompleteNote message={onComplete} /> : null}
         </div>
     )
 })
+
+type OnCompleteNoteProps = {
+    message: OnCompleteMessage
+}
+
+function OnCompleteNote({ message }: OnCompleteNoteProps) {
+    const tone =
+        message.kind === 'error'
+            ? 'border-dhis2-red-600 text-dhis2-red-800'
+            : 'border-dhis2-yellow-600 text-dhis2-grey-900'
+    return (
+        <p
+            className={`m-0 border-l-2 border-dashed pl-2 text-xs leading-4 ${tone}`}
+        >
+            <span className="font-semibold">
+                {i18n.t('On complete')}
+                {': '}
+            </span>
+            {message.text}
+        </p>
+    )
+}
+
+type FieldWidgetProps = {
+    control: ReturnType<typeof useFieldControl>
+    widgetControl: ReturnType<typeof useFieldControl>
+    programOrgUnits: ReturnType<typeof useProgramOrgUnitsContext>
+}
+
+function FieldWidget({
+    control,
+    widgetControl,
+    programOrgUnits,
+}: FieldWidgetProps) {
+    if (control.widgetKind === 'orgUnit' && programOrgUnits) {
+        return (
+            <OrgUnitWidget
+                control={control}
+                programOrgUnits={programOrgUnits}
+            />
+        )
+    }
+    return <D2FieldWidget control={widgetControl} />
+}
+
+type OrgUnitWidgetProps = {
+    control: ReturnType<typeof useFieldControl>
+    programOrgUnits: NonNullable<ReturnType<typeof useProgramOrgUnitsContext>>
+}
+
+function OrgUnitWidget({ control, programOrgUnits }: OrgUnitWidgetProps) {
+    return (
+        <OrgUnitSelectorField
+            value={String(control.field.value ?? '')}
+            onChange={control.field.onChange}
+            onBlur={control.field.onBlur}
+            orgUnits={programOrgUnits.orgUnits}
+            rootIds={programOrgUnits.rootIds}
+            disabled={control.isDisabled}
+            error={control.hasError}
+            validationText={control.errorMessage ?? control.warningMessage}
+        />
+    )
+}

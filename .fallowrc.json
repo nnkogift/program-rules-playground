@@ -1,0 +1,12 @@
+{
+    "entry": ["src/AppWrapper.tsx", "jest.setup.js", "src/**/*.test.{ts,tsx}"],
+    "ignorePatterns": [
+        "design/**",
+        ".d2/**",
+        "build/**",
+        "d2.config.js",
+        "viteConfigExtensions.mts",
+        "jest.css.mock.js"
+    ],
+    "ignoreDependencies": ["vite", "@tailwindcss/vite", "@dhis2/api-types"]
+}

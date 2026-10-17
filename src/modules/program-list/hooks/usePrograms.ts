@@ -18,7 +18,7 @@ type ProgramsQueryResult = {
     programs: ProgramsResponse
 }
 
-export const query = {
+const query = {
     programs: {
         resource: 'programs',
         params: ({

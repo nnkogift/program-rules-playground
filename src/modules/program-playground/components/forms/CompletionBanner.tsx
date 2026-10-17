@@ -17,7 +17,7 @@ type CompletionBannerProps = {
 const FOCUSABLE =
     'input, textarea, select, button, [tabindex]:not([tabindex="-1"]), [data-test="dhis2-uicore-select-input"]'
 
-export function focusField(fieldId: string) {
+function focusField(fieldId: string) {
     const target = Array.from(
         document.querySelectorAll<HTMLElement>('[data-field-id]')
     ).find((element) => element.dataset.fieldId === fieldId)

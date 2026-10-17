@@ -12,7 +12,3 @@ export const accessibleOrgUnitsResponseSchema = z.object({
         teiSearchOrganisationUnits: z.array(orgUnitSchema).optional(),
     }),
 })
-
-export type AccessibleOrgUnitsResponse = z.infer<
-    typeof accessibleOrgUnitsResponseSchema
->

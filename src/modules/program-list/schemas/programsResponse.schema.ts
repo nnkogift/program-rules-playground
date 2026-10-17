@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { PROGRAM_TYPE } from '@/shared/types/program'
 
-export const rawProgramListItemSchema = z.object({
+const rawProgramListItemSchema = z.object({
     id: z.string(),
     displayName: z.string(),
     code: z.string().optional(),
@@ -15,7 +15,7 @@ export const rawProgramListItemSchema = z.object({
     programRules: z.array(z.object({ id: z.string() })).optional(),
 })
 
-export const pagerSchema = z.object({
+const pagerSchema = z.object({
     page: z.number(),
     pageCount: z.number(),
     total: z.number(),

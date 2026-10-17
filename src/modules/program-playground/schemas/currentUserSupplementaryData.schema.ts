@@ -6,7 +6,3 @@ export const currentUserSupplementaryDataResponseSchema = z.object({
         userRoles: z.array(z.object({ id: z.string() })).optional(),
     }),
 })
-
-export type CurrentUserSupplementaryDataResponse = z.infer<
-    typeof currentUserSupplementaryDataResponseSchema
->

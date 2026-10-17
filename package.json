@@ -53,6 +53,7 @@
         "@types/react-dom": "^19.2.3",
         "changeset-conventional-commits": "^1.0.4",
         "eslint": "^10.4.0",
+        "fallow": "^3.33.1",
         "husky": "^9.1.7",
         "lint-staged": "^17.3.0",
         "prettier": "^3.8.3",

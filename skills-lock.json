@@ -13,6 +13,30 @@
             "skillPath": "dev-tooling/SKILL.md",
             "computedHash": "30aab1c5148281e264f7af2bb49fb07e2ff471528aa7ff6b03dbc892a364affe"
         },
+        "fallow": {
+            "source": "fallow-rs/fallow-skills",
+            "sourceType": "github",
+            "skillPath": "fallow/skills/fallow/SKILL.md",
+            "computedHash": "3f8fb5a8a181cf395473107b06005b38aa836dd2ebc5aa96dc5a0715a451cf7b"
+        },
+        "fallow-codex-onboarding": {
+            "source": "fallow-rs/fallow-skills",
+            "sourceType": "github",
+            "skillPath": "fallow/skills/fallow-codex-onboarding/SKILL.md",
+            "computedHash": "3ad00ed915b023b8435b4f986e52284e8a82b4dccc625a7e444b5a785e605ce1"
+        },
+        "fallow-review": {
+            "source": "fallow-rs/fallow-skills",
+            "sourceType": "github",
+            "skillPath": "fallow/skills/fallow-review/SKILL.md",
+            "computedHash": "738d0db6764123300ac05cc73572dcad0f6836f039b26f3a1913d4b8b80d7bbb"
+        },
+        "fallow-setup": {
+            "source": "fallow-rs/fallow-skills",
+            "sourceType": "github",
+            "skillPath": "fallow/skills/fallow-setup/SKILL.md",
+            "computedHash": "48259e9df538bd30dbb1ef83fb68ad2386de0e6fcbf548b9975c9b9c91cddfdc"
+        },
         "forming": {
             "source": "nnkogift/personal-skills",
             "sourceType": "github",

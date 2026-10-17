@@ -85,6 +85,7 @@ export const RuleAwareField = memo(function RuleAwareField({
                     className={`text-sm leading-5 ${control.isHidden ? 'text-dhis2-grey-600' : 'text-dhis2-grey-900'}`}
                 >
                     {label}
+                    {control.isMandatory ? '*' : ''}
                 </span>
                 {ruleEffect && ruleName ? (
                     <FieldEffectBadge

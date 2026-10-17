@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-16T19:46:26.438Z\n"
-"PO-Revision-Date: 2026-10-16T19:46:26.438Z\n"
+"POT-Creation-Date: 2026-10-17T16:25:58.778Z\n"
+"PO-Revision-Date: 2026-10-17T16:25:58.778Z\n"
 
 msgid "All"
 msgstr "All"
@@ -101,26 +101,11 @@ msgstr "Section"
 msgid "The form values could not be validated before saving"
 msgstr "The form values could not be validated before saving"
 
-msgid "Server rules ran on the completed event"
-msgstr "Server rules ran on the completed event"
+msgid "Form is valid"
+msgstr "Form is valid"
 
-msgid "Server rules ran on the event"
-msgstr "Server rules ran on the event"
-
-msgid "Could not trigger server rules"
-msgstr "Could not trigger server rules"
-
-msgid "Server rules triggered"
-msgstr "Server rules triggered"
-
-msgid "Trigger on-complete rules"
-msgstr "Trigger on-complete rules"
-
-msgid "Trigger server rules"
-msgstr "Trigger server rules"
-
-msgid "Saved"
-msgstr "Saved"
+msgid "No validation issues were found."
+msgstr "No validation issues were found."
 
 msgid "Form has issues"
 msgstr "Form has issues"
@@ -128,17 +113,20 @@ msgstr "Form has issues"
 msgid "Could not validate the form"
 msgstr "Could not validate the form"
 
-msgid "Form is valid"
-msgstr "Form is valid"
-
-msgid "No validation issues were found."
-msgstr "No validation issues were found."
-
 msgid "Validate form"
 msgstr "Validate form"
 
-msgid "Server rules ran on the registration"
-msgstr "Server rules ran on the registration"
+msgid "Verify again"
+msgstr "Verify again"
+
+msgid "Verify with server"
+msgstr "Verify with server"
+
+msgid "Trigger server rules"
+msgstr "Trigger server rules"
+
+msgid "Trigger on-complete rules"
+msgstr "Trigger on-complete rules"
 
 msgid "Incident date"
 msgstr "Incident date"
@@ -162,33 +150,30 @@ msgstr ""
 msgid "This program stage does not have a form to render."
 msgstr "This program stage does not have a form to render."
 
-msgid "Could not verify with server"
-msgstr "Could not verify with server"
-
-msgid "Verify again"
-msgstr "Verify again"
-
-msgid "Verify with server"
-msgstr "Verify with server"
-
-msgid "Verifying with server…"
-msgstr "Verifying with server…"
-
-msgid "Server found no rule errors or warnings."
-msgstr "Server found no rule errors or warnings."
-
-msgid "Server reported {{ruleCount}} from rules and {{otherCount}} other errors."
-msgstr "Server reported {{ruleCount}} from rules and {{otherCount}} other errors."
-
-msgid "Showing the previous server check."
-msgstr "Showing the previous server check."
-
 msgid ""
 "The dry run doesn't report notifications, so notification rows stay "
 "Simulated."
 msgstr ""
 "The dry run doesn't report notifications, so notification rows stay "
 "Simulated."
+
+msgid "Use Verify with server on the form to compare against the server."
+msgstr "Use Verify with server on the form to compare against the server."
+
+msgid "Could not verify with server"
+msgstr "Could not verify with server"
+
+msgid "Server check passed"
+msgstr "Server check passed"
+
+msgid "Server found no rule errors or warnings."
+msgstr "Server found no rule errors or warnings."
+
+msgid "Server check found issues"
+msgstr "Server check found issues"
+
+msgid "The affected fields are highlighted in the form."
+msgstr "The affected fields are highlighted in the form."
 
 msgid "Hidden"
 msgstr "Hidden"

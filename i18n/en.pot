@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-17T16:25:58.778Z\n"
-"PO-Revision-Date: 2026-10-17T16:25:58.778Z\n"
+"POT-Creation-Date: 2026-10-17T17:13:35.066Z\n"
+"PO-Revision-Date: 2026-10-17T17:13:35.066Z\n"
 
 msgid "All"
 msgstr "All"
@@ -62,6 +62,9 @@ msgstr "1 event"
 msgid "Organisation unit"
 msgstr "Organisation unit"
 
+msgid "Required to verify or save"
+msgstr "Required to verify or save"
+
 msgid "Reset playground"
 msgstr "Reset playground"
 
@@ -98,6 +101,9 @@ msgstr "a rule"
 msgid "Section"
 msgstr "Section"
 
+msgid "Select an organisation unit before saving or verifying"
+msgstr "Select an organisation unit before saving or verifying"
+
 msgid "The form values could not be validated before saving"
 msgstr "The form values could not be validated before saving"
 
@@ -115,9 +121,6 @@ msgstr "Could not validate the form"
 
 msgid "Validate form"
 msgstr "Validate form"
-
-msgid "Verify again"
-msgstr "Verify again"
 
 msgid "Verify with server"
 msgstr "Verify with server"
@@ -174,6 +177,39 @@ msgstr "Server check found issues"
 
 msgid "The affected fields are highlighted in the form."
 msgstr "The affected fields are highlighted in the form."
+
+msgid "Select organisation unit"
+msgstr "Select organisation unit"
+
+msgid "Change"
+msgstr "Change"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Clear"
+msgstr "Clear"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Search program organisation units"
+msgstr "Search program organisation units"
+
+msgid "Only organisation units assigned to this program can be selected."
+msgstr "Only organisation units assigned to this program can be selected."
+
+msgid "No matching organisation units"
+msgstr "No matching organisation units"
+
+msgid "Not assigned to this program"
+msgstr "Not assigned to this program"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Select {{name}}"
+msgstr "Select {{name}}"
 
 msgid "Hidden"
 msgstr "Hidden"
@@ -241,18 +277,18 @@ msgstr "Event date"
 msgid "Could not load organisation units"
 msgstr "Could not load organisation units"
 
-msgid "The current user organisation units could not be loaded for data entry."
-msgstr "The current user organisation units could not be loaded for data entry."
+msgid "The organisation units for this program could not be loaded for data entry."
+msgstr "The organisation units for this program could not be loaded for data entry."
 
 msgid "No organisation units available"
 msgstr "No organisation units available"
 
 msgid ""
-"The current user does not have any accessible organisation units for this "
-"playground."
+"This program has no organisation units assigned, or none are accessible to "
+"the current user."
 msgstr ""
-"The current user does not have any accessible organisation units for this "
-"playground."
+"This program has no organisation units assigned, or none are accessible to "
+"the current user."
 
 msgid "Back to programs"
 msgstr "Back to programs"

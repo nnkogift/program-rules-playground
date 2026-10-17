@@ -65,3 +65,29 @@ jobs:
             - uses: fallow-rs/fallow@v3
               with:
                   command: audit
+
+    fallow-badge:
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: pnpm
+            - run: pnpm install --frozen-lockfile
+            - run: pnpm exec fallow health --format badge --quiet > .github/badges/fallow.svg
+            - name: Commit refreshed badge
+              run: |
+                  if git diff --quiet -- .github/badges/fallow.svg; then
+                      echo "Badge unchanged"
+                      exit 0
+                  fi
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add .github/badges/fallow.svg
+                  git commit -m "chore: refresh fallow badge [skip ci]"
+                  git push

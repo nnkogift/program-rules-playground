@@ -1,5 +1,7 @@
 # Program Rules Playground
 
+[![fallow](.github/badges/fallow.svg)](https://github.com/fallow-rs/fallow)
+
 This is a playground app for testing and debugging DHIS2 program rules. It exercises the [`@nnkogift/dhis2-form-utils-hooks`](https://www.npmjs.com/package/@nnkogift/dhis2-form-utils-hooks), [`-rules`](https://www.npmjs.com/package/@nnkogift/dhis2-form-utils-rules), and [`-metadata`](https://www.npmjs.com/package/@nnkogift/dhis2-form-utils-metadata) packages against real form configurations, and uses [`@nnkogift/dhis2-form-utils-devtools`](https://www.npmjs.com/package/@nnkogift/dhis2-form-utils-devtools) (rule trace and dependency graph panels) to inspect rule evaluation live.
 
 It consumes those packages as regular npm dependencies, published from the [`dhis2-form-utils`](https://github.com/nnkogift/dhis2-form-utils) monorepo — file issues or PRs against the underlying libraries there.

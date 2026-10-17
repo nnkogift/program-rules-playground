@@ -26,5 +26,10 @@ minimumReleaseAgeExclude:
     - '@nnkogift/dhis2-form-utils-devtools@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
     - '@nnkogift/dhis2-form-utils-dhis2-ui@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
     - '@nnkogift/dhis2-form-utils-hooks@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
-    - '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
+    - '@nnkogift/dhis2-form-utils-metadata@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12 || 0.1.0-alpha.13'
     - '@nnkogift/dhis2-form-utils-rules@0.1.0-alpha.7 || 0.1.0-alpha.8 || 0.1.0-alpha.9 || 0.1.0-alpha.10 || 0.1.0-alpha.12'
+
+# hooks/rules/devtools@alpha.12 pin metadata@alpha.12 exactly; force the section-shape fix
+# (dhis2-form-utils#54) until the other packages are republished in lockstep.
+overrides:
+    '@nnkogift/dhis2-form-utils-metadata': 0.1.0-alpha.13

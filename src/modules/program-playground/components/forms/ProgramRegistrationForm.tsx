@@ -193,7 +193,7 @@ export function ProgramRegistrationForm({
                                         void serverCheck.verify()
                                     },
                                 }}
-                                submitLabel={i18n.t('Trigger server rules')}
+                                submitLabel={i18n.t('Preview server effects')}
                             />
                         </RuleFormBody>
                     </form>

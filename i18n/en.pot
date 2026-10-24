@@ -53,8 +53,8 @@ msgstr "Add event"
 msgid "Enrollment"
 msgstr "Enrollment"
 
-msgid "Registration"
-msgstr "Registration"
+msgid "Enrollment form"
+msgstr "Enrollment form"
 
 msgid "1 event"
 msgstr "1 event"
@@ -107,17 +107,17 @@ msgstr "Validate form"
 msgid "Verify with server"
 msgstr "Verify with server"
 
-msgid "Trigger server rules"
-msgstr "Trigger server rules"
+msgid "Preview server effects"
+msgstr "Preview server effects"
 
-msgid "Trigger on-complete rules"
-msgstr "Trigger on-complete rules"
+msgid "Preview on-complete effects"
+msgstr "Preview on-complete effects"
 
 msgid "Incident date"
 msgstr "Incident date"
 
-msgid "Could not load registration form"
-msgstr "Could not load registration form"
+msgid "Could not load enrollment form"
+msgstr "Could not load enrollment form"
 
 msgid "The tracker program metadata could not be loaded."
 msgstr "The tracker program metadata could not be loaded."

@@ -168,7 +168,7 @@ function SplitActionButtons({
                 disabled={isSubmitting || completionPhase === 'evaluating'}
                 onClick={onSave}
             >
-                {i18n.t('Trigger server rules')}
+                {i18n.t('Preview server effects')}
             </Button>
             <Button
                 primary
@@ -180,7 +180,7 @@ function SplitActionButtons({
                 disabled={isSubmitting || completionPhase !== 'idle'}
                 onClick={onComplete}
             >
-                {i18n.t('Trigger on-complete rules')}
+                {i18n.t('Preview on-complete effects')}
             </Button>
         </>
     )

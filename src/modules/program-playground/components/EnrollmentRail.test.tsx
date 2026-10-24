@@ -38,7 +38,7 @@ describe('EnrollmentRail', () => {
             .getAllByRole('button')
             .map((button) => button.textContent)
 
-        expect(labels[0]).toContain('Registration')
+        expect(labels[0]).toContain('Enrollment form')
         expect(labels[1]).toContain('Intake')
         expect(labels[2]).toContain('Follow-up')
         expect(screen.queryByText('No id')).toBeNull()

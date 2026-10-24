@@ -22,10 +22,12 @@ describe('ProgramFormActions', () => {
                 .getAttribute('type')
         ).toBe('submit')
         expect(
-            screen.queryByRole('button', { name: 'Trigger server rules' })
+            screen.queryByRole('button', { name: 'Preview server effects' })
         ).toBeNull()
         expect(
-            screen.queryByRole('button', { name: 'Trigger on-complete rules' })
+            screen.queryByRole('button', {
+                name: 'Preview on-complete effects',
+            })
         ).toBeNull()
     })
 
@@ -39,13 +41,13 @@ describe('ProgramFormActions', () => {
         )
 
         fireEvent.click(
-            screen.getByRole('button', { name: 'Trigger server rules' })
+            screen.getByRole('button', { name: 'Preview server effects' })
         )
         expect(onSave).toHaveBeenCalledTimes(1)
         expect(onComplete).not.toHaveBeenCalled()
 
         fireEvent.click(
-            screen.getByRole('button', { name: 'Trigger on-complete rules' })
+            screen.getByRole('button', { name: 'Preview on-complete effects' })
         )
         expect(onComplete).toHaveBeenCalledTimes(1)
     })
@@ -205,10 +207,10 @@ describe('ProgramFormActions', () => {
         )
 
         const complete = screen.getByRole('button', {
-            name: 'Trigger on-complete rules',
+            name: 'Preview on-complete effects',
         }) as HTMLButtonElement
         const save = screen.getByRole('button', {
-            name: 'Trigger server rules',
+            name: 'Preview server effects',
         }) as HTMLButtonElement
         expect(complete.disabled).toBe(true)
         expect(save.disabled).toBe(false)

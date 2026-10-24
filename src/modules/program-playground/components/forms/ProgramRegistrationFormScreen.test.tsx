@@ -30,25 +30,19 @@ describe('ProgramRegistrationFormScreen', () => {
         renderScreen({ loading: true })
 
         expect(screen.queryByTestId('form')).toBeNull()
-        expect(
-            screen.queryByText('Could not load registration form')
-        ).toBeNull()
+        expect(screen.queryByText('Could not load enrollment form')).toBeNull()
     })
 
     it('shows an error notice when loading failed', () => {
         renderScreen({ error: new Error('boom') })
 
-        expect(
-            screen.getByText('Could not load registration form')
-        ).toBeTruthy()
+        expect(screen.getByText('Could not load enrollment form')).toBeTruthy()
     })
 
     it('shows an error notice when metadata is missing', () => {
         renderScreen({ metadata: undefined })
 
-        expect(
-            screen.getByText('Could not load registration form')
-        ).toBeTruthy()
+        expect(screen.getByText('Could not load enrollment form')).toBeTruthy()
     })
 
     it('explains when the program has no attributes', () => {
@@ -58,7 +52,7 @@ describe('ProgramRegistrationFormScreen', () => {
         expect(screen.queryByTestId('form')).toBeNull()
     })
 
-    it('renders the registration form once metadata is loaded', () => {
+    it('renders the enrollment form once metadata is loaded', () => {
         renderScreen()
 
         expect(screen.getByTestId('form')).toBeTruthy()

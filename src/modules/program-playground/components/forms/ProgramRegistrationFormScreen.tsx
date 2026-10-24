@@ -54,7 +54,7 @@ export const ProgramRegistrationFormScreen = memo(
             return (
                 <NoticeBox
                     error
-                    title={i18n.t('Could not load registration form')}
+                    title={i18n.t('Could not load enrollment form')}
                 >
                     {i18n.t(
                         'The tracker program metadata could not be loaded.'

@@ -25,7 +25,7 @@ describe('SaveReviewDialog', () => {
         renderDialog()
 
         expect(screen.queryByText('Verify with server')).toBeNull()
-        expect(screen.queryByText('Trigger server rules')).toBeNull()
+        expect(screen.queryByText('Preview server effects')).toBeNull()
     })
 
     it('points at the form until a server check has run', () => {

@@ -26,7 +26,7 @@ jest.mock(
 jest.mock(
     '@/modules/program-playground/components/forms/TrackerProgramShell',
     () => ({
-        TrackerProgramShell: jest.fn(() => <div>Registration form screen</div>),
+        TrackerProgramShell: jest.fn(() => <div>Enrollment form screen</div>),
     })
 )
 
@@ -149,7 +149,7 @@ describe('ProgramPage', () => {
 
         const view = renderPage()
 
-        expect(await view.findByText('Registration form screen')).toBeTruthy()
+        expect(await view.findByText('Enrollment form screen')).toBeTruthy()
         expect(TrackerProgramShell).toHaveBeenCalled()
         const [props] = jest.mocked(TrackerProgramShell).mock.calls[0]
         expect(props.supplementaryData).toEqual(SENTINEL_SUPPLEMENTARY_DATA)

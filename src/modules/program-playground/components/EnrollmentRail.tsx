@@ -43,7 +43,7 @@ export function EnrollmentRail({
             <div className="flex flex-col">
                 <RailRow
                     icon={<IconUser16 />}
-                    label={i18n.t('Registration')}
+                    label={i18n.t('Enrollment form')}
                     meta={i18n.t('{{count}} attributes', {
                         count:
                             trackerMetadata?.programTrackedEntityAttributes

@@ -29,12 +29,12 @@ export const RuleAwareField = memo(function RuleAwareField({
     const ruleEffect = useFieldRuleEffect(control.fieldId)
     const fieldState = useFieldState(control.fieldId)
     const status = useWatch({ name: 'status' })
-    const { ghostsEnabled, labelLookup } = useRuleDisplay()
+    const { showHiddenFields, labelLookup } = useRuleDisplay()
     const labelId = useId()
     const programOrgUnits = useProgramOrgUnitsContext()
     const widgetContainerRef = useWidgetAriaLabel(labelId)
 
-    if (control.isHidden && !ghostsEnabled) {
+    if (control.isHidden && !showHiddenFields) {
         return null
     }
 

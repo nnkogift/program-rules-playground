@@ -22,9 +22,9 @@ export function FormSectionCard({
 }: FormSectionCardProps) {
     const state = useSectionState(sectionId)
     const ruleEffect = useSectionRuleEffect(sectionId)
-    const { ghostsEnabled, labelLookup } = useRuleDisplay()
+    const { showHiddenFields, labelLookup } = useRuleDisplay()
 
-    if (state.hidden && !ghostsEnabled) {
+    if (state.hidden && !showHiddenFields) {
         return null
     }
 

@@ -7,14 +7,14 @@ import { RuleOutputColumn } from '@/modules/program-playground/components/rules/
 type RuleFormBodyProps = {
     rulesMetadata: ComponentProps<typeof RuleOutputColumn>['metadata']
     labelLookup: ReturnType<typeof createLabelLookup>
-    /** The metadata-driven fields; rendered with rule-hidden ghosts when enabled. */
+    /** The metadata-driven fields; rendered with hidden-field placeholders when enabled. */
     fields: ReactNode
     /** Rendered under the fields (banners, action buttons). */
     children?: ReactNode
 }
 
 /**
- * Shared layout of the registration and event forms: the ghost toggle, the
+ * Shared layout of the registration and event forms: the hidden-fields toggle, the
  * fields column and the sticky rule output sidebar.
  */
 export function RuleFormBody({
@@ -23,14 +23,14 @@ export function RuleFormBody({
     fields,
     children,
 }: RuleFormBodyProps) {
-    const [ghostsEnabled, setGhostsEnabled] = useState(true)
+    const [showHiddenFields, setShowHiddenFields] = useState(true)
 
     return (
         <>
             <GhostToggleButton
-                enabled={ghostsEnabled}
+                enabled={showHiddenFields}
                 onToggle={() => {
-                    setGhostsEnabled((current) => !current)
+                    setShowHiddenFields((current) => !current)
                 }}
             />
             <div className="flex flex-1 flex-row-reverse items-start gap-5 pt-4">
@@ -39,7 +39,7 @@ export function RuleFormBody({
                 </div>
                 <div className="flex min-w-130 flex-1 flex-col gap-dp16">
                     <RuleDisplayProvider
-                        ghostsEnabled={ghostsEnabled}
+                        showHiddenFields={showHiddenFields}
                         labelLookup={labelLookup}
                     >
                         {fields}

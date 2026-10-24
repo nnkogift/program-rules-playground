@@ -223,14 +223,11 @@ msgstr "On complete"
 msgid "{{actionType}} from rule"
 msgstr "{{actionType}} from rule"
 
-msgid "Ghost placeholders keep the slot of fields and sections a rule hid."
-msgstr "Ghost placeholders keep the slot of fields and sections a rule hid."
+msgid "Shows a placeholder where a rule hid a field or section."
+msgstr "Shows a placeholder where a rule hid a field or section."
 
-msgid "Hidden fields shown"
-msgstr "Hidden fields shown"
-
-msgid "Hidden fields collapsed"
-msgstr "Hidden fields collapsed"
+msgid "Show hidden fields"
+msgstr "Show hidden fields"
 
 msgid "Hidden by {{ruleName}}"
 msgstr "Hidden by {{ruleName}}"

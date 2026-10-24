@@ -14,19 +14,18 @@ export function GhostToggleButton({
         <button
             type="button"
             onClick={onToggle}
+            aria-pressed={enabled}
             className={`inline-flex w-fit shrink-0 items-center gap-1.5 self-end rounded px-2.5 py-1.5 text-[13px] ${
                 enabled
                     ? 'bg-dhis2-teal-100 text-dhis2-teal-900 shadow-[inset_0_0_0_1px_#4db6ac]'
                     : 'bg-dhis2-grey-100 text-dhis2-grey-900 shadow-[inset_0_0_0_1px_#a0adba]'
             }`}
             title={i18n.t(
-                'Ghost placeholders keep the slot of fields and sections a rule hid.'
+                'Shows a placeholder where a rule hid a field or section.'
             )}
         >
             <IconViewOff16 aria-hidden="true" />
-            {enabled
-                ? i18n.t('Hidden fields shown')
-                : i18n.t('Hidden fields collapsed')}
+            {i18n.t('Show hidden fields')}
         </button>
     )
 }

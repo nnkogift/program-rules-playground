@@ -68,10 +68,10 @@ function control(overrides: Record<string, unknown> = {}) {
     } as never
 }
 
-function renderField(ghostsEnabled = true) {
+function renderField(showHiddenFields = true) {
     return render(
         <RuleDisplayProvider
-            ghostsEnabled={ghostsEnabled}
+            showHiddenFields={showHiddenFields}
             labelLookup={labelLookup as never}
         >
             <RuleAwareField field={{} as never} />
@@ -115,7 +115,7 @@ describe('RuleAwareField', () => {
         expect(screen.getByText('Weight*')).toBeTruthy()
     })
 
-    it('renders nothing for a hidden field when ghosts are disabled', () => {
+    it('renders nothing for a hidden field when hidden-field placeholders are off', () => {
         mockedUseFieldControl.mockReturnValue(control({ isHidden: true }))
 
         const { container } = renderField(false)
@@ -123,7 +123,7 @@ describe('RuleAwareField', () => {
         expect(container.innerHTML).toBe('')
     })
 
-    it('renders a placeholder naming the rule for a hidden field with ghosts', () => {
+    it('renders a placeholder naming the rule for a hidden field with placeholders on', () => {
         mockedUseFieldControl.mockReturnValue(control({ isHidden: true }))
         mockedUseFieldRuleEffect.mockReturnValue({
             ruleId: 'r1',

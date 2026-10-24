@@ -2,7 +2,7 @@ import { createContext, type ReactNode, useContext, useMemo } from 'react'
 import type { DevtoolsLabelLookup } from '@nnkogift/dhis2-form-utils-devtools'
 
 type RuleDisplayContextValue = {
-    ghostsEnabled: boolean
+    showHiddenFields: boolean
     labelLookup: DevtoolsLabelLookup
 }
 
@@ -13,13 +13,13 @@ type RuleDisplayProviderProps = RuleDisplayContextValue & {
 }
 
 export function RuleDisplayProvider({
-    ghostsEnabled,
+    showHiddenFields,
     labelLookup,
     children,
 }: RuleDisplayProviderProps) {
     const value = useMemo(
-        () => ({ ghostsEnabled, labelLookup }),
-        [ghostsEnabled, labelLookup]
+        () => ({ showHiddenFields, labelLookup }),
+        [showHiddenFields, labelLookup]
     )
     return (
         <RuleDisplayContext.Provider value={value}>

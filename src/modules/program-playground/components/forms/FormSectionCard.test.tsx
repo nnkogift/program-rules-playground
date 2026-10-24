@@ -27,10 +27,10 @@ const labelLookup = {
     resolveFieldName: (fieldId: string) => fieldId,
 }
 
-function renderCard(ghostsEnabled = true, props = {}) {
+function renderCard(showHiddenFields = true, props = {}) {
     return render(
         <RuleDisplayProvider
-            ghostsEnabled={ghostsEnabled}
+            showHiddenFields={showHiddenFields}
             labelLookup={labelLookup as never}
         >
             <FormSectionCard sectionId="sec1" {...props}>
@@ -64,7 +64,7 @@ describe('FormSectionCard', () => {
         expect(screen.queryByRole('heading')).toBeNull()
     })
 
-    it('renders nothing for a hidden section when ghosts are disabled', () => {
+    it('renders nothing for a hidden section when hidden-field placeholders are off', () => {
         mockedState.mockReturnValue({ hidden: true } as never)
 
         const { container } = renderCard(false)

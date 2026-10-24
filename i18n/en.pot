@@ -5,8 +5,63 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-17T19:01:17.843Z\n"
-"PO-Revision-Date: 2026-10-17T19:01:17.844Z\n"
+"POT-Creation-Date: 2026-10-24T10:59:49.069Z\n"
+"PO-Revision-Date: 2026-10-24T10:59:49.070Z\n"
+
+msgid "(opens in a new tab)"
+msgstr "(opens in a new tab)"
+
+msgid "Unknown"
+msgstr "Unknown"
+
+msgid "← Back to programs"
+msgstr "← Back to programs"
+
+msgid "Program Rules Playground"
+msgstr "Program Rules Playground"
+
+msgid "View, test and debug program rules in your DHIS2 instance."
+msgstr "View, test and debug program rules in your DHIS2 instance."
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Supported DHIS2"
+msgstr "Supported DHIS2"
+
+msgid "Safe to experiment"
+msgstr "Safe to experiment"
+
+msgid ""
+"Nothing you enter is saved. \"Verify with server\" is a dry run that checks "
+"your input without storing any data."
+msgstr ""
+"Nothing you enter is saved. \"Verify with server\" is a dry run that checks "
+"your input without storing any data."
+
+msgid "Resources"
+msgstr "Resources"
+
+msgid "Documentation"
+msgstr "Documentation"
+
+msgid "Guides and reference"
+msgstr "Guides and reference"
+
+msgid "GitHub repository"
+msgstr "GitHub repository"
+
+msgid "Source code and releases"
+msgstr "Source code and releases"
+
+msgid "Report a bug"
+msgstr "Report a bug"
+
+msgid "Open an issue on GitHub"
+msgstr "Open an issue on GitHub"
+
+msgid "The rule engine and form libraries this app is built on"
+msgstr "The rule engine and form libraries this app is built on"
 
 msgid "All"
 msgstr "All"
@@ -40,6 +95,15 @@ msgstr "Programs"
 
 msgid "Pick a program to open its forms and watch its rules evaluate."
 msgstr "Pick a program to open its forms and watch its rules evaluate."
+
+msgid "Help"
+msgstr "Help"
+
+msgid "Docs"
+msgstr "Docs"
+
+msgid "About"
+msgstr "About"
 
 msgid "Error"
 msgstr "Error"

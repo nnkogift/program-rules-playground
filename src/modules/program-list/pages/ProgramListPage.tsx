@@ -2,12 +2,20 @@ import React from 'react'
 import { useNavigate } from 'react-router'
 import i18n from '@dhis2/d2-i18n'
 import { NoticeBox } from '@dhis2/ui'
+import { ProgramListHelpLinks } from '@/modules/program-list/components/ProgramListHelpLinks'
 import { ProgramListFilters } from '@/modules/program-list/components/ProgramListFilters'
 import { ProgramListTable } from '@/modules/program-list/components/ProgramListTable'
 import { useProgramListParams } from '@/modules/program-list/hooks/useProgramListParams'
 import { usePrograms } from '@/modules/program-list/hooks/usePrograms'
 import { resolveProgramListItem } from '@/modules/program-list/utils/resolveProgramListItem'
 import type { Program, ProgramListParams } from '@/shared/types/program'
+
+function selectProgramList(data: ReturnType<typeof usePrograms>['data']) {
+    return {
+        programs: (data?.programs?.programs ?? []).map(resolveProgramListItem),
+        pager: data?.programs?.pager,
+    }
+}
 
 export function ProgramListPage() {
     const navigate = useNavigate()
@@ -28,10 +36,7 @@ export function ProgramListPage() {
         type,
     })
 
-    const programs = (data?.programs?.programs ?? []).map(
-        resolveProgramListItem
-    )
-    const pager = data?.programs?.pager
+    const { programs, pager } = selectProgramList(data)
 
     const handleProgramSelect = (program: Program) => {
         const listParams: ProgramListParams = {
@@ -59,6 +64,7 @@ export function ProgramListPage() {
                         )}
                     </p>
                 </div>
+                <ProgramListHelpLinks />
                 <ProgramListFilters
                     search={search}
                     type={type}

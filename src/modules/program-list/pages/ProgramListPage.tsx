@@ -52,7 +52,7 @@ export function ProgramListPage() {
     }
 
     return (
-        <div className="flex flex-col max-w-400 w-full mx-auto px-8 pt-7 pb-12 gap-5">
+        <div className="flex flex-col min-h-full max-w-400 w-full mx-auto px-8 pt-7 pb-6 gap-5">
             <div className="flex items-end justify-between gap-6 flex-wrap">
                 <div className="flex flex-col gap-1">
                     <h1 className="m-0 text-2xl font-medium leading-[1.3] text-dhis2-grey-900">
@@ -64,7 +64,6 @@ export function ProgramListPage() {
                         )}
                     </p>
                 </div>
-                <ProgramListHelpLinks />
                 <ProgramListFilters
                     search={search}
                     type={type}
@@ -90,6 +89,7 @@ export function ProgramListPage() {
                     />
                 )}
             </section>
+            <ProgramListHelpLinks />
         </div>
     )
 }

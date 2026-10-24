@@ -9,7 +9,7 @@ export function ProgramListHelpLinks() {
     return (
         <nav
             aria-label={i18n.t('Help')}
-            className="flex items-center gap-dp16 text-sm"
+            className="flex items-center justify-end gap-dp16 mt-auto pt-dp16 text-sm"
         >
             <a
                 href={DOCS_URL}

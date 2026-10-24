@@ -110,23 +110,6 @@ export function AboutPage() {
             </dl>
 
             <section
-                aria-labelledby="about-safety"
-                className="flex flex-col gap-1 p-dp16 bg-dhis2-blue-050 border border-dhis2-blue-200 rounded-md"
-            >
-                <h2
-                    id="about-safety"
-                    className="m-0 text-base font-medium text-dhis2-blue-900"
-                >
-                    {i18n.t('Safe to experiment')}
-                </h2>
-                <p className="m-0 text-sm text-dhis2-grey-800">
-                    {i18n.t(
-                        'Nothing you enter is saved. "Verify with server" is a dry run that checks your input without storing any data.'
-                    )}
-                </p>
-            </section>
-
-            <section
                 aria-labelledby="about-links"
                 className="flex flex-col gap-dp8"
             >

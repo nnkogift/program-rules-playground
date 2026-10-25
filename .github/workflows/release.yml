@@ -50,6 +50,29 @@ jobs:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: gh release upload "v${{ steps.version.outputs.version }}" build/bundle/*.zip --clobber
 
+    # Tells the docs repo about the release: opens a "Docs impact" issue with
+    # the changesets' `docs:` notes and any DHIS2 version range change, and
+    # triggers its screenshot pipeline. A separate job so a docs-side failure
+    # never blocks the deploy. Skips with a warning without DOCS_REPO_TOKEN.
+    docs-impact:
+        needs: release
+        if: needs.release.outputs.published == 'true'
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  # Tags and history, to diff d2.config.js against the previous release.
+                  fetch-depth: 0
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+            - name: Open docs issue and trigger screenshots
+              env:
+                  DOCS_REPO_TOKEN: ${{ secrets.DOCS_REPO_TOKEN }}
+              run: node scripts/docs-impact.mjs
+
     deploy:
         needs: release
         if: needs.release.outputs.published == 'true'

@@ -105,3 +105,19 @@ Jest + Testing Library; tests sit next to the code as `*.test.ts(x)`. `usehooks-
 ### Releases
 
 Changesets with conventional commits (`changeset-conventional-commits`); keep the `@nnkogift/dhis2-form-utils-*` versions in `package.json` aligned with each other. `pnpm-workspace.yaml` exempts those packages from pnpm's minimum release age so fresh alphas can be installed.
+
+Releases run from `.github/workflows/release.yml` on pushes to `alpha`: `changesets/action` opens the version PR, and once it is merged `scripts/release.mjs` builds the bundle and tags the release.
+
+**Docs impact.** When a changeset changes something users see, add a line starting with `docs:` after the summary, in its own paragraph, saying what the docs must change:
+
+```md
+---
+'program-rules-playground': minor
+---
+
+Renames the Show hidden fields toggle to Show placeholders.
+
+docs: Rename the toggle in "Read field badges and hidden-field placeholders" and retake its screenshot.
+```
+
+After a release, the `docs-impact` job runs `scripts/docs-impact.mjs`. It reads the `docs:` lines from the new version's `CHANGELOG.md` section (the changelog generator copies changeset bodies there), compares `minDHIS2Version`/`maxDHIS2Version` in `d2.config.js` with the previous tag, and, in [`nnkogift/program-rules-playground-docs`](https://github.com/nnkogift/program-rules-playground-docs), opens a `Docs impact: program-rules-playground vX` issue when either found something and sends the `app-released` (always) and `app-compat-changed` (range changed) repository dispatches. It needs the `DOCS_REPO_TOKEN` secret and skips with a warning without it. Run `node scripts/docs-impact.mjs --dry-run` to see what it would do. The PR template (`.github/pull_request_template.md`) asks for the docs impact of every PR.

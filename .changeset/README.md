@@ -6,3 +6,19 @@ find the full documentation for it [in our repository](https://github.com/change
 
 We have a quick list of common questions to get you started engaging with this project in
 [our documentation](https://github.com/changesets/changesets/blob/main/docs/common-questions.md).
+
+## Docs notes
+
+If your change affects what users see, add a line starting with `docs:` after the summary, in its own paragraph, describing what the docs must change. For example:
+
+```md
+---
+'program-rules-playground': patch
+---
+
+Shows the rule name in the Verify with server notice.
+
+docs: Update the notice screenshot in "Check rules against the server".
+```
+
+The release workflow collects these lines from `CHANGELOG.md` and opens a docs issue in `nnkogift/program-rules-playground-docs`. Don't start the summary itself with `docs:`; only lines after it are collected.

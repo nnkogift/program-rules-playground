@@ -2,62 +2,50 @@
 
 [![fallow](.github/badges/fallow.svg)](https://github.com/fallow-rs/fallow)
 
-This is a playground app for testing and debugging DHIS2 program rules. It exercises the [`@nnkogift/dhis2-form-utils-hooks`](https://www.npmjs.com/package/@nnkogift/dhis2-form-utils-hooks), [`-rules`](https://www.npmjs.com/package/@nnkogift/dhis2-form-utils-rules), and [`-metadata`](https://www.npmjs.com/package/@nnkogift/dhis2-form-utils-metadata) packages against real form configurations, and uses [`@nnkogift/dhis2-form-utils-devtools`](https://www.npmjs.com/package/@nnkogift/dhis2-form-utils-devtools) (rule trace and dependency graph panels) to inspect rule evaluation live.
+A DHIS2 app for testing, validating and debugging program rules against your real form configurations. You pick a program, fill in its enrollment and event forms, and watch the rules evaluate live: hidden fields and sections, assigned values, mandatory fields, warnings and errors, and feedback and indicator messages. A live rule trace and a dependency graph show why each rule fired, or why it did not.
 
-It consumes those packages as regular npm dependencies, published from the [`dhis2-form-utils`](https://github.com/nnkogift/dhis2-form-utils) monorepo — file issues or PRs against the underlying libraries there.
+<!-- TODO: screenshot from the docs pipeline (docs/images/playground.png) -->
 
-This project was bootstrapped with [DHIS2 Application Platform](https://github.com/dhis2/app-platform).
+## Who it's for
 
-## Getting started
+- **Program configurators and implementers** who write program rules and want to see them work before users do.
+- **DHIS2 admins** who need to find out why a rule behaves differently on their instance.
+- **Trainers** who explain program rules and want a safe place to show them in action.
+
+## Nothing is saved
+
+The playground never saves tracker data, events, enrollments or metadata, and never sends notifications. You can use it on a production server. The one exception: choosing a file in a file or image field uploads that file to the server as an unused file resource, so use a test file on production.
+
+- **Validate form** checks the form in your browser and sends nothing.
+- **Verify with server** sends your form to the tracker importer as a dry run (`importMode=VALIDATE`). The server runs its rule engine and validation and reports the result, but stores nothing.
+- **Preview server effects** and **Preview on-complete effects** open a read-only summary of the effects the server would run (messages, scheduled events). They do not post anything.
+
+## Supported DHIS2 versions
+
+DHIS2 2.40 to 2.43 (`minDHIS2Version` and `maxDHIS2Version` in [`d2.config.js`](d2.config.js)). The app's About page shows the same range and the installed version.
+
+## Documentation and install
+
+- User documentation: [prp-docs.nnkogift.dev](https://prp-docs.nnkogift.dev)
+- DHIS2 App Hub (coming soon)
+- Release bundles: the `.zip` attached to each [GitHub release](https://github.com/nnkogift/program-rules-playground/releases)
+
+## Built on dhis2-form-utils
+
+The rule engine, form hooks, field widgets and rule devtools come from the [`dhis2-form-utils`](https://github.com/nnkogift/dhis2-form-utils) libraries (`@nnkogift/dhis2-form-utils-*` on npm). File issues and pull requests for those parts there. This repository holds the app around them.
+
+## Development
+
+You need Node.js 24 and pnpm.
 
 ```bash
 pnpm install
-pnpm dev      # start the dev server, proxying against a DHIS2 instance
-pnpm build    # production build
-pnpm test     # run the test suite
-pnpm lint     # eslint + prettier check
+pnpm dev         # start the dev server, proxied against a DHIS2 instance
+pnpm test        # run the Jest test suite
+pnpm typecheck   # tsc --noEmit
+pnpm lint        # eslint + prettier check
+pnpm build       # production build; the deployable .zip lands in build/bundle
+pnpm changeset   # describe your change for the next release
 ```
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `pnpm dev`
-
-Runs the app in development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `pnpm test`
-
-Launches the test runner and runs all available tests found in `/src`.<br />
-
-See the section about [running tests](https://platform.dhis2.nu/#/scripts/test) for more information.
-
-### `pnpm build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-A deployable `.zip` file can be found in `build/bundle`!
-
-See the section about [building](https://platform.dhis2.nu/#/scripts/build) for more information.
-
-### `pnpm deploy`
-
-Deploys the built app in the `build` folder to a running DHIS2 instance.<br />
-This command will prompt you to enter a server URL as well as the username and password of a DHIS2 user with the App Management authority.<br/>
-You must run `pnpm build` before running `pnpm deploy`.<br />
-
-See the section about [deploying](https://platform.dhis2.nu/#/scripts/deploy) for more information.
-
-## Learn More
-
-You can learn more about the platform in the [DHIS2 Application Platform Documentation](https://platform.dhis2.nu/).
-
-You can learn more about the runtime in the [DHIS2 Application Runtime Documentation](https://runtime.dhis2.nu/).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+The app is built with the [DHIS2 Application Platform](https://platform.dhis2.nu/). Contributor and agent guidance lives in [`AGENTS.md`](AGENTS.md).

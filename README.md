@@ -14,7 +14,7 @@ A DHIS2 app for testing, validating and debugging program rules against your rea
 
 ## Nothing is saved
 
-The playground never writes data to your instance. You can use it on a production server.
+The playground never saves tracker data, events, enrollments or metadata, and never sends notifications. You can use it on a production server. The one exception: choosing a file in a file or image field uploads that file to the server as an unused file resource, so use a test file on production.
 
 - **Validate form** checks the form in your browser and sends nothing.
 - **Verify with server** sends your form to the tracker importer as a dry run (`importMode=VALIDATE`). The server runs its rule engine and validation and reports the result, but stores nothing.

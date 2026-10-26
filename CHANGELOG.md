@@ -1,5 +1,14 @@
 # program-rules-playground
 
+## 0.1.0-alpha.12
+
+### Patch Changes
+
+- 9f76666: Updates the `@nnkogift/dhis2-form-utils-*` packages to `0.1.0-alpha.14`, which adds stable `data-test` hooks, exported effect legend and provenance tag constants, and enrollment wording in the devtools.
+- 0d88316: Uses "Enrollment" consistently in user-facing copy: the first rail row is now **Enrollment form** and the load error reads **Could not load enrollment form**.
+- 35b94c6: Names the ghost feature once as "hidden-field placeholders": the toggle is now a **Show hidden fields** button that reports its state with `aria-pressed` instead of swapping its label, and its tooltip reads **Shows a placeholder where a rule hid a field or section.**
+- 0d88316: Renames **Trigger server rules** to **Preview server effects** and **Trigger on-complete rules** to **Preview on-complete effects**. The buttons only open the read-only server effects summary and never post anything.
+
 ## 0.1.0-alpha.11
 
 ### Patch Changes

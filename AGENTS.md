@@ -6,7 +6,7 @@ Guidance for AI coding agents (Claude Code, Codex, and others) working in this r
 
 A DHIS2 custom app (built on the [DHIS2 Application Platform](https://github.com/dhis2/app-platform)) for viewing, testing and debugging DHIS2 program rules. A user picks a program, opens its enrollment and event forms, fills them in, and watches program rules evaluate live (hide/show fields and sections, assignments, mandatory, warnings/errors, feedback and indicator messages). Supports DHIS2 2.40 to 2.43 (see `d2.config.js`).
 
-**The app never saves data.** Its only write call is the tracker importer dry run (`importMode=VALIDATE`) in `hooks/useServerVerification.ts`, which runs the server's rule engine and validation and persists nothing. Keep it that way: do not add calls that post to `tracker` (or any other resource) without `importMode=VALIDATE`.
+**The app never saves data.** Its only data write call is the tracker importer dry run (`importMode=VALIDATE`) in `hooks/useServerVerification.ts`, which runs the server's rule engine and validation and persists nothing. One exception lives in the libraries: FILE_RESOURCE and IMAGE field widgets (`-dhis2-ui`, via `useFileResourceUpload` in `-hooks`) upload a picked file immediately with `POST fileResources`, leaving an unassigned file resource on the server. The user docs say so. Keep it that way: do not add calls that post to `tracker` (or any other resource) without `importMode=VALIDATE`.
 
 It consumes five sibling libraries as regular npm dependencies, all published from the separate [`dhis2-form-utils`](https://github.com/nnkogift/dhis2-form-utils) monorepo and versioned in lockstep with this app. **File issues/PRs against the rule engine, hooks, widgets or devtools there, not here.**
 

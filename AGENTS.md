@@ -38,7 +38,7 @@ pnpm test -- src/modules/program-playground/hooks/usePublishFormValues.test.ts
 pnpm test -- -t "some test name"
 ```
 
-CI (`.github/workflows/ci.yml`) runs lint, test, build and a Fallow audit (fed with test coverage) as separate jobs on pushes and PRs to `main`, `alpha` and `beta`. It does not run `pnpm typecheck`, so run that locally before pushing. `deploy.yml` and `release.yml` handle deployment and Changesets releases.
+CI (`.github/workflows/ci.yml`) runs lint, typecheck, test, build and a Fallow audit (fed with test coverage) as separate jobs on pushes and PRs to `main`, `alpha` and `beta`. `deploy.yml` and `release.yml` handle deployment and Changesets releases.
 
 ## Source layout
 
